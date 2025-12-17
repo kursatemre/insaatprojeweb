@@ -10,7 +10,11 @@
       "Bash(git commit -m \"$(cat <<''EOF''\nInitial commit: Ekip Proje - Mimarlık ve Mühendislik Web Sitesi\n\n✨ Features:\n- Modern, lüks tasarım (Warm Concrete + Blueprint patterns)\n- 5 ana sayfa: Ana Sayfa, Hizmetler, Projeler, Hakkımızda, İletişim\n- Tam responsive tasarım (mobile, tablet, desktop)\n- Framer Motion animasyonlar\n- İnteraktif Türkiye haritası\n- Split hero section (Proje vs Danışmanlık)\n- Teknik kapasite metrikleri\n- SEO optimize edilmiş\n\n🎨 Design System:\n- Renk Paleti: Night Blue, Dark Carbon, Muted Gold\n- Tipografi: Playfair Display, Manrope, Roboto Mono\n- Textures: Blueprint ve topografik desenler\n\n🚀 Tech Stack:\n- Next.js 15 (App Router)\n- React 18\n- TypeScript 5\n- Tailwind CSS 3.4\n- Framer Motion 11\n\n📦 Ready for:\n- Vercel deployment\n- Supabase backend integration\n- Production build\n\n🤖 Generated with Claude Code\nhttps://claude.com/claude-code\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>\nEOF\n)\")",
       "Bash(git branch:*)",
       "Bash(git commit:*)",
-      "Bash(tree:*)"
+      "Bash(tree:*)",
+      "Bash(git remote add:*)",
+      "Bash(git push:*)",
+      "Bash(git pull:*)",
+      "Bash(git checkout:*)"
     ]
   }
 }
