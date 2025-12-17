@@ -1,0 +1,82 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Cinzel:wght@400;500;600;700;800;900&family=Manrope:wght@200;300;400;500;600;700;800&family=Roboto+Mono:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --warm-concrete: #f4f4f2;
+  --dark-carbon: #1a1a1a;
+  --night-blue: #0f172a;
+  --muted-gold: #b89150;
+  --bronze: #cd7f32;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Manrope', sans-serif;
+  background-color: var(--warm-concrete);
+  color: var(--dark-carbon);
+  overflow-x: hidden;
+}
+
+/* Smooth scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--warm-concrete);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--muted-gold);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--bronze);
+}
+
+/* Custom utilities */
+@layer utilities {
+  .text-shadow-gold {
+    text-shadow: 0 2px 20px rgba(184, 145, 80, 0.3);
+  }
+
+  .border-gradient {
+    border-image: linear-gradient(135deg, rgba(184, 145, 80, 0.5), rgba(15, 23, 42, 0.5)) 1;
+  }
+
+  .glass-effect {
+    background: rgba(244, 244, 242, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+}
+
+/* Selection */
+::selection {
+  background-color: var(--muted-gold);
+  color: white;
+}
+
+::-moz-selection {
+  background-color: var(--muted-gold);
+  color: white;
+}
