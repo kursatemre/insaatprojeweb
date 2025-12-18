@@ -181,12 +181,12 @@ export default function AdminMesajlarPage() {
                           {message.name}
                         </p>
                         <p className="text-xs text-dark-carbon/50 font-roboto-mono">
-                          {new Date(message.created_at).toLocaleString('tr-TR', {
+                          {message.created_at ? new Date(message.created_at).toLocaleString('tr-TR', {
                             day: '2-digit',
                             month: 'short',
                             hour: '2-digit',
                             minute: '2-digit',
-                          })}
+                          }) : '-'}
                         </p>
                       </div>
                     </div>
@@ -307,7 +307,7 @@ export default function AdminMesajlarPage() {
                           : 'Düşük Öncelik'}
                       </span>
                       <span className="text-sm text-dark-carbon/50 font-roboto-mono">
-                        {new Date(selectedMessage.created_at).toLocaleString('tr-TR')}
+                        {selectedMessage.created_at ? new Date(selectedMessage.created_at).toLocaleString('tr-TR') : '-'}
                       </span>
                     </div>
                   </div>
