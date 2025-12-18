@@ -27,8 +27,8 @@ export default function IletisimPage() {
         name: formData.name,
         email: formData.email,
         phone: formData.phone,
-        company: formData.company || null,
-        location: formData.location || null,
+        company: formData.company || undefined,
+        location: formData.location || undefined,
         project_type: formData.project_type,
         message: formData.message,
       });
