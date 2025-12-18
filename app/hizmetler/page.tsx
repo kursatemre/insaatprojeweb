@@ -8,8 +8,8 @@ import Link from 'next/link';
 export default function HizmetlerPage() {
   const projeRef = useRef(null);
   const danismanlikRef = useRef(null);
-  const isProjeInView = useInView(projeRef, { once: true, amount: 0.2 });
-  const isDanismanlikInView = useInView(danismanlikRef, { once: true, amount: 0.2 });
+  const isProjeInView = useInView(projeRef, { once: true, amount: 0.1 });
+  const isDanismanlikInView = useInView(danismanlikRef, { once: true, amount: 0.1 });
 
   const projeServices = [
     {
@@ -273,8 +273,8 @@ export default function HizmetlerPage() {
     <div className="pt-32 md:pt-28">
       {/* Hero Section */}
       <section className="relative py-24 bg-gradient-to-br from-night-blue via-dark-carbon to-night-blue overflow-hidden">
-        <div className="absolute inset-0 bg-blueprint-pattern opacity-5"></div>
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div className="absolute inset-0 bg-blueprint-pattern opacity-5 pointer-events-none"></div>
+        <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -298,9 +298,9 @@ export default function HizmetlerPage() {
       </section>
 
       {/* Proje Hizmetleri */}
-      <section id="proje" ref={projeRef} className="relative py-24 bg-warm-concrete">
-        <div className="absolute inset-0 bg-topo-pattern opacity-20"></div>
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section id="proje" ref={projeRef} className="relative py-24 bg-warm-concrete overflow-hidden">
+        <div className="absolute inset-0 bg-topo-pattern opacity-20 pointer-events-none"></div>
+        <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={isProjeInView ? { opacity: 1, y: 0 } : {}}
@@ -327,10 +327,10 @@ export default function HizmetlerPage() {
       <section
         id="danismanlik"
         ref={danismanlikRef}
-        className="relative py-24 bg-gradient-to-b from-slate-light to-warm-concrete"
+        className="relative py-24 bg-gradient-to-b from-slate-light to-warm-concrete overflow-hidden"
       >
-        <div className="absolute inset-0 bg-blueprint-pattern opacity-20"></div>
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="absolute inset-0 bg-blueprint-pattern opacity-20 pointer-events-none"></div>
+        <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={isDanismanlikInView ? { opacity: 1, y: 0 } : {}}
@@ -406,10 +406,10 @@ const ServiceCard = ({
 }) => {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.6, delay: index * 0.1 }}
-      className="bg-white rounded-2xl border-2 border-dark-carbon/10 hover:border-muted-gold/50 transition-all duration-300 overflow-hidden shadow-lg hover:shadow-2xl"
+      initial={{ opacity: 0, y: 20 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+      className="relative z-10 bg-white rounded-2xl border-2 border-dark-carbon/10 hover:border-muted-gold/50 transition-all duration-300 overflow-hidden shadow-lg hover:shadow-2xl"
     >
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 p-8 md:p-12">
         {/* Left Column */}
