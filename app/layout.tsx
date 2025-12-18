@@ -1,27 +1,27 @@
+'use client';
+
 import type { Metadata } from "next";
 import "./globals.css";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-
-export const metadata: Metadata = {
-  title: "Ekip Proje - Mimarlık ve Mühendislik",
-  description: "Sadece proje çizmiyoruz; geleceğin yapılarını teknik rehberlik ve uzmanlığımızla inşa ediyoruz.",
-  keywords: "mimarlık, mühendislik, statik proje, danışmanlık, deprem analizi, EKAP",
-};
+import { usePathname } from "next/navigation";
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const pathname = usePathname();
+  const isAdminRoute = pathname?.startsWith('/admin');
+
   return (
     <html lang="tr">
       <body className="antialiased">
-        <Navigation />
+        {!isAdminRoute && <Navigation />}
         <main className="min-h-screen">
           {children}
         </main>
-        <Footer />
+        {!isAdminRoute && <Footer />}
       </body>
     </html>
   );
