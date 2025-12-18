@@ -4,18 +4,8 @@ import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import AdminSidebar from '@/components/admin/AdminSidebar';
-
-interface Message {
-  id: number;
-  name: string;
-  email: string;
-  phone: string;
-  projectType: string;
-  message: string;
-  date: string;
-  isRead: boolean;
-  priority: 'low' | 'medium' | 'high';
-}
+import { getAllMessages, markMessageAsRead, deleteMessage } from '@/lib/api/messages';
+import type { Message } from '@/lib/supabase';
 
 export default function AdminMesajlarPage() {
   const router = useRouter();
@@ -23,6 +13,8 @@ export default function AdminMesajlarPage() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
   const [filterStatus, setFilterStatus] = useState<'all' | 'unread' | 'read'>('all');
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const token = localStorage.getItem('adminToken');
@@ -34,85 +26,65 @@ export default function AdminMesajlarPage() {
     }
   }, [router]);
 
-  const loadMessages = () => {
-    // Demo data - gerçek projede Supabase'den gelecek
-    const demoMessages: Message[] = [
-      {
-        id: 1,
-        name: 'Ahmet Yılmaz',
-        email: 'ahmet@example.com',
-        phone: '+90 532 123 4567',
-        projectType: 'Mimari Proje',
-        message:
-          'Merhaba, 500 m² arazim için villa projesi yaptırmak istiyorum. Detaylı bilgi alabilir miyim?',
-        date: '2024-03-18T10:30:00',
-        isRead: false,
-        priority: 'high',
-      },
-      {
-        id: 2,
-        name: 'Ayşe Demir',
-        email: 'ayse@example.com',
-        phone: '+90 533 987 6543',
-        projectType: 'Güçlendirme Projesi',
-        message: '3 katlı bina için deprem güçlendirme analizi yaptırmak istiyorum.',
-        date: '2024-03-18T09:15:00',
-        isRead: false,
-        priority: 'high',
-      },
-      {
-        id: 3,
-        name: 'Mehmet Kaya',
-        email: 'mehmet@example.com',
-        phone: '+90 534 555 1234',
-        projectType: 'Statik Proje',
-        message: 'İş yeri için statik proje hazırlatmak istiyorum. Fiyat teklifi alabilir miyim?',
-        date: '2024-03-17T16:45:00',
-        isRead: true,
-        priority: 'medium',
-      },
-      {
-        id: 4,
-        name: 'Fatma Özkan',
-        email: 'fatma@example.com',
-        phone: '+90 535 111 2222',
-        projectType: 'Tesisat Projesi',
-        message: 'Apartman için tesisat projesi yaptırmak istiyorum.',
-        date: '2024-03-17T14:20:00',
-        isRead: true,
-        priority: 'low',
-      },
-      {
-        id: 5,
-        name: 'Ali Çelik',
-        email: 'ali@example.com',
-        phone: '+90 536 999 8888',
-        projectType: 'Kontrollük',
-        message: 'Devam eden inşaat için kontrollük hizmeti almak istiyorum.',
-        date: '2024-03-17T11:00:00',
-        isRead: true,
-        priority: 'medium',
-      },
-    ];
-    setMessages(demoMessages);
+  const loadMessages = async () => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const result = await getAllMessages();
+
+      if (result.success && result.data) {
+        setMessages(result.data);
+      } else {
+        setError(result.error || 'Mesajlar yüklenirken bir hata oluştu');
+        console.error('Mesajlar yüklenemedi:', result.error);
+      }
+    } catch (err) {
+      setError('Beklenmeyen bir hata oluştu');
+      console.error('Error loading messages:', err);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const handleMarkAsRead = (id: number) => {
-    setMessages(messages.map((m) => (m.id === id ? { ...m, isRead: true } : m)));
-    // TODO: Supabase update işlemi
+  const handleMarkAsRead = async (id: number) => {
+    try {
+      const result = await markMessageAsRead(id);
+
+      if (result.success) {
+        setMessages(messages.map((m) => (m.id === id ? { ...m, is_read: true } : m)));
+      } else {
+        console.error('Mesaj okundu olarak işaretlenemedi:', result.error);
+      }
+    } catch (err) {
+      console.error('Error marking message as read:', err);
+    }
   };
 
-  const handleDelete = (id: number) => {
-    if (confirm('Bu mesajı silmek istediğinizden emin misiniz?')) {
-      setMessages(messages.filter((m) => m.id !== id));
-      setSelectedMessage(null);
-      // TODO: Supabase delete işlemi
+  const handleDelete = async (id: number) => {
+    if (!confirm('Bu mesajı silmek istediğinizden emin misiniz?')) {
+      return;
+    }
+
+    try {
+      const result = await deleteMessage(id);
+
+      if (result.success) {
+        setMessages(messages.filter((m) => m.id !== id));
+        setSelectedMessage(null);
+        alert('Mesaj başarıyla silindi!');
+      } else {
+        alert('Mesaj silinirken bir hata oluştu: ' + result.error);
+      }
+    } catch (err) {
+      console.error('Error deleting message:', err);
+      alert('Beklenmeyen bir hata oluştu');
     }
   };
 
   const handleSelectMessage = (message: Message) => {
     setSelectedMessage(message);
-    if (!message.isRead) {
+    if (!message.is_read) {
       handleMarkAsRead(message.id);
     }
   };
@@ -121,10 +93,10 @@ export default function AdminMesajlarPage() {
     filterStatus === 'all'
       ? messages
       : filterStatus === 'unread'
-      ? messages.filter((m) => !m.isRead)
-      : messages.filter((m) => m.isRead);
+      ? messages.filter((m) => !m.is_read)
+      : messages.filter((m) => m.is_read);
 
-  const unreadCount = messages.filter((m) => !m.isRead).length;
+  const unreadCount = messages.filter((m) => !m.is_read).length;
 
   if (!isAuthenticated) {
     return null;
@@ -195,7 +167,7 @@ export default function AdminMesajlarPage() {
                     selectedMessage?.id === message.id
                       ? 'border-muted-gold shadow-lg'
                       : 'border-dark-carbon/10 hover:border-muted-gold/30'
-                  } ${!message.isRead ? 'bg-blue-50/50' : ''}`}
+                  } ${!message.is_read ? 'bg-blue-50/50' : ''}`}
                 >
                   <div className="flex items-start justify-between mb-2">
                     <div className="flex items-center space-x-2">
@@ -209,7 +181,7 @@ export default function AdminMesajlarPage() {
                           {message.name}
                         </p>
                         <p className="text-xs text-dark-carbon/50 font-roboto-mono">
-                          {new Date(message.date).toLocaleString('tr-TR', {
+                          {new Date(message.created_at).toLocaleString('tr-TR', {
                             day: '2-digit',
                             month: 'short',
                             hour: '2-digit',
@@ -218,12 +190,12 @@ export default function AdminMesajlarPage() {
                         </p>
                       </div>
                     </div>
-                    {!message.isRead && (
+                    {!message.is_read && (
                       <span className="w-2 h-2 bg-red-500 rounded-full flex-shrink-0"></span>
                     )}
                   </div>
                   <p className="text-xs font-manrope text-muted-gold font-semibold mb-1">
-                    {message.projectType}
+                    {message.project_type}
                   </p>
                   <p className="text-sm text-dark-carbon/70 font-manrope line-clamp-2">
                     {message.message}
@@ -317,7 +289,7 @@ export default function AdminMesajlarPage() {
                     </div>
                     <div className="flex items-center space-x-4">
                       <span className="px-3 py-1 bg-muted-gold/20 text-muted-gold rounded-full text-sm font-manrope font-semibold">
-                        {selectedMessage.projectType}
+                        {selectedMessage.project_type}
                       </span>
                       <span
                         className={`px-3 py-1 rounded-full text-sm font-manrope font-semibold ${
@@ -335,7 +307,7 @@ export default function AdminMesajlarPage() {
                           : 'Düşük Öncelik'}
                       </span>
                       <span className="text-sm text-dark-carbon/50 font-roboto-mono">
-                        {new Date(selectedMessage.date).toLocaleString('tr-TR')}
+                        {new Date(selectedMessage.created_at).toLocaleString('tr-TR')}
                       </span>
                     </div>
                   </div>

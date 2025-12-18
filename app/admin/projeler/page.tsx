@@ -4,20 +4,8 @@ import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import AdminSidebar from '@/components/admin/AdminSidebar';
-
-interface Project {
-  id: number;
-  title: string;
-  category: string;
-  location: string;
-  year: string;
-  area: string;
-  description: string;
-  status: string;
-  budget: string;
-  duration: string;
-  services: string[];
-}
+import { getAllProjects, deleteProject } from '@/lib/api/projects';
+import type { Project } from '@/lib/supabase';
 
 export default function AdminProjelerPage() {
   const router = useRouter();
@@ -26,6 +14,8 @@ export default function AdminProjelerPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProject, setEditingProject] = useState<Project | null>(null);
   const [filterCategory, setFilterCategory] = useState('all');
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const token = localStorage.getItem('adminToken');
@@ -37,43 +27,45 @@ export default function AdminProjelerPage() {
     }
   }, [router]);
 
-  const loadProjects = () => {
-    // Demo data - gerçek projede Supabase'den gelecek
-    const demoProjects: Project[] = [
-      {
-        id: 1,
-        title: 'Milli Eğitim Bakanlığı İlkokul Binası',
-        category: 'kamu',
-        location: 'Ankara',
-        year: '2023',
-        area: '4,500 m²',
-        description: 'EKAP ihalesinden alınan 32 derslikli modern eğitim kompleksi',
-        status: 'Tamamlandı',
-        budget: '₺12.5M',
-        duration: '18 ay',
-        services: ['Mimari', 'Statik', 'Tesisat'],
-      },
-      {
-        id: 2,
-        title: 'Lüks Rezidans Kompleksi',
-        category: 'ozel',
-        location: 'İstanbul',
-        year: '2024',
-        area: '12,000 m²',
-        description: 'Premium konut projesi - 64 daire',
-        status: 'Devam Ediyor',
-        budget: '₺45M',
-        duration: '24 ay',
-        services: ['Mimari', 'Statik', 'Tesisat', 'Deprem Analizi'],
-      },
-    ];
-    setProjects(demoProjects);
+  const loadProjects = async () => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const result = await getAllProjects();
+
+      if (result.success && result.data) {
+        setProjects(result.data);
+      } else {
+        setError(result.error || 'Projeler yüklenirken bir hata oluştu');
+        console.error('Projeler yüklenemedi:', result.error);
+      }
+    } catch (err) {
+      setError('Beklenmeyen bir hata oluştu');
+      console.error('Error loading projects:', err);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const handleDelete = (id: number) => {
-    if (confirm('Bu projeyi silmek istediğinizden emin misiniz?')) {
-      setProjects(projects.filter((p) => p.id !== id));
-      // TODO: Supabase delete işlemi
+  const handleDelete = async (id: number) => {
+    if (!confirm('Bu projeyi silmek istediğinizden emin misiniz?')) {
+      return;
+    }
+
+    try {
+      const result = await deleteProject(id);
+
+      if (result.success) {
+        // Remove from local state
+        setProjects(projects.filter((p) => p.id !== id));
+        alert('Proje başarıyla silindi!');
+      } else {
+        alert('Proje silinirken bir hata oluştu: ' + result.error);
+      }
+    } catch (err) {
+      console.error('Error deleting project:', err);
+      alert('Beklenmeyen bir hata oluştu');
     }
   };
 
@@ -101,6 +93,17 @@ export default function AdminProjelerPage() {
       <div className="flex-1 lg:ml-64">
         {/* Top Bar */}
         <div className="bg-white border-b border-dark-carbon/10 p-6 lg:p-8">
+          {/* Error Alert */}
+          {error && (
+            <div className="mb-4 p-4 bg-red-50 border-2 border-red-200 rounded-lg">
+              <div className="flex items-center space-x-2 text-red-700">
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                </svg>
+                <span className="font-manrope font-semibold">{error}</span>
+              </div>
+            </div>
+          )}
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
               <h1 className="font-playfair font-bold text-3xl text-night-blue">Proje Yönetimi</h1>
@@ -157,9 +160,17 @@ export default function AdminProjelerPage() {
             </div>
           </div>
 
+          {/* Loading State */}
+          {isLoading && (
+            <div className="flex items-center justify-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-4 border-muted-gold border-t-transparent"></div>
+            </div>
+          )}
+
           {/* Projects Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {filteredProjects.map((project, index) => (
+          {!isLoading && (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {filteredProjects.map((project, index) => (
               <motion.div
                 key={project.id}
                 initial={{ opacity: 0, y: 20 }}
@@ -265,11 +276,12 @@ export default function AdminProjelerPage() {
                   </div>
                 </div>
               </motion.div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
 
           {/* Empty State */}
-          {filteredProjects.length === 0 && (
+          {!isLoading && filteredProjects.length === 0 && (
             <div className="bg-white rounded-xl p-12 text-center border-2 border-dark-carbon/10">
               <svg
                 className="w-16 h-16 mx-auto mb-4 text-dark-carbon/30"

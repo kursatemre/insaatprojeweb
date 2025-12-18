@@ -1,11 +1,16 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import { getAllProjects } from '@/lib/api/projects';
+import type { Project } from '@/lib/supabase';
 
 export default function ProjelerPage() {
   const [activeFilter, setActiveFilter] = useState('all');
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const categories = [
     { id: 'all', label: 'Tüm Projeler' },
@@ -15,104 +20,30 @@ export default function ProjelerPage() {
     { id: 'ticari', label: 'Ticari' },
   ];
 
-  const projects = [
-    {
-      id: 1,
-      title: 'Milli Eğitim Bakanlığı İlkokul Binası',
-      category: 'kamu',
-      location: 'Ankara',
-      year: '2023',
-      area: '4,500 m²',
-      description: 'EKAP ihalesinden alınan 32 derslikli modern eğitim kompleksi',
-      services: ['Mimari', 'Statik', 'Tesisat'],
-      image: '/projects/school.jpg',
-      stats: {
-        duration: '18 ay',
-        budget: '₺12.5M',
-        status: 'Tamamlandı',
-      },
-    },
-    {
-      id: 2,
-      title: 'Sağlık Ocağı ve Ek Hizmet Binası',
-      category: 'kamu',
-      location: 'İzmir',
-      year: '2023',
-      area: '2,800 m²',
-      description: 'Deprem sonrası yenilenen modern sağlık tesisi',
-      services: ['Mimari', 'Statik', 'Mekanik Tesisat'],
-      image: '/projects/health.jpg',
-      stats: {
-        duration: '14 ay',
-        budget: '₺8.2M',
-        status: 'Tamamlandı',
-      },
-    },
-    {
-      id: 3,
-      title: 'Lüks Rezidans Kompleksi',
-      category: 'ozel',
-      location: 'İstanbul',
-      year: '2024',
-      area: '12,000 m²',
-      description: 'Premium konut projesi - 64 daire',
-      services: ['Mimari', 'Statik', 'Tesisat', 'Deprem Analizi'],
-      image: '/projects/residence.jpg',
-      stats: {
-        duration: '24 ay',
-        budget: '₺45M',
-        status: 'Devam Ediyor',
-      },
-    },
-    {
-      id: 4,
-      title: 'Plaza ve İş Merkezi',
-      category: 'ticari',
-      location: 'Bursa',
-      year: '2023',
-      area: '8,500 m²',
-      description: 'A+ ofis binası - LEED sertifikalı',
-      services: ['Mimari', 'Statik', 'Elektrik', 'Mekanik'],
-      image: '/projects/plaza.jpg',
-      stats: {
-        duration: '20 ay',
-        budget: '₺28M',
-        status: 'Tamamlandı',
-      },
-    },
-    {
-      id: 5,
-      title: 'Villa Kompleksi',
-      category: 'konut',
-      location: 'Antalya',
-      year: '2024',
-      area: '6,200 m²',
-      description: 'Deniz manzaralı 12 villa projesi',
-      services: ['Mimari', 'Statik', 'Peyzaj'],
-      image: '/projects/villa.jpg',
-      stats: {
-        duration: '16 ay',
-        budget: '₺22M',
-        status: 'Devam Ediyor',
-      },
-    },
-    {
-      id: 6,
-      title: 'Belediye Hizmet Binası Güçlendirme',
-      category: 'kamu',
-      location: 'Kocaeli',
-      year: '2022',
-      area: '3,400 m²',
-      description: 'Deprem performans analizi ve güçlendirme projesi',
-      services: ['Deprem Analizi', 'Güçlendirme', 'Kontrollük'],
-      image: '/projects/strengthen.jpg',
-      stats: {
-        duration: '10 ay',
-        budget: '₺5.8M',
-        status: 'Tamamlandı',
-      },
-    },
-  ];
+  useEffect(() => {
+    loadProjects();
+  }, []);
+
+  const loadProjects = async () => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const result = await getAllProjects();
+
+      if (result.success && result.data) {
+        setProjects(result.data);
+      } else {
+        setError(result.error || 'Projeler yüklenirken bir hata oluştu');
+        console.error('Projeler yüklenemedi:', result.error);
+      }
+    } catch (err) {
+      setError('Beklenmeyen bir hata oluştu');
+      console.error('Error loading projects:', err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const filteredProjects =
     activeFilter === 'all' ? projects : projects.filter((p) => p.category === activeFilter);
@@ -172,8 +103,29 @@ export default function ProjelerPage() {
       <section className="relative py-16 bg-gradient-to-b from-warm-concrete to-slate-light">
         <div className="absolute inset-0 bg-topo-pattern opacity-20"></div>
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredProjects.map((project, index) => (
+          {/* Loading State */}
+          {isLoading && (
+            <div className="flex items-center justify-center py-12">
+              <div className="animate-spin rounded-full h-16 w-16 border-4 border-muted-gold border-t-transparent"></div>
+            </div>
+          )}
+
+          {/* Error State */}
+          {error && (
+            <div className="p-6 bg-red-50 border-2 border-red-200 rounded-lg text-center">
+              <div className="flex items-center justify-center space-x-2 text-red-700">
+                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                </svg>
+                <span className="font-manrope font-semibold">{error}</span>
+              </div>
+            </div>
+          )}
+
+          {/* Projects Grid */}
+          {!isLoading && !error && (
+            <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {filteredProjects.map((project, index) => (
               <motion.div
                 key={project.id}
                 layout
@@ -209,12 +161,12 @@ export default function ProjelerPage() {
                   <div className="absolute top-4 right-4">
                     <span
                       className={`px-3 py-1 rounded-full text-xs font-roboto-mono ${
-                        project.stats.status === 'Tamamlandı'
+                        project.status === 'Tamamlandı'
                           ? 'bg-green-500/90 text-white'
                           : 'bg-yellow-500/90 text-white'
                       }`}
                     >
-                      {project.stats.status}
+                      {project.status}
                     </span>
                   </div>
 
@@ -270,20 +222,46 @@ export default function ProjelerPage() {
                     <div>
                       <p className="text-dark-carbon/50 text-xs font-manrope mb-1">Süre</p>
                       <p className="text-night-blue font-roboto-mono font-semibold text-sm">
-                        {project.stats.duration}
+                        {project.duration}
                       </p>
                     </div>
                     <div>
                       <p className="text-dark-carbon/50 text-xs font-manrope mb-1">Bütçe</p>
                       <p className="text-night-blue font-roboto-mono font-semibold text-sm">
-                        {project.stats.budget}
+                        {project.budget}
                       </p>
                     </div>
                   </div>
                 </div>
               </motion.div>
-            ))}
-          </motion.div>
+              ))}
+
+              {/* Empty State */}
+              {filteredProjects.length === 0 && (
+                <div className="col-span-full text-center py-12">
+                  <svg
+                    className="w-20 h-20 mx-auto mb-4 text-dark-carbon/30"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={1}
+                      d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                    />
+                  </svg>
+                  <h3 className="font-playfair font-bold text-xl text-dark-carbon/60 mb-2">
+                    Proje Bulunamadı
+                  </h3>
+                  <p className="text-dark-carbon/50 font-manrope">
+                    Bu kategoride henüz proje bulunmamaktadır
+                  </p>
+                </div>
+              )}
+            </motion.div>
+          )}
         </div>
       </section>
 

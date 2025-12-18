@@ -2,22 +2,67 @@
 
 import { motion } from 'framer-motion';
 import { useState } from 'react';
+import { createMessage } from '@/lib/api/messages';
 
 export default function IletisimPage() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
-    subject: '',
-    projectType: '',
+    company: '',
+    location: '',
+    project_type: '',
     message: '',
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Form submission logic will be added with backend
-    console.log('Form submitted:', formData);
-    alert('Mesajınız alındı! En kısa sürede size dönüş yapacağız.');
+    setIsSubmitting(true);
+    setSubmitStatus(null);
+
+    try {
+      const result = await createMessage({
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        company: formData.company || null,
+        location: formData.location || null,
+        project_type: formData.project_type,
+        message: formData.message,
+      });
+
+      if (result.success) {
+        setSubmitStatus({
+          type: 'success',
+          message: 'Mesajınız başarıyla gönderildi! En kısa sürede size dönüş yapacağız.',
+        });
+        // Reset form
+        setFormData({
+          name: '',
+          email: '',
+          phone: '',
+          company: '',
+          location: '',
+          project_type: '',
+          message: '',
+        });
+      } else {
+        setSubmitStatus({
+          type: 'error',
+          message: 'Mesaj gönderilemedi: ' + result.error,
+        });
+      }
+    } catch (error) {
+      console.error('Form submission error:', error);
+      setSubmitStatus({
+        type: 'error',
+        message: 'Beklenmeyen bir hata oluştu. Lütfen daha sonra tekrar deneyin.',
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -224,13 +269,43 @@ export default function IletisimPage() {
                     </div>
                   </div>
 
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-dark-carbon font-manrope font-semibold mb-2">
+                        Şirket
+                      </label>
+                      <input
+                        type="text"
+                        name="company"
+                        value={formData.company}
+                        onChange={handleChange}
+                        className="w-full px-4 py-3 border-2 border-dark-carbon/10 rounded-lg focus:border-muted-gold focus:outline-none transition-colors font-manrope"
+                        placeholder="Şirket adı (opsiyonel)"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-dark-carbon font-manrope font-semibold mb-2">
+                        Şehir
+                      </label>
+                      <input
+                        type="text"
+                        name="location"
+                        value={formData.location}
+                        onChange={handleChange}
+                        className="w-full px-4 py-3 border-2 border-dark-carbon/10 rounded-lg focus:border-muted-gold focus:outline-none transition-colors font-manrope"
+                        placeholder="İl (opsiyonel)"
+                      />
+                    </div>
+                  </div>
+
                   <div>
                     <label className="block text-dark-carbon font-manrope font-semibold mb-2">
                       Proje Türü *
                     </label>
                     <select
-                      name="projectType"
-                      value={formData.projectType}
+                      name="project_type"
+                      value={formData.project_type}
                       onChange={handleChange}
                       required
                       className="w-full px-4 py-3 border-2 border-dark-carbon/10 rounded-lg focus:border-muted-gold focus:outline-none transition-colors font-manrope bg-white"
@@ -242,20 +317,6 @@ export default function IletisimPage() {
                         </option>
                       ))}
                     </select>
-                  </div>
-
-                  <div>
-                    <label className="block text-dark-carbon font-manrope font-semibold mb-2">
-                      Konu
-                    </label>
-                    <input
-                      type="text"
-                      name="subject"
-                      value={formData.subject}
-                      onChange={handleChange}
-                      className="w-full px-4 py-3 border-2 border-dark-carbon/10 rounded-lg focus:border-muted-gold focus:outline-none transition-colors font-manrope"
-                      placeholder="Projenizin kısa başlığı"
-                    />
                   </div>
 
                   <div>
@@ -273,26 +334,64 @@ export default function IletisimPage() {
                     ></textarea>
                   </div>
 
+                  {/* Success/Error Messages */}
+                  {submitStatus && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className={`p-4 rounded-lg border-2 ${
+                        submitStatus.type === 'success'
+                          ? 'bg-green-50 border-green-200 text-green-700'
+                          : 'bg-red-50 border-red-200 text-red-700'
+                      }`}
+                    >
+                      <div className="flex items-center space-x-2">
+                        {submitStatus.type === 'success' ? (
+                          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                          </svg>
+                        ) : (
+                          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                          </svg>
+                        )}
+                        <span className="font-manrope font-semibold">{submitStatus.message}</span>
+                      </div>
+                    </motion.div>
+                  )}
+
                   <motion.button
                     type="submit"
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="w-full px-8 py-4 bg-gradient-to-r from-night-blue to-dark-carbon text-white font-manrope font-bold text-lg rounded-lg hover:shadow-xl hover:shadow-night-blue/30 transition-all duration-300 flex items-center justify-center"
+                    disabled={isSubmitting}
+                    whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
+                    whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
+                    className={`w-full px-8 py-4 bg-gradient-to-r from-night-blue to-dark-carbon text-white font-manrope font-bold text-lg rounded-lg hover:shadow-xl hover:shadow-night-blue/30 transition-all duration-300 flex items-center justify-center ${
+                      isSubmitting ? 'opacity-70 cursor-not-allowed' : ''
+                    }`}
                   >
-                    Gönder
-                    <svg
-                      className="w-5 h-5 ml-2"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M14 5l7 7m0 0l-7 7m7-7H3"
-                      />
-                    </svg>
+                    {isSubmitting ? (
+                      <>
+                        <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent mr-2"></div>
+                        Gönderiliyor...
+                      </>
+                    ) : (
+                      <>
+                        Gönder
+                        <svg
+                          className="w-5 h-5 ml-2"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M14 5l7 7m0 0l-7 7m7-7H3"
+                          />
+                        </svg>
+                      </>
+                    )}
                   </motion.button>
                 </form>
               </div>
