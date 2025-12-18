@@ -270,7 +270,7 @@ export default function HizmetlerPage() {
   ];
 
   return (
-    <div className="pt-28">
+    <div className="pt-32 md:pt-28">
       {/* Hero Section */}
       <section className="relative py-24 bg-gradient-to-br from-night-blue via-dark-carbon to-night-blue overflow-hidden">
         <div className="absolute inset-0 bg-blueprint-pattern opacity-5"></div>

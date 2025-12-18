@@ -81,7 +81,7 @@ const Navigation = () => {
   return (
     <>
       {/* Top Bar - Stats Ticker */}
-      <div className="fixed top-0 left-0 right-0 z-50 bg-dark-carbon/95 backdrop-blur-sm border-b border-muted-gold/10">
+      <div className="fixed top-0 left-0 right-0 z-50 bg-dark-carbon/95 backdrop-blur-sm border-b border-muted-gold/10 nav-fixed">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-8 text-xs">
             {/* Animated Stats */}
@@ -130,7 +130,7 @@ const Navigation = () => {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
-        className={`fixed top-8 left-0 right-0 z-40 transition-all duration-300 ${
+        className={`fixed top-8 left-0 right-0 z-40 transition-all duration-300 nav-fixed ${
           isScrolled
             ? 'bg-warm-concrete/95 backdrop-blur-xl shadow-2xl border-b border-dark-carbon/10'
             : 'bg-dark-carbon/90 backdrop-blur-md border-b border-muted-gold/20'
