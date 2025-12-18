@@ -116,7 +116,7 @@ export default function HakkimizdaPage() {
   ];
 
   return (
-    <div className="pt-20">
+    <div className="pt-28">
       {/* Hero Section */}
       <section className="relative py-24 bg-gradient-to-br from-night-blue via-dark-carbon to-night-blue overflow-hidden">
         <div className="absolute inset-0 bg-blueprint-pattern opacity-5"></div>
