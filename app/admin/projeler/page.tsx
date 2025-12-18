@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import AdminSidebar from '@/components/admin/AdminSidebar';
+import ProjectForm from '@/components/admin/ProjectForm';
 import { getAllProjects, deleteProject } from '@/lib/api/projects';
 import type { Project } from '@/lib/supabase';
 
@@ -313,24 +314,18 @@ export default function AdminProjelerPage() {
         </div>
       </div>
 
-      {/* Add/Edit Modal - TODO: Implement full modal */}
+      {/* Add/Edit Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-xl max-w-2xl w-full p-8">
-            <h2 className="font-playfair font-bold text-2xl text-night-blue mb-6">
-              {editingProject ? 'Proje Düzenle' : 'Yeni Proje Ekle'}
-            </h2>
-            <p className="text-dark-carbon/60 font-manrope mb-6">
-              Form component buraya eklenecek (Supabase entegrasyonu ile birlikte)
-            </p>
-            <button
-              onClick={() => setIsModalOpen(false)}
-              className="px-6 py-3 bg-dark-carbon text-white rounded-lg hover:bg-dark-carbon/90 transition-colors"
-            >
-              Kapat
-            </button>
-          </div>
-        </div>
+        <ProjectForm
+          project={editingProject}
+          onClose={() => {
+            setIsModalOpen(false);
+            setEditingProject(null);
+          }}
+          onSuccess={() => {
+            loadProjects(); // Projeleri yeniden yükle
+          }}
+        />
       )}
     </div>
   );
