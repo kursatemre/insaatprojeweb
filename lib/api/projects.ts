@@ -1,7 +1,7 @@
 import { supabase, Project, handleSupabaseError } from '../supabase';
 
 // Tüm projeleri getir
-export async function getAllProjects() {
+export async function getAllProjects(): Promise<{ success: boolean; data?: Project[]; error?: string }> {
   try {
     const { data, error } = await supabase
       .from('projects')
@@ -10,14 +10,14 @@ export async function getAllProjects() {
 
     if (error) return handleSupabaseError(error);
 
-    return { success: true, data };
+    return { success: true, data: data || [] };
   } catch (error) {
     return handleSupabaseError(error);
   }
 }
 
 // Kategoriye göre projeler
-export async function getProjectsByCategory(category: string) {
+export async function getProjectsByCategory(category: string): Promise<{ success: boolean; data?: Project[]; error?: string }> {
   try {
     const { data, error } = await supabase
       .from('projects')
@@ -27,14 +27,14 @@ export async function getProjectsByCategory(category: string) {
 
     if (error) return handleSupabaseError(error);
 
-    return { success: true, data };
+    return { success: true, data: data || [] };
   } catch (error) {
     return handleSupabaseError(error);
   }
 }
 
 // Tek proje getir
-export async function getProjectById(id: number) {
+export async function getProjectById(id: number): Promise<{ success: boolean; data?: Project; error?: string }> {
   try {
     const { data, error } = await supabase
       .from('projects')
@@ -44,14 +44,14 @@ export async function getProjectById(id: number) {
 
     if (error) return handleSupabaseError(error);
 
-    return { success: true, data };
+    return { success: true, data: data || undefined };
   } catch (error) {
     return handleSupabaseError(error);
   }
 }
 
 // Yeni proje ekle
-export async function createProject(project: Omit<Project, 'id' | 'created_at'>) {
+export async function createProject(project: Omit<Project, 'id' | 'created_at'>): Promise<{ success: boolean; data?: Project; error?: string }> {
   try {
     const { data, error } = await supabase
       .from('projects')
@@ -61,14 +61,14 @@ export async function createProject(project: Omit<Project, 'id' | 'created_at'>)
 
     if (error) return handleSupabaseError(error);
 
-    return { success: true, data };
+    return { success: true, data: data || undefined };
   } catch (error) {
     return handleSupabaseError(error);
   }
 }
 
 // Proje güncelle
-export async function updateProject(id: number, updates: Partial<Project>) {
+export async function updateProject(id: number, updates: Partial<Project>): Promise<{ success: boolean; data?: Project; error?: string }> {
   try {
     const { data, error } = await supabase
       .from('projects')
@@ -79,14 +79,14 @@ export async function updateProject(id: number, updates: Partial<Project>) {
 
     if (error) return handleSupabaseError(error);
 
-    return { success: true, data };
+    return { success: true, data: data || undefined };
   } catch (error) {
     return handleSupabaseError(error);
   }
 }
 
 // Proje sil
-export async function deleteProject(id: number) {
+export async function deleteProject(id: number): Promise<{ success: boolean; error?: string }> {
   try {
     const { error } = await supabase.from('projects').delete().eq('id', id);
 
@@ -99,7 +99,7 @@ export async function deleteProject(id: number) {
 }
 
 // Proje sayısını getir
-export async function getProjectCount() {
+export async function getProjectCount(): Promise<{ success: boolean; data?: number; error?: string }> {
   try {
     const { count, error } = await supabase
       .from('projects')
@@ -107,7 +107,7 @@ export async function getProjectCount() {
 
     if (error) return handleSupabaseError(error);
 
-    return { success: true, count };
+    return { success: true, data: count || 0 };
   } catch (error) {
     return handleSupabaseError(error);
   }

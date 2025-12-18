@@ -1,7 +1,7 @@
 import { supabase, SiteSettings, handleSupabaseError } from '../supabase';
 
 // Site ayarlarını getir
-export async function getSiteSettings() {
+export async function getSiteSettings(): Promise<{ success: boolean; data?: SiteSettings; error?: string }> {
   try {
     const { data, error } = await supabase
       .from('site_settings')
@@ -10,14 +10,14 @@ export async function getSiteSettings() {
 
     if (error) return handleSupabaseError(error);
 
-    return { success: true, data };
+    return { success: true, data: data || undefined };
   } catch (error) {
     return handleSupabaseError(error);
   }
 }
 
 // Site ayarlarını güncelle
-export async function updateSiteSettings(settings: Partial<SiteSettings>) {
+export async function updateSiteSettings(settings: Partial<SiteSettings>): Promise<{ success: boolean; data?: SiteSettings; error?: string }> {
   try {
     const { data, error } = await supabase
       .from('site_settings')
@@ -31,14 +31,14 @@ export async function updateSiteSettings(settings: Partial<SiteSettings>) {
 
     if (error) return handleSupabaseError(error);
 
-    return { success: true, data };
+    return { success: true, data: data || undefined };
   } catch (error) {
     return handleSupabaseError(error);
   }
 }
 
 // İlk kurulum için default ayarları oluştur
-export async function createDefaultSettings() {
+export async function createDefaultSettings(): Promise<{ success: boolean; data?: SiteSettings; error?: string }> {
   try {
     const defaultSettings: Omit<SiteSettings, 'id' | 'created_at' | 'updated_at'> = {
       colors: {
@@ -80,7 +80,7 @@ export async function createDefaultSettings() {
 
     if (error) return handleSupabaseError(error);
 
-    return { success: true, data };
+    return { success: true, data: data || undefined };
   } catch (error) {
     return handleSupabaseError(error);
   }
