@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { createProject, updateProject } from '@/lib/api/projects';
 import type { Project } from '@/lib/supabase';
+import ImageUpload from './ImageUpload';
 
 interface ProjectFormProps {
   project?: Project | null;
@@ -328,17 +329,13 @@ export default function ProjectForm({ project, onClose, onSuccess }: ProjectForm
               </div>
             </div>
 
-            {/* Resim URL (Opsiyonel) */}
+            {/* Resim Upload */}
             <div className="md:col-span-2">
-              <label className="block text-sm font-manrope font-semibold text-dark-carbon mb-2">
-                Resim URL (Opsiyonel)
-              </label>
-              <input
-                type="text"
-                value={formData.image_url}
-                onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
-                className="w-full px-4 py-3 border-2 border-dark-carbon/10 rounded-lg focus:border-muted-gold focus:outline-none font-manrope"
-                placeholder="https://example.com/image.jpg"
+              <ImageUpload
+                currentImageUrl={formData.image_url}
+                onUploadSuccess={(url) => setFormData({ ...formData, image_url: url })}
+                onRemove={() => setFormData({ ...formData, image_url: '' })}
+                label="Proje Görseli (Opsiyonel)"
               />
             </div>
           </div>

@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import AdminSidebar from '@/components/admin/AdminSidebar';
+import { getSiteSettings, updateSiteSettings } from '@/lib/api/settings';
 
 interface SiteSettings {
   // Tema Renkleri
@@ -90,32 +91,90 @@ export default function AdminAyarlarPage() {
     }
   }, [router]);
 
-  const loadSettings = () => {
-    // TODO: Supabase'den ayarları yükle
-    // Şimdilik localStorage'dan yükleyelim
-    const savedSettings = localStorage.getItem('siteSettings');
-    if (savedSettings) {
-      setSettings(JSON.parse(savedSettings));
+  const loadSettings = async () => {
+    try {
+      const result = await getSiteSettings();
+
+      if (result.success && result.data) {
+        setSettings({
+          colors: result.data.colors,
+          hero: result.data.hero,
+          stats: result.data.stats,
+          contact: result.data.contact,
+          social: result.data.social,
+        });
+      } else {
+        console.error('Ayarlar yüklenemedi:', result.error);
+      }
+    } catch (error) {
+      console.error('Ayarlar yüklenirken hata:', error);
     }
   };
 
   const handleSave = async () => {
     setIsSaving(true);
-    // TODO: Supabase'e kaydet
-    // Şimdilik localStorage'a kaydet
-    localStorage.setItem('siteSettings', JSON.stringify(settings));
 
-    setTimeout(() => {
+    try {
+      const result = await updateSiteSettings(settings);
+
+      if (result.success) {
+        alert('Ayarlar başarıyla kaydedildi!');
+      } else {
+        alert('Ayarlar kaydedilemedi: ' + result.error);
+      }
+    } catch (error) {
+      console.error('Ayarlar kaydedilirken hata:', error);
+      alert('Beklenmeyen bir hata oluştu');
+    } finally {
       setIsSaving(false);
-      alert('Ayarlar başarıyla kaydedildi!');
-    }, 1000);
+    }
   };
 
-  const handleReset = () => {
+  const handleReset = async () => {
     if (confirm('Tüm ayarları varsayılan değerlere döndürmek istediğinizden emin misiniz?')) {
-      localStorage.removeItem('siteSettings');
-      loadSettings();
-      alert('Ayarlar sıfırlandı!');
+      // Varsayılan ayarları yükle
+      const defaultSettings = {
+        colors: {
+          primary: '#0f172a',
+          secondary: '#1a1a1a',
+          accent: '#b89150',
+          background: '#f4f4f2',
+        },
+        hero: {
+          title: 'Ekip Proje',
+          subtitle: 'MİMARLIK & MÜHENDİSLİK',
+          tagline: 'Sadece proje çizmiyoruz; geleceğin yapılarını teknik rehberlik ve uzmanlığımızla inşa ediyoruz.',
+        },
+        stats: {
+          totalProjects: '320+',
+          constructionArea: '2.4M m²',
+          activeSites: '45',
+          clients: '180+',
+        },
+        contact: {
+          email: 'info@ekipproje.com',
+          phone: '+90 (312) 123 4567',
+          address: 'Çankaya, Ankara, Türkiye',
+          workingHours: 'Pazartesi - Cuma: 09:00 - 18:00',
+        },
+        social: {
+          linkedin: 'https://linkedin.com/company/ekipproje',
+          instagram: 'https://instagram.com/ekipproje',
+          facebook: 'https://facebook.com/ekipproje',
+          twitter: 'https://twitter.com/ekipproje',
+        },
+      };
+
+      setSettings(defaultSettings);
+
+      // Supabase'e kaydet
+      const result = await updateSiteSettings(defaultSettings);
+
+      if (result.success) {
+        alert('Ayarlar varsayılan değerlere sıfırlandı!');
+      } else {
+        alert('Ayarlar sıfırlanırken bir hata oluştu: ' + result.error);
+      }
     }
   };
 
