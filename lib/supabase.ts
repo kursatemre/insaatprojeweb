@@ -35,7 +35,7 @@ export interface Message {
   location?: string;
   message: string;
   is_read: boolean;
-  priority: 'low' | 'medium' | 'high';
+  priority?: 'low' | 'medium' | 'high';
 }
 
 export interface SiteSettings {
