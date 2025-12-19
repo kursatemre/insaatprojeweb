@@ -135,27 +135,37 @@ export default function ProjelerPage() {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 className="group bg-white rounded-xl overflow-hidden border-2 border-dark-carbon/10 hover:border-muted-gold/50 transition-all duration-300 shadow-lg hover:shadow-2xl"
               >
-                {/* Project Image Placeholder */}
-                <div className="relative h-64 bg-gradient-to-br from-night-blue/90 to-dark-carbon/90 overflow-hidden">
-                  <div className="absolute inset-0 bg-blueprint-pattern opacity-20"></div>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-center text-white/40">
-                      <svg
-                        className="w-20 h-20 mx-auto mb-2"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={1}
-                          d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-                        />
-                      </svg>
-                      <p className="font-roboto-mono text-xs">PROJE GÖRSELI</p>
+                {/* Project Image */}
+                <div className="relative h-64 overflow-hidden">
+                  {project.image_url ? (
+                    <img
+                      src={project.image_url}
+                      alt={project.title}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gradient-to-br from-night-blue/90 to-dark-carbon/90">
+                      <div className="absolute inset-0 bg-blueprint-pattern opacity-20"></div>
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="text-center text-white/40">
+                          <svg
+                            className="w-20 h-20 mx-auto mb-2"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={1}
+                              d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                            />
+                          </svg>
+                          <p className="font-roboto-mono text-xs">PROJE GÖRSELI</p>
+                        </div>
+                      </div>
                     </div>
-                  </div>
+                  )}
 
                   {/* Status Badge */}
                   <div className="absolute top-4 right-4">
