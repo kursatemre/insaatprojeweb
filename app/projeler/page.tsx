@@ -2,11 +2,13 @@
 
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { getAllProjects } from '@/lib/api/projects';
 import type { Project } from '@/lib/supabase';
 
 export default function ProjelerPage() {
+  const router = useRouter();
   const [activeFilter, setActiveFilter] = useState('all');
   const [projects, setProjects] = useState<Project[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -133,7 +135,8 @@ export default function ProjelerPage() {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="group bg-white rounded-xl overflow-hidden border-2 border-dark-carbon/10 hover:border-muted-gold/50 transition-all duration-300 shadow-lg hover:shadow-2xl"
+                onClick={() => router.push(`/projeler/${project.id}`)}
+                className="group bg-white rounded-xl overflow-hidden border-2 border-dark-carbon/10 hover:border-muted-gold/50 transition-all duration-300 shadow-lg hover:shadow-2xl cursor-pointer"
               >
                 {/* Project Image */}
                 <div className="relative h-64 overflow-hidden">

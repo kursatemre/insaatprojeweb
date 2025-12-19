@@ -2,8 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import { createProject, updateProject } from '@/lib/api/projects';
-import type { Project } from '@/lib/supabase';
+import { getProjectImages } from '@/lib/api/projectImages';
+import type { Project, ProjectImage } from '@/lib/supabase';
 import ImageUpload from './ImageUpload';
+import MultiImageUpload from './MultiImageUpload';
 
 interface ProjectFormProps {
   project?: Project | null;
@@ -14,6 +16,7 @@ interface ProjectFormProps {
 export default function ProjectForm({ project, onClose, onSuccess }: ProjectFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [projectImages, setProjectImages] = useState<ProjectImage[]>([]);
 
   const [formData, setFormData] = useState({
     title: '',
@@ -47,8 +50,24 @@ export default function ProjectForm({ project, onClose, onSuccess }: ProjectForm
         services: project.services,
         image_url: project.image_url || '',
       });
+
+      // Proje görsellerini yükle
+      loadProjectImages();
     }
   }, [project]);
+
+  const loadProjectImages = async () => {
+    if (!project) return;
+
+    try {
+      const result = await getProjectImages(project.id);
+      if (result.success && result.data) {
+        setProjectImages(result.data);
+      }
+    } catch (err) {
+      console.error('Error loading project images:', err);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -329,15 +348,26 @@ export default function ProjectForm({ project, onClose, onSuccess }: ProjectForm
               </div>
             </div>
 
-            {/* Resim Upload */}
+            {/* Kapak Resmi */}
             <div className="md:col-span-2">
               <ImageUpload
                 currentImageUrl={formData.image_url}
                 onUploadSuccess={(url) => setFormData({ ...formData, image_url: url })}
                 onRemove={() => setFormData({ ...formData, image_url: '' })}
-                label="Proje Görseli (Opsiyonel)"
+                label="Kapak Görseli (Opsiyonel - Liste görünümünde)"
               />
             </div>
+
+            {/* Çoklu Görsel Upload - Sadece düzenleme modunda */}
+            {project && (
+              <div className="md:col-span-2">
+                <MultiImageUpload
+                  projectId={project.id}
+                  images={projectImages}
+                  onImagesChange={loadProjectImages}
+                />
+              </div>
+            )}
           </div>
 
           {/* Form Buttons */}

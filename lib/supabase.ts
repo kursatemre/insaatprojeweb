@@ -38,6 +38,16 @@ export interface Message {
   priority?: 'low' | 'medium' | 'high';
 }
 
+export interface ProjectImage {
+  id: number;
+  project_id: number;
+  image_url: string;
+  caption?: string;
+  display_order: number;
+  created_at?: string;
+  updated_at?: string;
+}
+
 export interface SiteSettings {
   id: number;
   created_at?: string;
