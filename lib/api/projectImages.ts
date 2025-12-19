@@ -3,7 +3,7 @@ import { supabase, handleSupabaseError, type ProjectImage } from '../supabase';
 /**
  * Bir projeye ait tüm görselleri getir
  */
-export async function getProjectImages(projectId: number) {
+export async function getProjectImages(projectId: number): Promise<{ success: boolean; data?: ProjectImage[]; error?: string }> {
   try {
     const { data, error } = await supabase
       .from('project_images')
@@ -32,7 +32,7 @@ export async function addProjectImage(
   imageUrl: string,
   caption?: string,
   displayOrder?: number
-) {
+): Promise<{ success: boolean; data?: ProjectImage; error?: string }> {
   try {
     // Eğer display_order belirtilmemişse, en son sırayı al
     if (displayOrder === undefined) {
@@ -75,7 +75,7 @@ export async function addProjectImage(
 /**
  * Proje görselini sil
  */
-export async function deleteProjectImage(imageId: number) {
+export async function deleteProjectImage(imageId: number): Promise<{ success: boolean; error?: string }> {
   try {
     const { error } = await supabase
       .from('project_images')
@@ -97,7 +97,7 @@ export async function deleteProjectImage(imageId: number) {
 /**
  * Proje görselinin sırasını güncelle
  */
-export async function updateProjectImageOrder(imageId: number, newOrder: number) {
+export async function updateProjectImageOrder(imageId: number, newOrder: number): Promise<{ success: boolean; error?: string }> {
   try {
     const { error } = await supabase
       .from('project_images')
@@ -119,7 +119,7 @@ export async function updateProjectImageOrder(imageId: number, newOrder: number)
 /**
  * Proje görselinin başlığını güncelle
  */
-export async function updateProjectImageCaption(imageId: number, caption: string) {
+export async function updateProjectImageCaption(imageId: number, caption: string): Promise<{ success: boolean; error?: string }> {
   try {
     const { error } = await supabase
       .from('project_images')
