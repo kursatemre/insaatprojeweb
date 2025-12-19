@@ -5,6 +5,7 @@ import Link from 'next/link';
 import HeroSection from '@/components/home/HeroSection';
 import StatsSection from '@/components/home/StatsSection';
 import ServicesOverview from '@/components/home/ServicesOverview';
+import FeaturedProjects from '@/components/home/FeaturedProjects';
 import TurkeyMap from '@/components/home/TurkeyMap';
 import CTASection from '@/components/home/CTASection';
 
@@ -19,6 +20,9 @@ export default function Home() {
 
       {/* Services Overview */}
       <ServicesOverview />
+
+      {/* Featured Projects */}
+      <FeaturedProjects />
 
       {/* Turkey Map Section */}
       <TurkeyMap />
