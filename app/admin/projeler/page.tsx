@@ -179,6 +179,17 @@ export default function AdminProjelerPage() {
                 transition={{ duration: 0.3, delay: index * 0.1 }}
                 className="bg-white rounded-xl border-2 border-dark-carbon/10 hover:border-muted-gold/50 transition-all duration-300 overflow-hidden"
               >
+                {/* Project Image */}
+                {project.image_url && (
+                  <div className="h-48 overflow-hidden">
+                    <img
+                      src={project.image_url}
+                      alt={project.title}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                )}
+
                 {/* Project Header */}
                 <div className="p-6 border-b border-dark-carbon/10">
                   <div className="flex items-start justify-between mb-3">
