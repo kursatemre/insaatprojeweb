@@ -62,24 +62,21 @@ export default function FeaturedProjects() {
 
   const slideVariants = {
     enter: (direction: number) => ({
-      x: direction > 0 ? 1200 : -1200,
+      x: direction > 0 ? '100%' : '-100%',
       opacity: 0,
-      scale: 0.9,
-      rotateY: direction > 0 ? 45 : -45,
+      scale: 0.95,
     }),
     center: {
       zIndex: 1,
       x: 0,
       opacity: 1,
       scale: 1,
-      rotateY: 0,
     },
     exit: (direction: number) => ({
       zIndex: 0,
-      x: direction < 0 ? 1200 : -1200,
+      x: direction < 0 ? '100%' : '-100%',
       opacity: 0,
-      scale: 0.9,
-      rotateY: direction < 0 ? 45 : -45,
+      scale: 0.95,
     }),
   };
 
@@ -105,7 +102,7 @@ export default function FeaturedProjects() {
   return (
     <section
       ref={containerRef}
-      className="relative py-32 bg-gradient-to-br from-night-blue via-dark-carbon to-night-blue overflow-hidden"
+      className="relative py-16 md:py-24 lg:py-32 bg-gradient-to-br from-night-blue via-dark-carbon to-night-blue overflow-hidden"
     >
       {/* Animated Background */}
       <div className="absolute inset-0">
@@ -116,7 +113,7 @@ export default function FeaturedProjects() {
         ></motion.div>
       </div>
 
-      {/* Floating Geometric Shapes */}
+      {/* Floating Geometric Shapes - Hidden on mobile */}
       <motion.div
         animate={{
           y: [0, -20, 0],
@@ -127,7 +124,7 @@ export default function FeaturedProjects() {
           repeat: Infinity,
           ease: 'easeInOut',
         }}
-        className="absolute top-20 right-10 w-64 h-64 border border-muted-gold/20 rounded-lg rotate-12"
+        className="hidden lg:block absolute top-20 right-10 w-64 h-64 border border-muted-gold/20 rounded-lg rotate-12"
       ></motion.div>
       <motion.div
         animate={{
@@ -139,7 +136,7 @@ export default function FeaturedProjects() {
           repeat: Infinity,
           ease: 'easeInOut',
         }}
-        className="absolute bottom-20 left-10 w-48 h-48 border border-muted-gold/10 rounded-full"
+        className="hidden lg:block absolute bottom-20 left-10 w-48 h-48 border border-muted-gold/10 rounded-full"
       ></motion.div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -169,17 +166,17 @@ export default function FeaturedProjects() {
             ></motion.div>
           </div>
 
-          <h2 className="font-playfair font-bold text-4xl md:text-6xl text-white mb-6">
+          <h2 className="font-playfair font-bold text-3xl md:text-5xl lg:text-6xl text-white mb-4 md:mb-6">
             Öne Çıkan Projelerimiz
           </h2>
 
-          <p className="text-white/70 font-manrope text-lg max-w-3xl mx-auto leading-relaxed">
+          <p className="text-white/70 font-manrope text-base md:text-lg max-w-3xl mx-auto leading-relaxed">
             Türkiye genelinde gerçekleştirdiğimiz başarılı projelerden bazıları
           </p>
         </motion.div>
 
         {/* Cinematic Project Showcase */}
-        <div className="relative h-[600px] md:h-[700px]">
+        <div className="relative min-h-[700px] md:min-h-[750px] lg:h-[700px]">
           <AnimatePresence initial={false} custom={direction} mode="popLayout">
             <motion.div
               key={activeIndex}
@@ -192,20 +189,19 @@ export default function FeaturedProjects() {
                 x: { type: 'spring', stiffness: 300, damping: 30 },
                 opacity: { duration: 0.5 },
                 scale: { duration: 0.5 },
-                rotateY: { duration: 0.6 },
               }}
               className="absolute inset-0"
             >
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 h-full">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 h-full">
                 {/* Left: Image */}
                 <motion.div
-                  initial={{ opacity: 0, x: -100 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.8, delay: 0.3 }}
-                  className="relative group cursor-pointer"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.2 }}
+                  className="relative group cursor-pointer h-[350px] md:h-[450px] lg:h-full"
                   onClick={() => router.push(`/projeler/${activeProject.id}`)}
                 >
-                  <div className="relative h-full rounded-2xl overflow-hidden border-2 border-muted-gold/30 shadow-2xl">
+                  <div className="relative h-full rounded-xl md:rounded-2xl overflow-hidden border-2 border-muted-gold/30 shadow-2xl">
                     {activeProject.image_url ? (
                       <img
                         src={activeProject.image_url}
@@ -249,8 +245,8 @@ export default function FeaturedProjects() {
                     </div>
 
                     {/* Badges */}
-                    <div className="absolute top-6 left-6 flex gap-2">
-                      <span className="px-4 py-2 bg-muted-gold/95 backdrop-blur-sm text-night-blue rounded-full text-xs font-manrope font-bold uppercase">
+                    <div className="absolute top-3 left-3 md:top-6 md:left-6 flex gap-2">
+                      <span className="px-3 py-1.5 md:px-4 md:py-2 bg-muted-gold/95 backdrop-blur-sm text-night-blue rounded-full text-xs font-manrope font-bold uppercase">
                         {activeProject.category === 'kamu' && 'Kamu'}
                         {activeProject.category === 'ozel' && 'Özel Sektör'}
                         {activeProject.category === 'konut' && 'Konut'}
@@ -258,9 +254,9 @@ export default function FeaturedProjects() {
                       </span>
                     </div>
 
-                    <div className="absolute top-6 right-6">
+                    <div className="absolute top-3 right-3 md:top-6 md:right-6">
                       <span
-                        className={`px-4 py-2 backdrop-blur-sm rounded-full text-xs font-roboto-mono font-semibold ${
+                        className={`px-3 py-1.5 md:px-4 md:py-2 backdrop-blur-sm rounded-full text-xs font-roboto-mono font-semibold ${
                           activeProject.status === 'Tamamlandı'
                             ? 'bg-green-500/95 text-white'
                             : activeProject.status === 'Devam Ediyor'
@@ -276,14 +272,14 @@ export default function FeaturedProjects() {
 
                 {/* Right: Info */}
                 <motion.div
-                  initial={{ opacity: 0, x: 100 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.8, delay: 0.5 }}
-                  className="flex flex-col justify-center space-y-8"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.4 }}
+                  className="flex flex-col justify-center space-y-4 md:space-y-6 lg:space-y-8"
                 >
                   {/* Counter */}
-                  <div className="flex items-center gap-4">
-                    <span className="font-playfair text-6xl md:text-8xl font-bold text-muted-gold/30">
+                  <div className="flex items-center gap-3 md:gap-4">
+                    <span className="font-playfair text-5xl md:text-6xl lg:text-8xl font-bold text-muted-gold/30">
                       {String(activeIndex + 1).padStart(2, '0')}
                     </span>
                     <div className="h-px flex-1 bg-gradient-to-r from-muted-gold/50 to-transparent"></div>
@@ -291,10 +287,10 @@ export default function FeaturedProjects() {
 
                   {/* Title & Location */}
                   <div>
-                    <h3 className="font-playfair font-bold text-3xl md:text-5xl text-white mb-4 leading-tight">
+                    <h3 className="font-playfair font-bold text-2xl md:text-3xl lg:text-5xl text-white mb-3 md:mb-4 leading-tight">
                       {activeProject.title}
                     </h3>
-                    <div className="flex items-center gap-3 text-white/60 font-manrope text-lg">
+                    <div className="flex items-center gap-2 md:gap-3 text-white/60 font-manrope text-sm md:text-base lg:text-lg">
                       <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                         <path
                           fillRule="evenodd"
@@ -309,34 +305,34 @@ export default function FeaturedProjects() {
                   </div>
 
                   {/* Description */}
-                  <p className="text-white/80 font-manrope text-lg leading-relaxed">
+                  <p className="text-white/80 font-manrope text-sm md:text-base lg:text-lg leading-relaxed">
                     {activeProject.description}
                   </p>
 
                   {/* Stats Grid */}
-                  <div className="grid grid-cols-3 gap-6">
-                    <div className="border-l-2 border-muted-gold pl-4">
-                      <p className="text-white/50 text-sm font-manrope mb-1 uppercase tracking-wide">Alan</p>
-                      <p className="text-white font-roboto-mono text-xl font-bold">{activeProject.area}</p>
+                  <div className="grid grid-cols-3 gap-3 md:gap-4 lg:gap-6">
+                    <div className="border-l-2 border-muted-gold pl-2 md:pl-3 lg:pl-4">
+                      <p className="text-white/50 text-xs md:text-sm font-manrope mb-1 uppercase tracking-wide">Alan</p>
+                      <p className="text-white font-roboto-mono text-sm md:text-base lg:text-xl font-bold">{activeProject.area}</p>
                     </div>
-                    <div className="border-l-2 border-muted-gold pl-4">
-                      <p className="text-white/50 text-sm font-manrope mb-1 uppercase tracking-wide">Süre</p>
-                      <p className="text-white font-roboto-mono text-xl font-bold">{activeProject.duration}</p>
+                    <div className="border-l-2 border-muted-gold pl-2 md:pl-3 lg:pl-4">
+                      <p className="text-white/50 text-xs md:text-sm font-manrope mb-1 uppercase tracking-wide">Süre</p>
+                      <p className="text-white font-roboto-mono text-sm md:text-base lg:text-xl font-bold">{activeProject.duration}</p>
                     </div>
-                    <div className="border-l-2 border-muted-gold pl-4">
-                      <p className="text-white/50 text-sm font-manrope mb-1 uppercase tracking-wide">Bütçe</p>
-                      <p className="text-white font-roboto-mono text-xl font-bold">{activeProject.budget}</p>
+                    <div className="border-l-2 border-muted-gold pl-2 md:pl-3 lg:pl-4">
+                      <p className="text-white/50 text-xs md:text-sm font-manrope mb-1 uppercase tracking-wide">Bütçe</p>
+                      <p className="text-white font-roboto-mono text-sm md:text-base lg:text-xl font-bold">{activeProject.budget}</p>
                     </div>
                   </div>
 
                   {/* Services */}
                   <div>
-                    <p className="text-white/50 text-sm font-manrope mb-3 uppercase tracking-wide">Hizmetler</p>
+                    <p className="text-white/50 text-xs md:text-sm font-manrope mb-2 md:mb-3 uppercase tracking-wide">Hizmetler</p>
                     <div className="flex flex-wrap gap-2">
                       {activeProject.services.slice(0, 4).map((service, idx) => (
                         <span
                           key={idx}
-                          className="px-4 py-2 border border-muted-gold/30 text-muted-gold rounded-lg text-sm font-manrope hover:bg-muted-gold/10 transition-colors"
+                          className="px-3 py-1.5 md:px-4 md:py-2 border border-muted-gold/30 text-muted-gold rounded-lg text-xs md:text-sm font-manrope hover:bg-muted-gold/10 transition-colors"
                         >
                           {service}
                         </span>
@@ -349,21 +345,21 @@ export default function FeaturedProjects() {
           </AnimatePresence>
 
           {/* Navigation */}
-          <div className="absolute bottom-0 left-0 right-0 flex items-center justify-between">
+          <div className="absolute bottom-0 left-0 right-0 flex items-center justify-between px-2 md:px-0">
             {/* Prev Button */}
             <motion.button
               whileHover={{ scale: 1.1, x: -5 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => paginate(-1)}
-              className="w-16 h-16 rounded-full border-2 border-muted-gold/50 bg-night-blue/50 backdrop-blur-sm text-muted-gold hover:bg-muted-gold hover:text-night-blue transition-all duration-300 flex items-center justify-center"
+              className="w-12 h-12 md:w-16 md:h-16 rounded-full border-2 border-muted-gold/50 bg-night-blue/50 backdrop-blur-sm text-muted-gold hover:bg-muted-gold hover:text-night-blue transition-all duration-300 flex items-center justify-center"
             >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
             </motion.button>
 
             {/* Dots */}
-            <div className="flex gap-3">
+            <div className="flex gap-2 md:gap-3">
               {projects.map((_, index) => (
                 <motion.button
                   key={index}
@@ -373,8 +369,8 @@ export default function FeaturedProjects() {
                   }}
                   className={`transition-all duration-300 ${
                     index === activeIndex
-                      ? 'w-12 h-2 bg-muted-gold rounded-full'
-                      : 'w-2 h-2 bg-white/30 rounded-full hover:bg-white/50'
+                      ? 'w-8 md:w-12 h-1.5 md:h-2 bg-muted-gold rounded-full'
+                      : 'w-1.5 md:w-2 h-1.5 md:h-2 bg-white/30 rounded-full hover:bg-white/50'
                   }`}
                   whileHover={{ scale: 1.2 }}
                 ></motion.button>
@@ -386,9 +382,9 @@ export default function FeaturedProjects() {
               whileHover={{ scale: 1.1, x: 5 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => paginate(1)}
-              className="w-16 h-16 rounded-full border-2 border-muted-gold/50 bg-night-blue/50 backdrop-blur-sm text-muted-gold hover:bg-muted-gold hover:text-night-blue transition-all duration-300 flex items-center justify-center"
+              className="w-12 h-12 md:w-16 md:h-16 rounded-full border-2 border-muted-gold/50 bg-night-blue/50 backdrop-blur-sm text-muted-gold hover:bg-muted-gold hover:text-night-blue transition-all duration-300 flex items-center justify-center"
             >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
             </motion.button>
@@ -401,17 +397,17 @@ export default function FeaturedProjects() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
           viewport={{ once: true }}
-          className="mt-20 text-center"
+          className="mt-12 md:mt-16 lg:mt-20 text-center"
         >
           <motion.button
             onClick={() => router.push('/projeler')}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="group inline-flex items-center gap-4 px-10 py-5 bg-muted-gold text-night-blue font-manrope font-bold text-lg rounded-lg shadow-2xl hover:shadow-muted-gold/50 transition-all duration-300"
+            className="group inline-flex items-center gap-3 md:gap-4 px-6 md:px-8 lg:px-10 py-3 md:py-4 lg:py-5 bg-muted-gold text-night-blue font-manrope font-bold text-sm md:text-base lg:text-lg rounded-lg shadow-2xl hover:shadow-muted-gold/50 transition-all duration-300"
           >
             <span>Tüm Projeleri Keşfet</span>
             <svg
-              className="w-6 h-6 group-hover:translate-x-2 transition-transform"
+              className="w-5 h-5 md:w-6 md:h-6 group-hover:translate-x-2 transition-transform"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -420,7 +416,7 @@ export default function FeaturedProjects() {
             </svg>
           </motion.button>
 
-          <p className="mt-6 text-white/50 font-manrope">
+          <p className="mt-4 md:mt-6 text-white/50 font-manrope text-sm md:text-base">
             {projects.length} Öne Çıkan Proje • 320+ Başarılı Referans
           </p>
         </motion.div>
