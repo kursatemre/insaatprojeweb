@@ -198,15 +198,15 @@ export default function FeaturedProjects() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8, delay: 0.2 }}
-                  className="relative group cursor-pointer h-[350px] md:h-[450px] lg:h-full"
+                  className="relative group cursor-pointer h-[350px] md:h-[450px] lg:h-[600px]"
                   onClick={() => router.push(`/projeler/${activeProject.id}`)}
                 >
-                  <div className="relative h-full rounded-xl md:rounded-2xl overflow-hidden border-2 border-muted-gold/30 shadow-2xl">
+                  <div className="relative w-full h-full rounded-xl md:rounded-2xl overflow-hidden border-2 border-muted-gold/30 shadow-2xl">
                     {activeProject.image_url ? (
                       <img
                         src={activeProject.image_url}
                         alt={activeProject.title}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                        className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                       />
                     ) : (
                       <div className="w-full h-full bg-gradient-to-br from-dark-carbon to-night-blue flex items-center justify-center">
