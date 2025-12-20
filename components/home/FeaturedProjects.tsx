@@ -176,7 +176,7 @@ export default function FeaturedProjects() {
         </motion.div>
 
         {/* Cinematic Project Showcase */}
-        <div className="relative min-h-[700px] md:min-h-[750px] lg:h-[700px]">
+        <div className="relative min-h-[850px] md:min-h-[900px] lg:min-h-[800px]">
           <AnimatePresence initial={false} custom={direction} mode="popLayout">
             <motion.div
               key={activeIndex}
@@ -190,7 +190,7 @@ export default function FeaturedProjects() {
                 opacity: { duration: 0.5 },
                 scale: { duration: 0.5 },
               }}
-              className="absolute inset-0"
+              className="absolute inset-0 pb-24 md:pb-28 lg:pb-24"
             >
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 h-full">
                 {/* Left: Image */}
@@ -345,13 +345,13 @@ export default function FeaturedProjects() {
           </AnimatePresence>
 
           {/* Navigation */}
-          <div className="absolute bottom-0 left-0 right-0 flex items-center justify-between px-2 md:px-0">
+          <div className="absolute bottom-0 left-0 right-0 flex items-center justify-between px-2 md:px-0 z-20">
             {/* Prev Button */}
             <motion.button
               whileHover={{ scale: 1.1, x: -5 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => paginate(-1)}
-              className="w-12 h-12 md:w-16 md:h-16 rounded-full border-2 border-muted-gold/50 bg-night-blue/50 backdrop-blur-sm text-muted-gold hover:bg-muted-gold hover:text-night-blue transition-all duration-300 flex items-center justify-center"
+              className="w-12 h-12 md:w-16 md:h-16 rounded-full border-2 border-muted-gold/50 bg-night-blue/80 backdrop-blur-md text-muted-gold hover:bg-muted-gold hover:text-night-blue transition-all duration-300 flex items-center justify-center shadow-xl"
             >
               <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -382,7 +382,7 @@ export default function FeaturedProjects() {
               whileHover={{ scale: 1.1, x: 5 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => paginate(1)}
-              className="w-12 h-12 md:w-16 md:h-16 rounded-full border-2 border-muted-gold/50 bg-night-blue/50 backdrop-blur-sm text-muted-gold hover:bg-muted-gold hover:text-night-blue transition-all duration-300 flex items-center justify-center"
+              className="w-12 h-12 md:w-16 md:h-16 rounded-full border-2 border-muted-gold/50 bg-night-blue/80 backdrop-blur-md text-muted-gold hover:bg-muted-gold hover:text-night-blue transition-all duration-300 flex items-center justify-center shadow-xl"
             >
               <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
