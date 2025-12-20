@@ -81,6 +81,17 @@ export interface SiteSettings {
     facebook: string;
     twitter: string;
   };
+  seo?: {
+    title: string;
+    description: string;
+    keywords: string;
+  };
+  about?: {
+    title: string;
+    description: string;
+    mission: string;
+    vision: string;
+  };
 }
 
 // Helper function - Error handling
