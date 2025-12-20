@@ -41,27 +41,13 @@ interface SiteSettings {
     facebook: string;
     twitter: string;
   };
-  // SEO Ayarları
-  seo?: {
-    title: string;
-    description: string;
-    keywords: string;
-  };
-  // Hakkımızda
-  about?: {
-    title: string;
-    description: string;
-    mission: string;
-    vision: string;
-  };
 }
 
 export default function AdminAyarlarPage() {
   const router = useRouter();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [activeTab, setActiveTab] = useState<'tema' | 'icerik' | 'hakkimizda' | 'iletisim' | 'sosyal' | 'seo'>('tema');
+  const [activeTab, setActiveTab] = useState<'tema' | 'icerik' | 'iletisim' | 'sosyal'>('tema');
   const [isSaving, setIsSaving] = useState(false);
-  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
   const [settings, setSettings] = useState<SiteSettings>({
     colors: {
       primary: '#0f172a', // night-blue
@@ -93,23 +79,7 @@ export default function AdminAyarlarPage() {
       facebook: 'https://facebook.com/ekipproje',
       twitter: 'https://twitter.com/ekipproje',
     },
-    seo: {
-      title: 'Ekip Proje | Mimarlık & Mühendislik',
-      description: 'Ankara merkezli mimarlık ve mühendislik hizmetleri. Proje tasarımı, danışmanlık ve teknik çözümler.',
-      keywords: 'mimarlık, mühendislik, proje tasarımı, danışmanlık, Ankara',
-    },
-    about: {
-      title: 'Ekip Proje Hakkında',
-      description: 'Ekip Proje, yılların deneyimi ve uzmanlığıyla mimarlık ve mühendislik alanında hizmet vermektedir.',
-      mission: 'Müşterilerimize en yüksek kalitede mimarlık ve mühendislik hizmetleri sunarak, projelerini hayata geçirmelerine yardımcı olmak.',
-      vision: 'Türkiye\'nin en güvenilir ve yenilikçi mimarlık ve mühendislik şirketi olmak.',
-    },
   });
-
-  const showToast = (message: string, type: 'success' | 'error') => {
-    setToast({ message, type });
-    setTimeout(() => setToast(null), 3000);
-  };
 
   useEffect(() => {
     const token = localStorage.getItem('adminToken');
@@ -132,23 +102,12 @@ export default function AdminAyarlarPage() {
           stats: result.data.stats,
           contact: result.data.contact,
           social: result.data.social,
-          seo: result.data.seo || {
-            title: 'Ekip Proje | Mimarlık & Mühendislik',
-            description: 'Ankara merkezli mimarlık ve mühendislik hizmetleri.',
-            keywords: 'mimarlık, mühendislik, proje tasarımı, danışmanlık, Ankara',
-          },
-          about: result.data.about || {
-            title: 'Ekip Proje Hakkında',
-            description: 'Ekip Proje, yılların deneyimi ve uzmanlığıyla hizmet vermektedir.',
-            mission: 'En yüksek kalitede mimarlık ve mühendislik hizmetleri sunmak.',
-            vision: 'Türkiye\'nin en güvenilir mimarlık ve mühendislik şirketi olmak.',
-          },
         });
       } else {
-        showToast('Ayarlar yüklenemedi: ' + result.error, 'error');
+        console.error('Ayarlar yüklenemedi:', result.error);
       }
     } catch (error) {
-      showToast('Ayarlar yüklenirken beklenmeyen bir hata oluştu', 'error');
+      console.error('Ayarlar yüklenirken hata:', error);
     }
   };
 
@@ -159,12 +118,13 @@ export default function AdminAyarlarPage() {
       const result = await updateSiteSettings(settings);
 
       if (result.success) {
-        showToast('Ayarlar başarıyla kaydedildi!', 'success');
+        alert('Ayarlar başarıyla kaydedildi!');
       } else {
-        showToast('Ayarlar kaydedilemedi: ' + result.error, 'error');
+        alert('Ayarlar kaydedilemedi: ' + result.error);
       }
     } catch (error) {
-      showToast('Beklenmeyen bir hata oluştu', 'error');
+      console.error('Ayarlar kaydedilirken hata:', error);
+      alert('Beklenmeyen bir hata oluştu');
     } finally {
       setIsSaving(false);
     }
@@ -211,9 +171,9 @@ export default function AdminAyarlarPage() {
       const result = await updateSiteSettings(defaultSettings);
 
       if (result.success) {
-        showToast('Ayarlar varsayılan değerlere sıfırlandı!', 'success');
+        alert('Ayarlar varsayılan değerlere sıfırlandı!');
       } else {
-        showToast('Ayarlar sıfırlanırken bir hata oluştu: ' + result.error, 'error');
+        alert('Ayarlar sıfırlanırken bir hata oluştu: ' + result.error);
       }
     }
   };
@@ -225,34 +185,13 @@ export default function AdminAyarlarPage() {
   const tabs = [
     { id: 'tema', label: 'Tema & Renkler', icon: '🎨' },
     { id: 'icerik', label: 'İçerik Düzenleme', icon: '📝' },
-    { id: 'hakkimizda', label: 'Hakkımızda', icon: 'ℹ️' },
     { id: 'iletisim', label: 'İletişim Bilgileri', icon: '📞' },
     { id: 'sosyal', label: 'Sosyal Medya', icon: '🌐' },
-    { id: 'seo', label: 'SEO Ayarları', icon: '🔍' },
   ];
 
   return (
     <div className="flex min-h-screen bg-warm-concrete">
       <AdminSidebar />
-
-      {/* Toast Notification */}
-      {toast && (
-        <motion.div
-          initial={{ opacity: 0, y: -50 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -50 }}
-          className={`fixed top-4 right-4 z-50 px-6 py-4 rounded-lg shadow-2xl ${
-            toast.type === 'success'
-              ? 'bg-green-500 text-white'
-              : 'bg-red-500 text-white'
-          }`}
-        >
-          <div className="flex items-center space-x-3">
-            <span className="text-2xl">{toast.type === 'success' ? '✅' : '❌'}</span>
-            <span className="font-manrope font-semibold">{toast.message}</span>
-          </div>
-        </motion.div>
-      )}
 
       <div className="flex-1 lg:ml-64">
         {/* Top Bar */}
@@ -810,171 +749,6 @@ export default function AdminAyarlarPage() {
                       className="w-full px-4 py-3 border-2 border-dark-carbon/20 rounded-lg font-manrope"
                       placeholder="https://twitter.com/ekipproje"
                     />
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          )}
-
-          {/* Hakkımızda Tab */}
-          {activeTab === 'hakkimizda' && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              <div className="bg-white rounded-xl border-2 border-dark-carbon/10 p-8">
-                <h2 className="font-playfair font-bold text-2xl text-night-blue mb-6">
-                  Hakkımızda Bilgileri
-                </h2>
-                <div className="space-y-4">
-                  <div>
-                    <label className="block font-manrope font-semibold text-dark-carbon mb-2">
-                      Başlık
-                    </label>
-                    <input
-                      type="text"
-                      value={settings.about?.title || ''}
-                      onChange={(e) =>
-                        setSettings({
-                          ...settings,
-                          about: { ...settings.about!, title: e.target.value },
-                        })
-                      }
-                      className="w-full px-4 py-3 border-2 border-dark-carbon/20 rounded-lg font-playfair text-lg"
-                      placeholder="Ekip Proje Hakkında"
-                    />
-                  </div>
-                  <div>
-                    <label className="block font-manrope font-semibold text-dark-carbon mb-2">
-                      Açıklama
-                    </label>
-                    <textarea
-                      value={settings.about?.description || ''}
-                      onChange={(e) =>
-                        setSettings({
-                          ...settings,
-                          about: { ...settings.about!, description: e.target.value },
-                        })
-                      }
-                      rows={3}
-                      className="w-full px-4 py-3 border-2 border-dark-carbon/20 rounded-lg font-manrope"
-                      placeholder="Şirket hakkında genel bilgi..."
-                    />
-                  </div>
-                  <div>
-                    <label className="block font-manrope font-semibold text-dark-carbon mb-2">
-                      Misyonumuz
-                    </label>
-                    <textarea
-                      value={settings.about?.mission || ''}
-                      onChange={(e) =>
-                        setSettings({
-                          ...settings,
-                          about: { ...settings.about!, mission: e.target.value },
-                        })
-                      }
-                      rows={3}
-                      className="w-full px-4 py-3 border-2 border-dark-carbon/20 rounded-lg font-manrope"
-                      placeholder="Misyonunuz nedir?"
-                    />
-                  </div>
-                  <div>
-                    <label className="block font-manrope font-semibold text-dark-carbon mb-2">
-                      Vizyonumuz
-                    </label>
-                    <textarea
-                      value={settings.about?.vision || ''}
-                      onChange={(e) =>
-                        setSettings({
-                          ...settings,
-                          about: { ...settings.about!, vision: e.target.value },
-                        })
-                      }
-                      rows={3}
-                      className="w-full px-4 py-3 border-2 border-dark-carbon/20 rounded-lg font-manrope"
-                      placeholder="Vizyonunuz nedir?"
-                    />
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          )}
-
-          {/* SEO Tab */}
-          {activeTab === 'seo' && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              <div className="bg-white rounded-xl border-2 border-dark-carbon/10 p-8">
-                <h2 className="font-playfair font-bold text-2xl text-night-blue mb-6">
-                  SEO Ayarları
-                </h2>
-                <p className="text-dark-carbon/60 font-manrope mb-6">
-                  Arama motorları için meta bilgilerini düzenleyin
-                </p>
-                <div className="space-y-4">
-                  <div>
-                    <label className="block font-manrope font-semibold text-dark-carbon mb-2">
-                      Sayfa Başlığı (Title)
-                    </label>
-                    <input
-                      type="text"
-                      value={settings.seo?.title || ''}
-                      onChange={(e) =>
-                        setSettings({
-                          ...settings,
-                          seo: { ...settings.seo!, title: e.target.value },
-                        })
-                      }
-                      className="w-full px-4 py-3 border-2 border-dark-carbon/20 rounded-lg font-manrope"
-                      placeholder="Ekip Proje | Mimarlık & Mühendislik"
-                    />
-                    <p className="text-xs text-dark-carbon/50 mt-2 font-manrope">
-                      Google arama sonuçlarında görünen başlık (50-60 karakter önerilir)
-                    </p>
-                  </div>
-                  <div>
-                    <label className="block font-manrope font-semibold text-dark-carbon mb-2">
-                      Meta Açıklama (Description)
-                    </label>
-                    <textarea
-                      value={settings.seo?.description || ''}
-                      onChange={(e) =>
-                        setSettings({
-                          ...settings,
-                          seo: { ...settings.seo!, description: e.target.value },
-                        })
-                      }
-                      rows={3}
-                      className="w-full px-4 py-3 border-2 border-dark-carbon/20 rounded-lg font-manrope"
-                      placeholder="Ankara merkezli mimarlık ve mühendislik hizmetleri..."
-                    />
-                    <p className="text-xs text-dark-carbon/50 mt-2 font-manrope">
-                      Arama sonuçlarında görünen açıklama (150-160 karakter önerilir)
-                    </p>
-                  </div>
-                  <div>
-                    <label className="block font-manrope font-semibold text-dark-carbon mb-2">
-                      Anahtar Kelimeler (Keywords)
-                    </label>
-                    <input
-                      type="text"
-                      value={settings.seo?.keywords || ''}
-                      onChange={(e) =>
-                        setSettings({
-                          ...settings,
-                          seo: { ...settings.seo!, keywords: e.target.value },
-                        })
-                      }
-                      className="w-full px-4 py-3 border-2 border-dark-carbon/20 rounded-lg font-manrope"
-                      placeholder="mimarlık, mühendislik, proje tasarımı, danışmanlık, Ankara"
-                    />
-                    <p className="text-xs text-dark-carbon/50 mt-2 font-manrope">
-                      Virgülle ayrılmış anahtar kelimeler (5-10 kelime önerilir)
-                    </p>
                   </div>
                 </div>
               </div>
