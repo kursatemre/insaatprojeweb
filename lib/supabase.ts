@@ -92,6 +92,60 @@ export interface SiteSettings {
     mission: string;
     vision: string;
   };
+  cta?: {
+    title: string;
+    subtitle: string;
+    description: string;
+    primaryButtonText: string;
+    secondaryButtonText: string;
+  };
+  navigation?: {
+    logo: {
+      text: string;
+      subtitle: string;
+      imageUrl?: string;
+      showImage: boolean;
+    };
+    colors: {
+      default: {
+        background: string;
+        text: string;
+        border: string;
+      };
+      scrolled: {
+        background: string;
+        text: string;
+        border: string;
+      };
+    };
+    topBar: {
+      enabled: boolean;
+      stats: string[];
+      showLanguageSwitcher: boolean;
+      showEkapBadge: boolean;
+      colors: {
+        background: string;
+        text: string;
+        border: string;
+      };
+    };
+    menuItems: Array<{
+      label: string;
+      href: string;
+      type: 'link' | 'megamenu';
+      megaMenuItems?: Array<{
+        title: string;
+        desc: string;
+        href: string;
+        icon: string;
+      }>;
+    }>;
+    ctaButton: {
+      enabled: boolean;
+      text: string;
+      href: string;
+    };
+  };
 }
 
 // Helper function - Error handling

@@ -10,6 +10,12 @@
   --night-blue: #0f172a;
   --muted-gold: #b89150;
   --bronze: #cd7f32;
+
+  /* Dinamik renkler - layout.tsx tarafından override edilebilir */
+  --color-primary: #0f172a;
+  --color-secondary: #1a1a1a;
+  --color-accent: #b89150;
+  --color-background: #f4f4f2;
 }
 
 * {

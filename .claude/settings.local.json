@@ -17,7 +17,11 @@
       "Bash(git checkout:*)",
       "Bash(grep:*)",
       "Bash(npm install:*)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(taskkill:*)",
+      "Bash(echo:*)",
+      "Bash(npx supabase:*)",
+      "Bash(npm run build:*)"
     ]
   }
 }

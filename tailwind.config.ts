@@ -9,10 +9,10 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        'warm-concrete': '#f4f4f2',
-        'dark-carbon': '#1a1a1a',
-        'night-blue': '#0f172a',
-        'muted-gold': '#b89150',
+        'warm-concrete': 'var(--color-background, #f4f4f2)',
+        'dark-carbon': 'var(--color-secondary, #1a1a1a)',
+        'night-blue': 'var(--color-primary, #0f172a)',
+        'muted-gold': 'var(--color-accent, #b89150)',
         'bronze': '#cd7f32',
         'slate-light': '#e2e8f0',
       },

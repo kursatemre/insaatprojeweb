@@ -1,8 +1,9 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { createMessage } from '@/lib/api/messages';
+import { getSiteSettings } from '@/lib/api/settings';
 
 export default function IletisimPage() {
   const [formData, setFormData] = useState({
@@ -16,6 +17,23 @@ export default function IletisimPage() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
+
+  const [contactData, setContactData] = useState({
+    phone: '+90 (312) 123 45 67',
+    email: 'info@ekipproje.com',
+    address: 'Çankaya, Ankara, Türkiye',
+    workingHours: 'Pzt-Cum: 09:00 - 18:00',
+  });
+
+  useEffect(() => {
+    const loadContactData = async () => {
+      const result = await getSiteSettings();
+      if (result.success && result.data?.contact) {
+        setContactData(result.data.contact);
+      }
+    };
+    loadContactData();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -75,7 +93,7 @@ export default function IletisimPage() {
   const contactInfo = [
     {
       title: 'Telefon',
-      value: '+90 (312) 123 45 67',
+      value: contactData.phone,
       icon: (
         <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
@@ -89,7 +107,7 @@ export default function IletisimPage() {
     },
     {
       title: 'E-posta',
-      value: 'info@ekipproje.com',
+      value: contactData.email,
       icon: (
         <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
@@ -103,7 +121,7 @@ export default function IletisimPage() {
     },
     {
       title: 'Adres',
-      value: 'Çankaya, Ankara, Türkiye',
+      value: contactData.address,
       icon: (
         <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
@@ -123,7 +141,7 @@ export default function IletisimPage() {
     },
     {
       title: 'Çalışma Saatleri',
-      value: 'Pzt-Cum: 09:00 - 18:00',
+      value: contactData.workingHours,
       icon: (
         <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path

@@ -2,10 +2,26 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { getSiteSettings } from '@/lib/api/settings';
 
 const HeroSection = () => {
   const [hoveredSide, setHoveredSide] = useState<'left' | 'right' | null>(null);
+  const [heroData, setHeroData] = useState({
+    title: 'Ekip Proje',
+    subtitle: 'MİMARLIK & MÜHENDİSLİK',
+    tagline: 'Sadece proje çizmiyoruz; geleceğin yapılarını teknik rehberlik ve uzmanlığımızla inşa ediyoruz.',
+  });
+
+  useEffect(() => {
+    const loadHeroData = async () => {
+      const result = await getSiteSettings();
+      if (result.success && result.data?.hero) {
+        setHeroData(result.data.hero);
+      }
+    };
+    loadHeroData();
+  }, []);
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-warm-concrete via-slate-light to-warm-concrete">
@@ -26,10 +42,10 @@ const HeroSection = () => {
           className="text-center mb-12"
         >
           <h1 className="font-playfair font-bold text-5xl md:text-7xl text-night-blue mb-4">
-            Ekip Proje
+            {heroData.title}
           </h1>
           <p className="font-roboto-mono text-muted-gold tracking-[0.3em] text-sm md:text-base">
-            MİMARLIK & MÜHENDİSLİK
+            {heroData.subtitle}
           </p>
         </motion.div>
 
@@ -215,9 +231,7 @@ const HeroSection = () => {
           className="text-center max-w-4xl mx-auto"
         >
           <p className="font-playfair text-2xl md:text-3xl text-dark-carbon leading-relaxed italic">
-            "Sadece proje çizmiyoruz; geleceğin yapılarını{' '}
-            <span className="text-muted-gold font-semibold">teknik rehberlik</span> ve{' '}
-            <span className="text-muted-gold font-semibold">uzmanlığımızla</span> inşa ediyoruz."
+            "{heroData.tagline}"
           </p>
         </motion.div>
 

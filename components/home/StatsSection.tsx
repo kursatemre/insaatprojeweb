@@ -3,39 +3,44 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef, useEffect, useState } from 'react';
+import { getSiteSettings } from '@/lib/api/settings';
 
 const StatsSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.3 });
+  const [statsData, setStatsData] = useState({
+    totalProjects: '320+',
+    constructionArea: '2.4M m²',
+    activeSites: '45',
+    clients: '180+',
+  });
+
+  useEffect(() => {
+    const loadStats = async () => {
+      const result = await getSiteSettings();
+      if (result.success && result.data?.stats) {
+        setStatsData(result.data.stats);
+      }
+    };
+    loadStats();
+  }, []);
 
   const stats = [
     {
-      value: 2.4,
-      suffix: 'M+',
-      unit: 'm²',
-      label: 'Projeler İnşaat Alanı',
-      description: 'Toplam tamamlanmış proje alanı',
+      label: 'Toplam Proje',
+      description: statsData.totalProjects,
     },
     {
-      value: 110,
-      suffix: '+',
-      unit: '',
-      label: 'Onaylı Kamu Projesi',
-      description: 'EKAP uyumluluğu',
+      label: 'İnşaat Alanı',
+      description: statsData.constructionArea,
     },
     {
-      value: 50,
-      suffix: '+',
-      unit: '',
-      label: 'Deprem Performans Analizi',
-      description: 'Güçlendirme çalışmaları',
+      label: 'Aktif Şantiye',
+      description: statsData.activeSites,
     },
     {
-      value: 81,
-      suffix: '',
-      unit: 'İl',
-      label: 'Ulusal Hizmet Ağı',
-      description: 'Türkiye geneli etki',
+      label: 'Müşteri',
+      description: statsData.clients,
     },
   ];
 
@@ -124,22 +129,14 @@ const StatsSection = () => {
                 {/* Content */}
                 <div className="relative z-10">
                   <div className="mb-4">
-                    <CountUpNumber
-                      end={stat.value}
-                      duration={2}
-                      isInView={isInView}
-                      suffix={stat.suffix}
-                      unit={stat.unit}
-                    />
+                    <div className="font-playfair font-bold text-5xl md:text-6xl text-white">
+                      {stat.description}
+                    </div>
                   </div>
 
                   <h3 className="font-playfair font-semibold text-xl text-white mb-2 group-hover:text-muted-gold transition-colors">
                     {stat.label}
                   </h3>
-
-                  <p className="text-white/50 font-manrope text-sm leading-relaxed">
-                    {stat.description}
-                  </p>
                 </div>
 
                 {/* Bottom Accent Line */}

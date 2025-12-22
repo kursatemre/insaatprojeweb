@@ -2,13 +2,31 @@
 
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
-import { useRef } from 'react';
+import { useRef, useEffect, useState } from 'react';
+import { getSiteSettings } from '@/lib/api/settings';
 
 export default function HakkimizdaPage() {
   const missionRef = useRef(null);
   const teamRef = useRef(null);
   const isMissionInView = useInView(missionRef, { once: true, amount: 0.3 });
   const isTeamInView = useInView(teamRef, { once: true, amount: 0.2 });
+
+  const [aboutData, setAboutData] = useState({
+    title: '15 Yıllık Deneyim',
+    description: "Türkiye'nin dört bir yanında 320+ başarılı proje ile mühendislik sektörünün güvenilir ortağıyız",
+    mission: 'Mühendislik ve mimarlık alanında en yüksek kalite standartlarında hizmet sunarak, müşterilerimizin hayallerini gerçeğe dönüştürmek. Her projede güvenlik, sürdürülebilirlik ve estetik mükemmelliği sağlamak.',
+    vision: "Türkiye'de mühendislik ve danışmanlık sektörünün lider kuruluşlarından biri olmak. Teknolojik yenilikleri ve sürdürülebilir çözümleri kullanarak sektörde öncü rol oynamak.",
+  });
+
+  useEffect(() => {
+    const loadAboutData = async () => {
+      const result = await getSiteSettings();
+      if (result.success && result.data?.about) {
+        setAboutData(result.data.about);
+      }
+    };
+    loadAboutData();
+  }, []);
 
   const values = [
     {
@@ -134,11 +152,10 @@ export default function HakkimizdaPage() {
               <div className="w-16 h-0.5 bg-muted-gold"></div>
             </div>
             <h1 className="font-playfair font-bold text-5xl md:text-6xl text-white mb-6">
-              15 Yıllık Deneyim
+              {aboutData.title}
             </h1>
             <p className="text-white/70 font-manrope text-xl max-w-3xl mx-auto leading-relaxed">
-              Türkiye'nin dört bir yanında 320+ başarılı proje ile mühendislik sektörünün
-              güvenilir ortağıyız
+              {aboutData.description}
             </p>
           </motion.div>
         </div>
@@ -167,9 +184,7 @@ export default function HakkimizdaPage() {
               </div>
               <h2 className="font-playfair font-bold text-3xl text-night-blue mb-4">Misyonumuz</h2>
               <p className="text-dark-carbon/70 font-manrope leading-relaxed">
-                Mühendislik ve mimarlık alanında en yüksek kalite standartlarında hizmet sunarak,
-                müşterilerimizin hayallerini gerçeğe dönüştürmek. Her projede güvenlik,
-                sürdürülebilirlik ve estetik mükemmelliği sağlamak.
+                {aboutData.mission}
               </p>
             </motion.div>
 
@@ -197,9 +212,7 @@ export default function HakkimizdaPage() {
               </div>
               <h2 className="font-playfair font-bold text-3xl text-white mb-4">Vizyonumuz</h2>
               <p className="text-white/70 font-manrope leading-relaxed">
-                Türkiye'de mühendislik ve danışmanlık sektörünün lider kuruluşlarından biri olmak.
-                Teknolojik yenilikleri ve sürdürülebilir çözümleri kullanarak sektörde öncü rol
-                oynamak.
+                {aboutData.vision}
               </p>
             </motion.div>
           </div>

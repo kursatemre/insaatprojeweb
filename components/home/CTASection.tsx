@@ -2,12 +2,31 @@
 
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
+import { getSiteSettings } from '@/lib/api/settings';
 
 const CTASection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.5 });
+
+  const [ctaData, setCtaData] = useState({
+    title: 'Hayalinizdeki Projeyi',
+    subtitle: 'Gerçeğe Dönüştürün',
+    description: 'Ekip Proje ile profesyonel mühendislik hizmetleri alın. EKAP uyumlu, kamu standartlarında projeler için hemen teklif isteyin.',
+    primaryButtonText: 'Ücretsiz Teklif Al',
+    secondaryButtonText: 'Projelerimizi İnceleyin',
+  });
+
+  useEffect(() => {
+    const loadCtaData = async () => {
+      const result = await getSiteSettings();
+      if (result.success && result.data?.cta) {
+        setCtaData(result.data.cta);
+      }
+    };
+    loadCtaData();
+  }, []);
 
   return (
     <section
@@ -49,9 +68,9 @@ const CTASection = () => {
               transition={{ duration: 0.6, delay: 0.3 }}
               className="font-playfair font-bold text-4xl md:text-5xl lg:text-6xl text-white mb-6 leading-tight"
             >
-              Hayalinizdeki Projeyi
+              {ctaData.title}
               <br />
-              <span className="text-muted-gold">Gerçeğe Dönüştürün</span>
+              <span className="text-muted-gold">{ctaData.subtitle}</span>
             </motion.h2>
 
             <motion.p
@@ -60,8 +79,7 @@ const CTASection = () => {
               transition={{ duration: 0.6, delay: 0.4 }}
               className="text-white/70 font-manrope text-lg md:text-xl max-w-3xl mx-auto mb-12 leading-relaxed"
             >
-              Ekip Proje ile profesyonel mühendislik hizmetleri alın. EKAP uyumlu, kamu
-              standartlarında projeler için hemen teklif isteyin.
+              {ctaData.description}
             </motion.p>
 
             <motion.div
@@ -74,7 +92,7 @@ const CTASection = () => {
                 href="/iletisim"
                 className="group px-8 py-4 bg-gradient-to-r from-muted-gold to-bronze text-white font-manrope font-bold text-lg rounded-lg hover:shadow-2xl hover:shadow-muted-gold/50 transition-all duration-300 flex items-center"
               >
-                Ücretsiz Teklif Al
+                {ctaData.primaryButtonText}
                 <svg
                   className="w-5 h-5 ml-2 group-hover:translate-x-2 transition-transform"
                   fill="none"
@@ -94,7 +112,7 @@ const CTASection = () => {
                 href="/projeler"
                 className="px-8 py-4 bg-white/10 backdrop-blur-sm text-white font-manrope font-semibold text-lg rounded-lg border-2 border-white/20 hover:border-muted-gold/50 hover:bg-white/20 transition-all duration-300"
               >
-                Projelerimizi İnceleyin
+                {ctaData.secondaryButtonText}
               </Link>
             </motion.div>
 

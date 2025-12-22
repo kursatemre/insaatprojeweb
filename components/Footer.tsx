@@ -2,9 +2,27 @@
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import { getSiteSettings } from '@/lib/api/settings';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const [socialLinks, setSocialLinks] = useState({
+    linkedin: 'https://linkedin.com/company/ekipproje',
+    instagram: 'https://instagram.com/ekipproje',
+    facebook: 'https://facebook.com/ekipproje',
+    twitter: 'https://twitter.com/ekipproje',
+  });
+
+  useEffect(() => {
+    const loadSocialLinks = async () => {
+      const result = await getSiteSettings();
+      if (result.success && result.data?.social) {
+        setSocialLinks(result.data.social);
+      }
+    };
+    loadSocialLinks();
+  }, []);
 
   const footerSections = [
     {
@@ -61,15 +79,22 @@ const Footer = () => {
               EKAP uyumlu, kamu standartlarında projeler.
             </p>
             <div className="flex space-x-4">
-              {['facebook', 'twitter', 'linkedin', 'instagram'].map((social) => (
+              {[
+                { name: 'facebook', url: socialLinks.facebook },
+                { name: 'twitter', url: socialLinks.twitter },
+                { name: 'linkedin', url: socialLinks.linkedin },
+                { name: 'instagram', url: socialLinks.instagram },
+              ].map((social) => (
                 <motion.a
-                  key={social}
-                  href={`#${social}`}
+                  key={social.name}
+                  href={social.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   whileHover={{ scale: 1.1, y: -2 }}
                   className="w-10 h-10 bg-white/5 hover:bg-muted-gold/20 rounded-full flex items-center justify-center transition-colors duration-200"
                 >
                   <span className="text-white/60 hover:text-muted-gold transition-colors capitalize text-xs">
-                    {social[0].toUpperCase()}
+                    {social.name[0].toUpperCase()}
                   </span>
                 </motion.a>
               ))}

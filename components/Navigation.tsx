@@ -3,12 +3,166 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { getSiteSettings } from '@/lib/api/settings';
+import {
+  Building2,
+  Ruler,
+  Zap,
+  LineChart,
+  ShieldCheck,
+  ClipboardCheck,
+  Home,
+  Briefcase,
+  FolderOpen,
+  Info,
+  Mail,
+  Search,
+  Menu,
+  X
+} from 'lucide-react';
+
+// Icon mapping helper
+const getIconComponent = (iconName: string) => {
+  const icons: { [key: string]: any } = {
+    Building2,
+    Ruler,
+    Zap,
+    LineChart,
+    ShieldCheck,
+    ClipboardCheck,
+    Home,
+    Briefcase,
+    FolderOpen,
+    Info,
+    Mail,
+  };
+  return icons[iconName] || Building2;
+};
 
 const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeMegaMenu, setActiveMegaMenu] = useState<string | null>(null);
   const [mobileAccordion, setMobileAccordion] = useState<string | null>(null);
+  const [navData, setNavData] = useState({
+    logo: {
+      text: 'EKİP PROJE',
+      subtitle: 'MİMARLIK & MÜHENDİSLİK',
+      imageUrl: '',
+      showImage: false,
+    },
+    colors: {
+      default: {
+        background: 'rgba(26, 26, 26, 0.9)',
+        text: '#ffffff',
+        border: 'rgba(184, 145, 80, 0.2)',
+      },
+      scrolled: {
+        background: 'rgba(244, 244, 242, 0.95)',
+        text: '#0f172a',
+        border: 'rgba(26, 26, 26, 0.1)',
+      },
+    },
+    topBar: {
+      enabled: true,
+      stats: [
+        '2.4M+ m² İnşaat Alanı',
+        '110+ Onaylı Kamu Projesi',
+        '50+ Deprem Analizi',
+        '81 İl Hizmet Ağı',
+        'EKAP Uyumlu Projeler',
+      ],
+      showLanguageSwitcher: true,
+      showEkapBadge: true,
+      colors: {
+        background: 'rgba(26, 26, 26, 0.95)',
+        text: 'rgba(184, 145, 80, 0.8)',
+        border: 'rgba(184, 145, 80, 0.1)',
+      },
+    },
+    menuItems: [
+      {
+        label: 'Ana Sayfa',
+        href: '/',
+        type: 'link' as const,
+      },
+      {
+        label: 'Hizmetler',
+        href: '/hizmetler',
+        type: 'megamenu' as const,
+        megaMenuItems: [
+          {
+            category: 'Hizmet Alımı',
+            categoryDesc: 'Proje Üretimi',
+            items: [
+              {
+                title: 'Mimari Projeler',
+                desc: 'Estetik ve fonksiyonel tasarımlar',
+                href: '/hizmetler#mimari',
+                icon: 'Building2',
+              },
+              {
+                title: 'Statik Projeler',
+                desc: 'Güvenli taşıyıcı sistem tasarımı',
+                href: '/hizmetler#statik',
+                icon: 'Ruler',
+              },
+              {
+                title: 'Tesisat Projeleri',
+                desc: 'Elektrik, mekanik, sıhhi tesisat',
+                href: '/hizmetler#tesisat',
+                icon: 'Zap',
+              },
+            ],
+          },
+          {
+            category: 'Danışmanlık',
+            categoryDesc: 'Teknik Müşavirlik',
+            items: [
+              {
+                title: 'Deprem Performans Analizi',
+                desc: 'TBDY 2018 uyumlu hesaplamalar',
+                href: '/hizmetler#deprem',
+                icon: 'LineChart',
+              },
+              {
+                title: 'Kontrollük Hizmetleri',
+                desc: 'İnşaat gözetim ve kalite kontrolü',
+                href: '/hizmetler#kontrolluk',
+                icon: 'ClipboardCheck',
+              },
+              {
+                title: 'Teknik Raporlama',
+                desc: 'Ekspertiz ve değerlendirme',
+                href: '/hizmetler#raporlama',
+                icon: 'ShieldCheck',
+              },
+            ],
+          },
+        ],
+      },
+      {
+        label: 'Projeler',
+        href: '/projeler',
+        type: 'link' as const,
+      },
+      {
+        label: 'Hakkımızda',
+        href: '/hakkimizda',
+        type: 'link' as const,
+      },
+      {
+        label: 'İletişim',
+        href: '/iletisim',
+        type: 'link' as const,
+      },
+    ],
+    ctaButton: {
+      enabled: true,
+      text: 'Teklif Al',
+      href: '/iletisim',
+    },
+  });
 
   useEffect(() => {
     const handleScroll = () => {
@@ -19,325 +173,274 @@ const Navigation = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const hizmetAlimi = [
-    {
-      title: 'Mimari Projeler',
-      desc: 'Estetik ve fonksiyonel tasarımlar',
-      href: '/hizmetler#mimari',
-      icon: '🏛️',
-    },
-    {
-      title: 'Statik Projeler',
-      desc: 'Güvenli taşıyıcı sistem tasarımı',
-      href: '/hizmetler#statik',
-      icon: '🏗️',
-    },
-    {
-      title: 'Tesisat Projeleri',
-      desc: 'Elektrik, mekanik, sıhhi tesisat',
-      href: '/hizmetler#tesisat',
-      icon: '⚡',
-    },
-  ];
-
-  const danismanlik = [
-    {
-      title: 'Deprem Performans Analizi',
-      desc: 'TBDY 2018 uyumlu hesaplamalar',
-      href: '/hizmetler#deprem',
-      icon: '📊',
-    },
-    {
-      title: 'Kontrollük Hizmetleri',
-      desc: 'İnşaat gözetim ve kalite kontrolü',
-      href: '/hizmetler#kontrolluk',
-      icon: '✓',
-    },
-    {
-      title: 'Teknik Raporlama',
-      desc: 'Ekspertiz ve değerlendirme',
-      href: '/hizmetler#raporlama',
-      icon: '📋',
-    },
-  ];
-
-  const stats = [
-    '2.4M+ m² İnşaat Alanı',
-    '110+ Onaylı Kamu Projesi',
-    '50+ Deprem Analizi',
-    '81 İl Hizmet Ağı',
-    'EKAP Uyumlu Projeler',
-  ];
+  useEffect(() => {
+    const loadNavData = async () => {
+      const result = await getSiteSettings();
+      if (result.success && result.data?.navigation) {
+        setNavData({
+          ...result.data.navigation,
+          logo: {
+            ...result.data.navigation.logo,
+            imageUrl: result.data.navigation.logo.imageUrl || '',
+          },
+        } as any);
+      }
+    };
+    loadNavData();
+  }, []);
 
   const [currentStat, setCurrentStat] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentStat((prev) => (prev + 1) % stats.length);
+      setCurrentStat((prev) => (prev + 1) % navData.topBar.stats.length);
     }, 3000);
     return () => clearInterval(interval);
-  }, [stats.length]);
+  }, [navData.topBar.stats.length]);
 
   return (
     <>
       {/* Top Bar - Stats Ticker */}
-      <div className="fixed top-0 left-0 right-0 z-50 bg-dark-carbon/95 backdrop-blur-sm border-b border-muted-gold/10 nav-fixed">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-8 text-xs">
-            {/* Animated Stats */}
-            <div className="flex-1 overflow-hidden">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={currentStat}
-                  initial={{ y: 20, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  exit={{ y: -20, opacity: 0 }}
-                  transition={{ duration: 0.5 }}
-                  className="text-muted-gold/80 font-roboto-mono flex items-center"
-                >
-                  <span className="mr-2">▸</span>
-                  {stats[currentStat]}
-                </motion.div>
-              </AnimatePresence>
-            </div>
+      {navData.topBar.enabled && (
+        <div
+          className="fixed top-0 left-0 right-0 z-50 backdrop-blur-sm nav-fixed"
+          style={{
+            backgroundColor: navData.topBar.colors?.background || 'rgba(26, 26, 26, 0.95)',
+            borderBottom: `1px solid ${navData.topBar.colors?.border || 'rgba(184, 145, 80, 0.1)'}`
+          }}
+        >
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex items-center justify-between h-8 text-xs">
+              {/* Animated Stats */}
+              <div className="flex-1 overflow-hidden">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={currentStat}
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: -20, opacity: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="font-roboto-mono font-semibold flex items-center"
+                    style={{ color: navData.topBar.colors?.text || 'rgba(184, 145, 80, 0.8)' }}
+                  >
+                    <span className="mr-2">▸</span>
+                    {navData.topBar.stats[currentStat]}
+                  </motion.div>
+                </AnimatePresence>
+              </div>
 
-            {/* Quick Actions */}
-            <div className="hidden md:flex items-center space-x-4 text-white/60">
-              <Link
-                href="/hizmetler"
-                className="hover:text-muted-gold transition-colors flex items-center"
+              {/* Quick Actions */}
+              <div
+                className="hidden md:flex items-center space-x-4 font-medium"
+                style={{
+                  color: navData.topBar.colors?.text || 'rgba(184, 145, 80, 0.8)',
+                  opacity: 0.6
+                }}
               >
-                <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                  <path
-                    fillRule="evenodd"
-                    d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                EKAP Uyumlu
-              </Link>
-              <span className="text-white/20">|</span>
-              <button className="hover:text-muted-gold transition-colors">
-                TR / EN
-              </button>
+                {navData.topBar.showEkapBadge && (
+                  <Link
+                    href="/hizmetler"
+                    className="hover:text-muted-gold transition-colors flex items-center font-semibold"
+                    style={{ color: navData.topBar.colors?.text || 'rgba(184, 145, 80, 0.8)' }}
+                  >
+                    <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                      <path
+                        fillRule="evenodd"
+                        d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                    EKAP Uyumlu
+                  </Link>
+                )}
+                {navData.topBar.showLanguageSwitcher && (
+                  <>
+                    <span style={{ color: navData.topBar.colors?.text || 'rgba(184, 145, 80, 0.8)', opacity: 0.2 }}>|</span>
+                    <button
+                      className="hover:text-muted-gold transition-colors font-semibold"
+                      style={{ color: navData.topBar.colors?.text || 'rgba(184, 145, 80, 0.8)' }}
+                    >
+                      TR / EN
+                    </button>
+                  </>
+                )}
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* Main Navigation */}
       <motion.nav
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
-        className={`fixed top-8 left-0 right-0 z-40 transition-all duration-300 nav-fixed ${
-          isScrolled
-            ? 'bg-warm-concrete/95 backdrop-blur-xl shadow-2xl border-b border-dark-carbon/10'
-            : 'bg-dark-carbon/90 backdrop-blur-md border-b border-muted-gold/20'
-        }`}
+        style={{
+          backgroundColor: isScrolled ? navData.colors.scrolled.background : navData.colors.default.background,
+          borderBottom: `1px solid ${isScrolled ? navData.colors.scrolled.border : navData.colors.default.border}`,
+        }}
+        className={`fixed ${navData.topBar.enabled ? 'top-8' : 'top-0'} left-0 right-0 z-40 transition-all duration-300 nav-fixed backdrop-blur-xl shadow-2xl`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
             {/* Logo */}
             <Link href="/" className="flex items-center space-x-4 group relative z-50">
-              <div className="relative">
-                {/* Glow Effect */}
-                <div className="absolute -inset-2 bg-gradient-to-r from-muted-gold/20 to-bronze/20 rounded-lg blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              {navData.logo.showImage && navData.logo.imageUrl ? (
+                <img
+                  src={navData.logo.imageUrl}
+                  alt={navData.logo.text}
+                  className="h-14 w-auto object-contain transform group-hover:scale-105 transition-transform duration-300"
+                />
+              ) : (
+                <>
+                  <div className="relative">
+                    {/* Glow Effect */}
+                    <div className="absolute -inset-2 bg-gradient-to-r from-muted-gold/20 to-bronze/20 rounded-lg blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
-                {/* Logo Square */}
-                <div className="relative w-14 h-14 bg-gradient-to-br from-night-blue via-dark-carbon to-night-blue rounded border-2 border-muted-gold/30 flex items-center justify-center transform group-hover:scale-105 transition-transform duration-300">
-                  <span className="text-muted-gold font-cinzel font-bold text-2xl">E</span>
-                  <span className="text-white font-cinzel font-bold text-2xl">P</span>
-                </div>
-              </div>
+                    {/* Logo Square */}
+                    <div className="relative w-14 h-14 bg-gradient-to-br from-night-blue via-dark-carbon to-night-blue rounded border-2 border-muted-gold/30 flex items-center justify-center transform group-hover:scale-105 transition-transform duration-300">
+                      <span className="text-muted-gold font-cinzel font-bold text-2xl">E</span>
+                      <span className="text-white font-cinzel font-bold text-2xl">P</span>
+                    </div>
+                  </div>
 
-              <div>
-                <h1 className={`font-cinzel font-bold text-2xl tracking-wider transition-colors ${
-                  isScrolled ? 'text-night-blue' : 'text-white'
-                }`}>
-                  EKİP PROJE
-                </h1>
-                <p className="text-muted-gold text-xs font-roboto-mono tracking-[0.2em] -mt-1">
-                  MİMARLIK & MÜHENDİSLİK
-                </p>
-              </div>
+                  <div>
+                    <h1
+                      className="font-cinzel font-extrabold text-2xl tracking-wider transition-colors"
+                      style={{ color: isScrolled ? navData.colors.scrolled.text : navData.colors.default.text }}
+                    >
+                      {navData.logo.text}
+                    </h1>
+                    <p className="text-muted-gold text-xs font-roboto-mono font-semibold tracking-[0.2em] -mt-1">
+                      {navData.logo.subtitle}
+                    </p>
+                  </div>
+                </>
+              )}
             </Link>
 
             {/* Desktop Menu */}
             <div className="hidden lg:flex items-center space-x-2">
-              <Link
-                href="/"
-                className={`px-4 py-2 font-manrope text-sm font-medium transition-colors relative group ${
-                  isScrolled ? 'text-dark-carbon/80 hover:text-dark-carbon' : 'text-white hover:text-muted-gold'
-                }`}
-              >
-                Ana Sayfa
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-muted-gold group-hover:w-full transition-all duration-300"></span>
-              </Link>
-
-              {/* Mega Menu - Hizmetler */}
-              <div
-                className="relative"
-                onMouseEnter={() => setActiveMegaMenu('hizmetler')}
-                onMouseLeave={() => setActiveMegaMenu(null)}
-              >
-                <button
-                  className={`px-4 py-2 font-manrope text-sm font-medium transition-colors relative group ${
-                    isScrolled ? 'text-dark-carbon/80 hover:text-dark-carbon' : 'text-white hover:text-muted-gold'
-                  }`}
-                >
-                  Hizmetler
-                  <svg className="w-4 h-4 inline ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-muted-gold group-hover:w-full transition-all duration-300"></span>
-                </button>
-
-                {/* Mega Menu Dropdown */}
-                <AnimatePresence>
-                  {activeMegaMenu === 'hizmetler' && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 10 }}
-                      transition={{ duration: 0.2 }}
-                      className="absolute left-0 top-full mt-2 w-[600px] bg-white backdrop-blur-xl rounded-lg shadow-2xl border-2 border-muted-gold/20 overflow-hidden"
+              {navData.menuItems.map((menuItem) => (
+                menuItem.type === 'link' ? (
+                  <Link
+                    key={menuItem.label}
+                    href={menuItem.href}
+                    style={{ color: isScrolled ? navData.colors.scrolled.text : navData.colors.default.text }}
+                    className="px-4 py-2 font-manrope text-sm font-semibold transition-colors relative group hover:text-muted-gold"
+                  >
+                    {menuItem.label}
+                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-muted-gold group-hover:w-full transition-all duration-300"></span>
+                  </Link>
+                ) : (
+                  <div
+                    key={menuItem.label}
+                    className="relative"
+                    onMouseEnter={() => setActiveMegaMenu(menuItem.label)}
+                    onMouseLeave={() => setActiveMegaMenu(null)}
+                  >
+                    <button
+                      style={{ color: isScrolled ? navData.colors.scrolled.text : navData.colors.default.text }}
+                      className="px-4 py-2 font-manrope text-sm font-semibold transition-colors relative group hover:text-muted-gold"
                     >
-                      <div className="grid grid-cols-2 divide-x divide-dark-carbon/10">
-                        {/* Hizmet Alımı */}
-                        <div className="p-6">
-                          <h3 className="font-playfair font-bold text-lg text-night-blue mb-1 flex items-center">
-                            <span className="w-2 h-2 bg-muted-gold rounded-full mr-2"></span>
-                            Hizmet Alımı
-                          </h3>
-                          <p className="text-xs text-dark-carbon/60 font-manrope mb-4">Proje Üretimi</p>
-                          <div className="space-y-2">
-                            {hizmetAlimi.map((item) => (
-                              <Link
-                                key={item.title}
-                                href={item.href}
-                                className="block p-3 rounded-lg hover:bg-muted-gold/10 transition-all group"
-                              >
-                                <div className="flex items-start">
-                                  <span className="text-2xl mr-3">{item.icon}</span>
-                                  <div>
-                                    <h4 className="font-manrope font-semibold text-sm text-night-blue group-hover:text-muted-gold transition-colors">
-                                      {item.title}
-                                    </h4>
-                                    <p className="text-xs text-dark-carbon/60">{item.desc}</p>
-                                  </div>
+                      {menuItem.label}
+                      <svg className="w-4 h-4 inline ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                      <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-muted-gold group-hover:w-full transition-all duration-300"></span>
+                    </button>
+
+                    {/* Mega Menu Dropdown */}
+                    <AnimatePresence>
+                      {activeMegaMenu === menuItem.label && menuItem.megaMenuItems && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: 10 }}
+                          transition={{ duration: 0.2 }}
+                          className="absolute left-0 top-full mt-2 w-[600px] bg-white backdrop-blur-xl rounded-lg shadow-2xl border-2 border-muted-gold/20 overflow-hidden"
+                        >
+                          <div className="grid grid-cols-2 divide-x divide-dark-carbon/10">
+                            {menuItem.megaMenuItems.map((category, idx) => (
+                              <div key={category.category} className={`p-6 ${idx === 1 ? 'bg-gradient-to-br from-night-blue/5 to-muted-gold/5' : ''}`}>
+                                <h3 className="font-playfair font-bold text-lg text-night-blue mb-1 flex items-center">
+                                  <span className={`w-2 h-2 ${idx === 0 ? 'bg-muted-gold' : 'bg-bronze'} rounded-full mr-2`}></span>
+                                  {category.category}
+                                </h3>
+                                <p className="text-xs text-dark-carbon/60 font-manrope mb-4">{category.categoryDesc}</p>
+                                <div className="space-y-2">
+                                  {category.items.map((item) => {
+                                    const IconComponent = getIconComponent(item.icon);
+                                    return (
+                                      <Link
+                                        key={item.title}
+                                        href={item.href}
+                                        className={`block p-3 rounded-lg transition-all group ${idx === 0 ? 'hover:bg-muted-gold/10' : 'hover:bg-white/50'}`}
+                                      >
+                                        <div className="flex items-start">
+                                          <IconComponent className={`w-5 h-5 mr-3 mt-0.5 ${idx === 0 ? 'text-muted-gold' : 'text-bronze'}`} />
+                                          <div>
+                                            <h4 className={`font-manrope font-semibold text-sm text-night-blue transition-colors ${idx === 0 ? 'group-hover:text-muted-gold' : 'group-hover:text-bronze'}`}>
+                                              {item.title}
+                                            </h4>
+                                            <p className="text-xs text-dark-carbon/60">{item.desc}</p>
+                                          </div>
+                                        </div>
+                                      </Link>
+                                    );
+                                  })}
                                 </div>
-                              </Link>
+                              </div>
                             ))}
                           </div>
-                        </div>
 
-                        {/* Danışmanlık */}
-                        <div className="p-6 bg-gradient-to-br from-night-blue/5 to-muted-gold/5">
-                          <h3 className="font-playfair font-bold text-lg text-night-blue mb-1 flex items-center">
-                            <span className="w-2 h-2 bg-bronze rounded-full mr-2"></span>
-                            Danışmanlık
-                          </h3>
-                          <p className="text-xs text-dark-carbon/60 font-manrope mb-4">Teknik Müşavirlik</p>
-                          <div className="space-y-2">
-                            {danismanlik.map((item) => (
-                              <Link
-                                key={item.title}
-                                href={item.href}
-                                className="block p-3 rounded-lg hover:bg-white/50 transition-all group"
-                              >
-                                <div className="flex items-start">
-                                  <span className="text-2xl mr-3">{item.icon}</span>
-                                  <div>
-                                    <h4 className="font-manrope font-semibold text-sm text-night-blue group-hover:text-bronze transition-colors">
-                                      {item.title}
-                                    </h4>
-                                    <p className="text-xs text-dark-carbon/60">{item.desc}</p>
-                                  </div>
-                                </div>
-                              </Link>
-                            ))}
+                          {/* Footer Link */}
+                          <div className="bg-gradient-to-r from-night-blue to-dark-carbon px-6 py-3 text-center">
+                            <Link href={menuItem.href} className="text-white hover:text-muted-gold transition-colors text-sm font-manrope">
+                              Tümünü Görüntüle →
+                            </Link>
                           </div>
-                        </div>
-                      </div>
-
-                      {/* Footer Link */}
-                      <div className="bg-gradient-to-r from-night-blue to-dark-carbon px-6 py-3 text-center">
-                        <Link href="/hizmetler" className="text-white hover:text-muted-gold transition-colors text-sm font-manrope">
-                          Tüm Hizmetleri Görüntüle →
-                        </Link>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-
-              <Link
-                href="/projeler"
-                className={`px-4 py-2 font-manrope text-sm font-medium transition-colors relative group ${
-                  isScrolled ? 'text-dark-carbon/80 hover:text-dark-carbon' : 'text-white hover:text-muted-gold'
-                }`}
-              >
-                Projeler
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-muted-gold group-hover:w-full transition-all duration-300"></span>
-              </Link>
-
-              <Link
-                href="/hakkimizda"
-                className={`px-4 py-2 font-manrope text-sm font-medium transition-colors relative group ${
-                  isScrolled ? 'text-dark-carbon/80 hover:text-dark-carbon' : 'text-white hover:text-muted-gold'
-                }`}
-              >
-                Hakkımızda
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-muted-gold group-hover:w-full transition-all duration-300"></span>
-              </Link>
-
-              <Link
-                href="/iletisim"
-                className={`px-4 py-2 font-manrope text-sm font-medium transition-colors relative group ${
-                  isScrolled ? 'text-dark-carbon/80 hover:text-dark-carbon' : 'text-white hover:text-muted-gold'
-                }`}
-              >
-                İletişim
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-muted-gold group-hover:w-full transition-all duration-300"></span>
-              </Link>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                )
+              ))}
 
               {/* Search Icon */}
-              <button className={`p-2 rounded-lg transition-all ${
-                isScrolled ? 'text-dark-carbon/60 hover:text-dark-carbon hover:bg-dark-carbon/5' : 'text-white hover:text-muted-gold hover:bg-white/10'
-              }`}>
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
+              <button
+                style={{ color: isScrolled ? navData.colors.scrolled.text : navData.colors.default.text }}
+                className="p-2 rounded-lg transition-all hover:text-muted-gold hover:bg-white/10"
+              >
+                <Search className="w-5 h-5" />
               </button>
 
               {/* CTA Button */}
-              <Link href="/iletisim">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="ml-4 px-6 py-3 bg-gradient-to-r from-night-blue to-dark-carbon text-white font-manrope font-semibold text-sm rounded-lg border-2 border-muted-gold/30 hover:border-muted-gold hover:shadow-xl hover:shadow-muted-gold/30 transition-all duration-300 relative overflow-hidden group"
-                >
-                  <span className="relative z-10">Projeyi Başlat</span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-muted-gold to-bronze opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                </motion.button>
-              </Link>
+              {navData.ctaButton.enabled && (
+                <Link href={navData.ctaButton.href}>
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="ml-4 px-6 py-3 bg-gradient-to-r from-night-blue to-dark-carbon text-white font-manrope font-semibold text-sm rounded-lg border-2 border-muted-gold/30 hover:border-muted-gold hover:shadow-xl hover:shadow-muted-gold/30 transition-all duration-300 relative overflow-hidden group"
+                  >
+                    <span className="relative z-10">{navData.ctaButton.text}</span>
+                    <div className="absolute inset-0 bg-gradient-to-r from-muted-gold to-bronze opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  </motion.button>
+                </Link>
+              )}
             </div>
 
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className={`lg:hidden p-2 rounded transition-colors ${
-                isScrolled ? 'text-dark-carbon' : 'text-white'
-              }`}
+              style={{ color: isScrolled ? navData.colors.scrolled.text : navData.colors.default.text }}
+              className="lg:hidden p-2 rounded transition-colors"
             >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                {isMobileMenuOpen ? (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                ) : (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16" />
-                )}
-              </svg>
+              {isMobileMenuOpen ? (
+                <X className="w-6 h-6" />
+              ) : (
+                <Menu className="w-6 h-6" />
+              )}
             </button>
           </div>
         </div>
@@ -361,9 +464,7 @@ const Navigation = () => {
               onClick={() => setIsMobileMenuOpen(false)}
               className="absolute top-6 right-6 text-white p-2 z-50"
             >
-              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
+              <X className="w-8 h-8" />
             </button>
 
             {/* Menu Content */}
@@ -371,145 +472,88 @@ const Navigation = () => {
               <div className="max-w-md mx-auto">
                 {/* Logo */}
                 <div className="text-center mb-12">
-                  <h2 className="font-cinzel font-bold text-3xl text-white mb-2">EKİP PROJE</h2>
-                  <p className="text-muted-gold text-xs font-roboto-mono tracking-widest">MİMARLIK & MÜHENDİSLİK</p>
+                  <h2 className="font-cinzel font-bold text-3xl text-white mb-2">{navData.logo.text}</h2>
+                  <p className="text-muted-gold text-xs font-roboto-mono tracking-widest">{navData.logo.subtitle}</p>
                 </div>
 
                 {/* Menu Items */}
                 <div className="space-y-4">
-                  <Link
-                    href="/"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="block px-6 py-4 text-white/90 hover:text-white bg-white/5 hover:bg-white/10 rounded-lg font-manrope text-lg transition-all"
-                  >
-                    Ana Sayfa
-                  </Link>
-
-                  {/* Accordion - Proje İşleri */}
-                  <div className="bg-white/5 rounded-lg overflow-hidden">
-                    <button
-                      onClick={() => setMobileAccordion(mobileAccordion === 'proje' ? null : 'proje')}
-                      className="w-full px-6 py-4 text-white/90 hover:text-white font-manrope text-lg flex items-center justify-between"
-                    >
-                      <span>Proje İşleri</span>
-                      <svg
-                        className={`w-5 h-5 transition-transform ${mobileAccordion === 'proje' ? 'rotate-180' : ''}`}
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
+                  {navData.menuItems.map((menuItem) => (
+                    menuItem.type === 'link' ? (
+                      <Link
+                        key={menuItem.label}
+                        href={menuItem.href}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="block px-6 py-4 text-white/90 hover:text-white bg-white/5 hover:bg-white/10 rounded-lg font-manrope text-lg transition-all"
                       >
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                      </svg>
-                    </button>
-                    <AnimatePresence>
-                      {mobileAccordion === 'proje' && (
-                        <motion.div
-                          initial={{ height: 0 }}
-                          animate={{ height: 'auto' }}
-                          exit={{ height: 0 }}
-                          className="overflow-hidden"
+                        {menuItem.label}
+                      </Link>
+                    ) : (
+                      <div key={menuItem.label} className="bg-white/5 rounded-lg overflow-hidden">
+                        <button
+                          onClick={() => setMobileAccordion(mobileAccordion === menuItem.label ? null : menuItem.label)}
+                          className="w-full px-6 py-4 text-white/90 hover:text-white font-manrope text-lg flex items-center justify-between"
                         >
-                          <div className="px-6 pb-4 space-y-2">
-                            {hizmetAlimi.map((item) => (
-                              <Link
-                                key={item.title}
-                                href={item.href}
-                                onClick={() => setIsMobileMenuOpen(false)}
-                                className="block px-4 py-3 text-white/70 hover:text-muted-gold bg-white/5 hover:bg-muted-gold/10 rounded transition-all"
-                              >
-                                <div className="flex items-center">
-                                  <span className="text-xl mr-3">{item.icon}</span>
-                                  <div>
-                                    <div className="font-manrope font-medium text-sm">{item.title}</div>
-                                    <div className="text-xs text-white/50">{item.desc}</div>
-                                  </div>
+                          <span>{menuItem.label}</span>
+                          <svg
+                            className={`w-5 h-5 transition-transform ${mobileAccordion === menuItem.label ? 'rotate-180' : ''}`}
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                          </svg>
+                        </button>
+                        <AnimatePresence>
+                          {mobileAccordion === menuItem.label && menuItem.megaMenuItems && (
+                            <motion.div
+                              initial={{ height: 0 }}
+                              animate={{ height: 'auto' }}
+                              exit={{ height: 0 }}
+                              className="overflow-hidden"
+                            >
+                              {menuItem.megaMenuItems.map((category, catIdx) => (
+                                <div key={category.category} className="px-6 pb-4 space-y-2">
+                                  <h4 className="text-muted-gold font-playfair font-semibold text-sm mb-2 mt-2">
+                                    {category.category}
+                                  </h4>
+                                  {category.items.map((item) => {
+                                    const IconComponent = getIconComponent(item.icon);
+                                    return (
+                                      <Link
+                                        key={item.title}
+                                        href={item.href}
+                                        onClick={() => setIsMobileMenuOpen(false)}
+                                        className={`block px-4 py-3 text-white/70 bg-white/5 rounded transition-all ${catIdx === 0 ? 'hover:text-muted-gold hover:bg-muted-gold/10' : 'hover:text-bronze hover:bg-bronze/10'}`}
+                                      >
+                                        <div className="flex items-center">
+                                          <IconComponent className={`w-5 h-5 mr-3 ${catIdx === 0 ? 'text-muted-gold' : 'text-bronze'}`} />
+                                          <div>
+                                            <div className="font-manrope font-medium text-sm">{item.title}</div>
+                                            <div className="text-xs text-white/50">{item.desc}</div>
+                                          </div>
+                                        </div>
+                                      </Link>
+                                    );
+                                  })}
                                 </div>
-                              </Link>
-                            ))}
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-
-                  {/* Accordion - Danışmanlık */}
-                  <div className="bg-white/5 rounded-lg overflow-hidden">
-                    <button
-                      onClick={() => setMobileAccordion(mobileAccordion === 'danismanlik' ? null : 'danismanlik')}
-                      className="w-full px-6 py-4 text-white/90 hover:text-white font-manrope text-lg flex items-center justify-between"
-                    >
-                      <span>Danışmanlık</span>
-                      <svg
-                        className={`w-5 h-5 transition-transform ${mobileAccordion === 'danismanlik' ? 'rotate-180' : ''}`}
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                      </svg>
-                    </button>
-                    <AnimatePresence>
-                      {mobileAccordion === 'danismanlik' && (
-                        <motion.div
-                          initial={{ height: 0 }}
-                          animate={{ height: 'auto' }}
-                          exit={{ height: 0 }}
-                          className="overflow-hidden"
-                        >
-                          <div className="px-6 pb-4 space-y-2">
-                            {danismanlik.map((item) => (
-                              <Link
-                                key={item.title}
-                                href={item.href}
-                                onClick={() => setIsMobileMenuOpen(false)}
-                                className="block px-4 py-3 text-white/70 hover:text-bronze bg-white/5 hover:bg-bronze/10 rounded transition-all"
-                              >
-                                <div className="flex items-center">
-                                  <span className="text-xl mr-3">{item.icon}</span>
-                                  <div>
-                                    <div className="font-manrope font-medium text-sm">{item.title}</div>
-                                    <div className="text-xs text-white/50">{item.desc}</div>
-                                  </div>
-                                </div>
-                              </Link>
-                            ))}
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-
-                  <Link
-                    href="/projeler"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="block px-6 py-4 text-white/90 hover:text-white bg-white/5 hover:bg-white/10 rounded-lg font-manrope text-lg transition-all"
-                  >
-                    Projeler
-                  </Link>
-
-                  <Link
-                    href="/hakkimizda"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="block px-6 py-4 text-white/90 hover:text-white bg-white/5 hover:bg-white/10 rounded-lg font-manrope text-lg transition-all"
-                  >
-                    Hakkımızda
-                  </Link>
-
-                  <Link
-                    href="/iletisim"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="block px-6 py-4 text-white/90 hover:text-white bg-white/5 hover:bg-white/10 rounded-lg font-manrope text-lg transition-all"
-                  >
-                    İletişim
-                  </Link>
+                              ))}
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </div>
+                    )
+                  ))}
                 </div>
 
                 {/* CTA Button */}
-                <Link href="/iletisim" onClick={() => setIsMobileMenuOpen(false)}>
-                  <button className="w-full mt-8 px-8 py-4 bg-gradient-to-r from-muted-gold to-bronze text-white font-manrope font-bold text-lg rounded-lg shadow-2xl shadow-muted-gold/30">
-                    Projeyi Başlat
-                  </button>
-                </Link>
+                {navData.ctaButton.enabled && (
+                  <Link href={navData.ctaButton.href} onClick={() => setIsMobileMenuOpen(false)}>
+                    <button className="w-full mt-8 px-8 py-4 bg-gradient-to-r from-muted-gold to-bronze text-white font-manrope font-bold text-lg rounded-lg shadow-2xl shadow-muted-gold/30">
+                      {navData.ctaButton.text}
+                    </button>
+                  </Link>
+                )}
               </div>
 
               {/* Quick Contact - Fixed Bottom */}

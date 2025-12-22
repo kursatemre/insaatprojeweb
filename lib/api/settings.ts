@@ -19,19 +19,55 @@ export async function getSiteSettings(): Promise<{ success: boolean; data?: Site
 // Site ayarlarını güncelle
 export async function updateSiteSettings(settings: Partial<SiteSettings>): Promise<{ success: boolean; data?: SiteSettings; error?: string }> {
   try {
-    const { data, error } = await supabase
+    // Önce mevcut kayıtları kontrol et
+    const { data: existing, error: selectError } = await supabase
+      .from('site_settings')
+      .select('*')
+      .limit(1);
+
+    if (selectError) {
+      return handleSupabaseError(selectError);
+    }
+
+    if (!existing || existing.length === 0) {
+      return { success: false, error: 'Site ayarları bulunamadı. Lütfen önce default ayarları oluşturun.' };
+    }
+
+    const firstRecord = existing[0];
+
+    // Güncelleme yap
+    console.log('🔄 Updating with settings:', settings);
+
+    const { error: updateError } = await supabase
       .from('site_settings')
       .update({
-        ...settings,
+        colors: settings.colors,
+        hero: settings.hero,
+        stats: settings.stats,
+        contact: settings.contact,
+        social: settings.social,
+        seo: settings.seo,
+        about: settings.about,
+        cta: settings.cta,
+        navigation: settings.navigation,
         updated_at: new Date().toISOString(),
       })
-      .eq('id', 1) // Tek satır olacağı için id=1
-      .select()
+      .eq('id', firstRecord.id);
+
+    console.log('📤 Update error:', updateError);
+
+    if (updateError) return handleSupabaseError(updateError);
+
+    // RLS politikası UPDATE sonucu döndürmüyor, o yüzden tekrar SELECT yapıyoruz
+    const { data: updatedData, error: selectAfterUpdateError } = await supabase
+      .from('site_settings')
+      .select('*')
+      .eq('id', firstRecord.id)
       .single();
 
-    if (error) return handleSupabaseError(error);
+    if (selectAfterUpdateError) return handleSupabaseError(selectAfterUpdateError);
 
-    return { success: true, data: data || undefined };
+    return { success: true, data: updatedData };
   } catch (error) {
     return handleSupabaseError(error);
   }
