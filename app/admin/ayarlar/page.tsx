@@ -393,40 +393,40 @@ export default function AdminAyarlarPage() {
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -50 }}
-          className={`fixed top-4 right-4 z-50 px-6 py-4 rounded-lg shadow-2xl ${
+          className={`fixed top-4 right-4 left-4 sm:left-auto z-50 px-4 sm:px-6 py-3 sm:py-4 rounded-lg shadow-2xl ${
             toast.type === 'success'
               ? 'bg-green-500 text-white'
               : 'bg-red-500 text-white'
           }`}
         >
-          <div className="flex items-center space-x-3">
-            <span className="text-2xl">{toast.type === 'success' ? '✅' : '❌'}</span>
-            <span className="font-manrope font-semibold">{toast.message}</span>
+          <div className="flex items-center space-x-2 sm:space-x-3">
+            <span className="text-xl sm:text-2xl">{toast.type === 'success' ? '✅' : '❌'}</span>
+            <span className="font-manrope font-semibold text-sm sm:text-base">{toast.message}</span>
           </div>
         </motion.div>
       )}
 
       <div className="flex-1 lg:ml-64">
         {/* Top Bar */}
-        <div className="bg-white border-b border-dark-carbon/10 p-6 lg:p-8">
-          <div className="flex items-center justify-between">
+        <div className="bg-white border-b border-dark-carbon/10 p-4 sm:p-6 lg:p-8">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-              <h1 className="font-playfair font-bold text-3xl text-night-blue">Site Ayarları</h1>
-              <p className="text-dark-carbon/60 font-manrope mt-1">
+              <h1 className="font-playfair font-bold text-2xl sm:text-3xl text-night-blue">Site Ayarları</h1>
+              <p className="text-dark-carbon/60 font-manrope mt-1 text-sm sm:text-base">
                 Site içeriğini ve temasını düzenleyin
               </p>
             </div>
-            <div className="flex space-x-3">
+            <div className="flex flex-col sm:flex-row gap-2 sm:space-x-3">
               <button
                 onClick={handleReset}
-                className="px-6 py-3 bg-red-500/10 text-red-600 font-manrope font-semibold rounded-lg hover:bg-red-500/20 transition-all border-2 border-red-500/20"
+                className="px-4 sm:px-6 py-2 sm:py-3 bg-red-500/10 text-red-600 font-manrope font-semibold rounded-lg hover:bg-red-500/20 transition-all border-2 border-red-500/20 text-sm sm:text-base"
               >
                 Sıfırla
               </button>
               <button
                 onClick={handleSave}
                 disabled={isSaving}
-                className="px-6 py-3 bg-gradient-to-r from-muted-gold to-bronze text-white font-manrope font-semibold rounded-lg hover:shadow-xl transition-all duration-300 disabled:opacity-50"
+                className="px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-muted-gold to-bronze text-white font-manrope font-semibold rounded-lg hover:shadow-xl transition-all duration-300 disabled:opacity-50 text-sm sm:text-base"
               >
                 {isSaving ? 'Kaydediliyor...' : 'Değişiklikleri Kaydet'}
               </button>
@@ -435,13 +435,13 @@ export default function AdminAyarlarPage() {
         </div>
 
         {/* Tabs */}
-        <div className="bg-white border-b border-dark-carbon/10 px-6 lg:px-8">
-          <div className="flex space-x-2 overflow-x-auto">
+        <div className="bg-white border-b border-dark-carbon/10 px-4 sm:px-6 lg:px-8">
+          <div className="flex space-x-1 sm:space-x-2 overflow-x-auto scrollbar-hide">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as any)}
-                className={`px-6 py-4 font-manrope font-semibold text-sm whitespace-nowrap transition-all border-b-2 ${
+                className={`px-3 sm:px-6 py-3 sm:py-4 font-manrope font-semibold text-xs sm:text-sm whitespace-nowrap transition-all border-b-2 ${
                   activeTab === tab.id
                     ? 'text-muted-gold border-muted-gold'
                     : 'text-dark-carbon/60 border-transparent hover:text-dark-carbon'
@@ -455,7 +455,7 @@ export default function AdminAyarlarPage() {
         </div>
 
         {/* Content */}
-        <div className="p-6 lg:p-8">
+        <div className="p-4 sm:p-6 lg:p-8">
           {/* Tema & Renkler Tab */}
           {activeTab === 'tema' && (
             <motion.div
