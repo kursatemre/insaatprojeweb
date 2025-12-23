@@ -3,12 +3,13 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function AdminSidebar() {
   const pathname = usePathname();
   const router = useRouter();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(false);
 
   const menuItems = [
     {
@@ -77,6 +78,16 @@ export default function AdminSidebar() {
     },
   ];
 
+  useEffect(() => {
+    const checkDesktop = () => {
+      setIsDesktop(window.innerWidth >= 1024);
+    };
+
+    checkDesktop();
+    window.addEventListener('resize', checkDesktop);
+    return () => window.removeEventListener('resize', checkDesktop);
+  }, []);
+
   const handleLogout = () => {
     localStorage.removeItem('adminToken');
     router.push('/admin/login');
@@ -87,19 +98,25 @@ export default function AdminSidebar() {
       {/* Mobile Menu Button */}
       <button
         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        className="lg:hidden fixed top-4 left-4 z-50 p-2 bg-night-blue text-white rounded-lg shadow-lg"
+        className="lg:hidden fixed top-4 left-4 z-50 p-3 bg-night-blue text-white rounded-lg shadow-xl hover:bg-night-blue/90 transition-colors"
       >
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-        </svg>
+        {isMobileMenuOpen ? (
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        ) : (
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        )}
       </button>
 
       {/* Sidebar */}
       <motion.aside
-        initial={{ x: -300 }}
-        animate={{ x: 0 }}
-        transition={{ duration: 0.3 }}
-        className={`fixed left-0 top-0 h-screen w-64 bg-gradient-to-b from-night-blue to-dark-carbon border-r border-muted-gold/20 z-40 transition-transform duration-300 ${
+        initial={false}
+        animate={{ x: isMobileMenuOpen || isDesktop ? 0 : -300 }}
+        transition={{ duration: 0.3, ease: 'easeInOut' }}
+        className={`fixed left-0 top-0 h-screen w-64 bg-gradient-to-b from-night-blue to-dark-carbon border-r border-muted-gold/20 z-40 overflow-y-auto lg:translate-x-0 ${
           isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         }`}
       >
