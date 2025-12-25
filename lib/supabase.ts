@@ -226,6 +226,21 @@ export interface SiteSettings {
     }>;
     copyright: string;
   };
+  faq?: {
+    hero: {
+      title: string;
+      description: string;
+    };
+    categories: Array<{
+      id: string;
+      name: string;
+      icon: 'help' | 'document' | 'support' | 'money';
+      questions: Array<{
+        question: string;
+        answer: string;
+      }>;
+    }>;
+  };
 }
 
 // Helper function - Error handling
