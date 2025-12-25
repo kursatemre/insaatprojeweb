@@ -2,109 +2,156 @@
 
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
+import { getSiteSettings } from '@/lib/api/settings';
 
 const ServicesOverview = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.2 });
   const [activeTab, setActiveTab] = useState<'proje' | 'danismanlik'>('proje');
+  const [servicesData, setServicesData] = useState<any>(null);
 
-  const projeServices = [
+  // Load services data from Supabase
+  useEffect(() => {
+    const loadServices = async () => {
+      const result = await getSiteSettings();
+      if (result.success && result.data?.services) {
+        setServicesData(result.data.services);
+      }
+    };
+    loadServices();
+  }, []);
+
+  // Default services (fallback)
+  const defaultProjeServices = [
     {
+      id: 'mimari',
       title: 'Mimari Projeler',
-      description: 'Estetik ve fonksiyonelliği birleştiren yaratıcı tasarımlar',
+      subtitle: 'Estetik ve fonksiyonelliği birleştiren yaratıcı tasarımlar',
       features: [
-        'Ön Fizibilite Çalışmaları',
-        'Vaziyet ve Mimari Projeler',
-        'Ruhsat ve Uygulama Projeleri',
-        '3D Görselleştirme ve Maket',
+        { title: 'Ön Fizibilite Çalışmaları', desc: '' },
+        { title: 'Vaziyet ve Mimari Projeler', desc: '' },
+        { title: 'Ruhsat ve Uygulama Projeleri', desc: '' },
+        { title: '3D Görselleştirme ve Maket', desc: '' },
       ],
-      icon: (
+    },
+    {
+      id: 'statik',
+      title: 'Statik Projeler',
+      subtitle: 'Güvenli ve dayanıklı yapılar için hassas hesaplamalar',
+      features: [
+        { title: 'Taşıyıcı Sistem Tasarımı', desc: '' },
+        { title: 'Deprem ve Rüzgar Analizleri', desc: '' },
+        { title: 'Zemin Etüdü ve Temel Tasarımı', desc: '' },
+        { title: 'Betonarme ve Çelik Yapı Hesapları', desc: '' },
+      ],
+    },
+    {
+      id: 'tesisat',
+      title: 'Tesisat Projeleri',
+      subtitle: 'Konforlu ve verimli altyapı sistemleri',
+      features: [
+        { title: 'Elektrik Tesisat Projeleri', desc: '' },
+        { title: 'Mekanik Tesisat (Isıtma/Soğutma)', desc: '' },
+        { title: 'Sıhhi Tesisat ve Yangın', desc: '' },
+        { title: 'Enerji Verimliliği Analizi', desc: '' },
+      ],
+    },
+  ];
+
+  const defaultDanismanlikServices = [
+    {
+      id: 'deprem',
+      title: 'Deprem Performans Analizi',
+      subtitle: 'Yapıların deprem güvenliğinin değerlendirilmesi',
+      features: [
+        { title: 'Mevcut Yapı Değerlendirmesi', desc: '' },
+        { title: 'Performans Hesapları (TBDY 2018)', desc: '' },
+        { title: 'Güçlendirme Önerileri', desc: '' },
+        { title: 'Raporlama ve Onay Süreçleri', desc: '' },
+      ],
+    },
+    {
+      id: 'kontrolluk',
+      title: 'Kontrollük Hizmetleri',
+      subtitle: 'İnşaat sürecinde teknik gözetim ve kalite kontrolü',
+      features: [
+        { title: 'Uygulama Kontrolü', desc: '' },
+        { title: 'Malzeme Kontrol Testleri', desc: '' },
+        { title: 'Hakedişlerin İncelenmesi', desc: '' },
+        { title: 'İş Güvenliği Denetimi', desc: '' },
+      ],
+    },
+    {
+      id: 'raporlama',
+      title: 'Teknik Raporlama',
+      subtitle: 'Profesyonel değerlendirme ve ekspertiz hizmetleri',
+      features: [
+        { title: 'Hasar Tespit Raporları', desc: '' },
+        { title: 'Keşif ve Mahal Listeleri', desc: '' },
+        { title: 'Enerji Kimlik Belgesi', desc: '' },
+        { title: 'Teknik Due Diligence', desc: '' },
+      ],
+    },
+  ];
+
+  // Helper function to get icon based on service id
+  const getIcon = (id: string) => {
+    const icons: { [key: string]: JSX.Element } = {
+      mimari: (
         <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
         </svg>
       ),
-    },
-    {
-      title: 'Statik Projeler',
-      description: 'Güvenli ve dayanıklı yapılar için hassas hesaplamalar',
-      features: [
-        'Taşıyıcı Sistem Tasarımı',
-        'Deprem ve Rüzgar Analizleri',
-        'Zemin Etüdü ve Temel Tasarımı',
-        'Betonarme ve Çelik Yapı Hesapları',
-      ],
-      icon: (
+      statik: (
         <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
         </svg>
       ),
-    },
-    {
-      title: 'Tesisat Projeleri',
-      description: 'Konforlu ve verimli altyapı sistemleri',
-      features: [
-        'Elektrik Tesisat Projeleri',
-        'Mekanik Tesisat (Isıtma/Soğutma)',
-        'Sıhhi Tesisat ve Yangın',
-        'Enerji Verimliliği Analizi',
-      ],
-      icon: (
+      tesisat: (
         <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
         </svg>
       ),
-    },
-  ];
-
-  const danismanlikServices = [
-    {
-      title: 'Deprem Performans Analizi',
-      description: 'Yapıların deprem güvenliğinin değerlendirilmesi',
-      features: [
-        'Mevcut Yapı Değerlendirmesi',
-        'Performans Hesapları (TBDY 2018)',
-        'Güçlendirme Önerileri',
-        'Raporlama ve Onay Süreçleri',
-      ],
-      icon: (
+      deprem: (
         <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
         </svg>
       ),
-    },
-    {
-      title: 'Kontrollük Hizmetleri',
-      description: 'İnşaat sürecinde teknik gözetim ve kalite kontrolü',
-      features: [
-        'Uygulama Kontrolü',
-        'Malzeme Kontrol Testleri',
-        'Hakedişlerin İncelenmesi',
-        'İş Güvenliği Denetimi',
-      ],
-      icon: (
+      kontrolluk: (
         <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
       ),
-    },
-    {
-      title: 'Teknik Raporlama',
-      description: 'Profesyonel değerlendirme ve ekspertiz hizmetleri',
-      features: [
-        'Hasar Tespit Raporları',
-        'Keşif ve Mahal Listeleri',
-        'Enerji Kimlik Belgesi',
-        'Teknik Due Diligence',
-      ],
-      icon: (
+      raporlama: (
         <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
         </svg>
       ),
-    },
-  ];
+    };
+    return icons[id] || icons['mimari'];
+  };
+
+  // Merge dynamic data with defaults and add icons
+  const projeServices = (servicesData?.proje?.items || defaultProjeServices).map((service: any) => ({
+    id: service.id,
+    title: service.title,
+    description: service.subtitle,
+    features: service.features.map((f: any) => f.title || f),
+    icon: getIcon(service.id),
+  }));
+
+  const danismanlikServices = (servicesData?.danismanlik?.items || defaultDanismanlikServices).map((service: any) => ({
+    id: service.id,
+    title: service.title,
+    description: service.subtitle,
+    features: service.features.map((f: any) => f.title || f),
+    icon: getIcon(service.id),
+  }));
+
+  const projeTabLabel = servicesData?.proje?.title || 'Proje Hizmetleri';
+  const danismanlikTabLabel = servicesData?.danismanlik?.title || 'Danışmanlık Hizmetleri';
 
   const activeServices = activeTab === 'proje' ? projeServices : danismanlikServices;
 
@@ -155,7 +202,7 @@ const ServicesOverview = () => {
                   : 'text-dark-carbon/60 hover:text-dark-carbon'
               }`}
             >
-              Proje Hizmetleri
+              {projeTabLabel}
             </button>
             <button
               onClick={() => setActiveTab('danismanlik')}
@@ -165,7 +212,7 @@ const ServicesOverview = () => {
                   : 'text-dark-carbon/60 hover:text-dark-carbon'
               }`}
             >
-              Danışmanlık Hizmetleri
+              {danismanlikTabLabel}
             </button>
           </div>
         </motion.div>
