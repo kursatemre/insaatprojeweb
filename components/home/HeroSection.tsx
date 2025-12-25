@@ -27,7 +27,22 @@ const HeroSection = () => {
     const loadHeroData = async () => {
       const result = await getSiteSettings();
       if (result.success && result.data?.hero) {
-        setHeroData(result.data.hero);
+        const hero = result.data.hero;
+        setHeroData({
+          title: hero.title,
+          subtitle: hero.subtitle,
+          tagline: hero.tagline,
+          leftCard: hero.leftCard || {
+            title: 'Hizmet Alımı\n& Proje',
+            description: 'Eksiksiz ve uygulanabilir teslimat. Mimari, Statik ve Tesisat projelerinde profesyonel çözümler.',
+            features: ['Mimari Projeler', 'Statik Hesaplamalar', 'Tesisat Projeleri'],
+          },
+          rightCard: hero.rightCard || {
+            title: 'Danışmanlık\n& Müşavirlik',
+            description: 'Veri odaklı ve uzmanlık merkezli rehberlik. Teknik analiz ve performans değerlendirmesi.',
+            features: ['Deprem Analizi', 'Kontrollük Hizmetleri', 'Teknik Raporlama'],
+          },
+        });
       }
     };
     loadHeroData();
