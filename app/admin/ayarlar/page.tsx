@@ -460,21 +460,6 @@ export default function AdminAyarlarPage() {
                 Site içeriğini ve temasını düzenleyin
               </p>
             </div>
-            <div className="flex flex-col sm:flex-row gap-2 sm:space-x-3">
-              <button
-                onClick={handleReset}
-                className="px-4 sm:px-6 py-2 sm:py-3 bg-red-500/10 text-red-600 font-manrope font-semibold rounded-lg hover:bg-red-500/20 transition-all border-2 border-red-500/20 text-sm sm:text-base"
-              >
-                Sıfırla
-              </button>
-              <button
-                onClick={handleSave}
-                disabled={isSaving}
-                className="px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-muted-gold to-bronze text-white font-manrope font-semibold rounded-lg hover:shadow-xl transition-all duration-300 disabled:opacity-50 text-sm sm:text-base"
-              >
-                {isSaving ? 'Kaydediliyor...' : 'Değişiklikleri Kaydet'}
-              </button>
-            </div>
           </div>
         </div>
 
@@ -2371,6 +2356,23 @@ export default function AdminAyarlarPage() {
               </div>
             </motion.div>
           )}
+        </div>
+
+        {/* Sticky Save Button */}
+        <div className="sticky bottom-6 z-10 flex justify-end gap-3 px-4 sm:px-6 lg:px-8">
+          <button
+            onClick={handleReset}
+            className="px-6 py-4 bg-red-500/10 text-red-600 font-manrope font-bold text-lg rounded-lg hover:bg-red-500/20 transition-all border-2 border-red-500/20 shadow-xl"
+          >
+            Sıfırla
+          </button>
+          <button
+            onClick={handleSave}
+            disabled={isSaving}
+            className="px-8 py-4 bg-gradient-to-r from-muted-gold to-bronze text-white font-manrope font-bold text-lg rounded-lg hover:shadow-2xl hover:shadow-muted-gold/50 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-xl"
+          >
+            {isSaving ? 'Kaydediliyor...' : 'Değişiklikleri Kaydet'}
+          </button>
         </div>
       </div>
     </div>
