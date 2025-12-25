@@ -1,7 +1,19 @@
 -- Migration: Add services to site_settings
 -- Description: Adds proje and danismanlik services sections for admin editing
 
--- Update site_settings to include services
+-- First, add the services column if it doesn't exist
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM information_schema.columns
+    WHERE table_name = 'site_settings'
+    AND column_name = 'services'
+  ) THEN
+    ALTER TABLE site_settings ADD COLUMN services JSONB;
+  END IF;
+END $$;
+
+-- Then, populate the services data
 DO $$
 DECLARE
   current_settings RECORD;
