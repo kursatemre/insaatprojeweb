@@ -14,44 +14,94 @@ const Footer = () => {
     twitter: 'https://twitter.com/ekipproje',
   });
 
+  const [footerData, setFooterData] = useState({
+    company: {
+      logoText: 'EP',
+      name: 'Ekip Proje',
+      subtitle: 'MİMARLIK & MÜHENDİSLİK',
+      description: 'Geleceğin yapılarını teknik rehberlik ve uzmanlığımızla inşa ediyoruz. EKAP uyumlu, kamu standartlarında projeler.',
+    },
+    sections: [
+      {
+        title: 'Hizmetler',
+        links: [
+          { name: 'Mimari Projeler', href: '/hizmetler#mimari' },
+          { name: 'Statik Projeler', href: '/hizmetler#statik' },
+          { name: 'Tesisat Projeleri', href: '/hizmetler#tesisat' },
+          { name: 'Danışmanlık', href: '/hizmetler#danismanlik' },
+        ],
+      },
+      {
+        title: 'Kurumsal',
+        links: [
+          { name: 'Hakkımızda', href: '/hakkimizda' },
+          { name: 'Projelerimiz', href: '/projeler' },
+          { name: 'Referanslar', href: '/hakkimizda#referanslar' },
+          { name: 'Kariyer', href: '/kariyer' },
+        ],
+      },
+      {
+        title: 'İletişim',
+        links: [
+          { name: 'Bize Ulaşın', href: '/iletisim' },
+          { name: 'Teklif Al', href: '/iletisim#teklif' },
+          { name: 'S.S.S.', href: '/sss' },
+        ],
+      },
+    ],
+    certifications: [
+      { label: 'EKAP Uyumlu', icon: 'star' as const },
+      { label: 'Kamu Onaylı', icon: 'badge' as const },
+      { label: 'ISO 9001', icon: 'check' as const },
+    ],
+    legalLinks: [
+      { name: 'Gizlilik Politikası', href: '/gizlilik' },
+      { name: 'Kullanım Koşulları', href: '/kullanim-kosullari' },
+      { name: 'KVKK', href: '/kvkk' },
+    ],
+    copyright: 'Ekip Proje Mimarlık ve Mühendislik. Tüm hakları saklıdır.',
+  });
+
   useEffect(() => {
-    const loadSocialLinks = async () => {
+    const loadFooterData = async () => {
       const result = await getSiteSettings();
-      if (result.success && result.data?.social) {
-        setSocialLinks(result.data.social);
+      if (result.success && result.data) {
+        if (result.data.social) {
+          setSocialLinks(result.data.social);
+        }
+        if (result.data.footer) {
+          setFooterData(result.data.footer);
+        }
       }
     };
-    loadSocialLinks();
+    loadFooterData();
   }, []);
 
-  const footerSections = [
-    {
-      title: 'Hizmetler',
-      links: [
-        { name: 'Mimari Projeler', href: '/hizmetler#mimari' },
-        { name: 'Statik Projeler', href: '/hizmetler#statik' },
-        { name: 'Tesisat Projeleri', href: '/hizmetler#tesisat' },
-        { name: 'Danışmanlık', href: '/hizmetler#danismanlik' },
-      ],
-    },
-    {
-      title: 'Kurumsal',
-      links: [
-        { name: 'Hakkımızda', href: '/hakkimizda' },
-        { name: 'Projelerimiz', href: '/projeler' },
-        { name: 'Referanslar', href: '/hakkimizda#referanslar' },
-        { name: 'Kariyer', href: '/kariyer' },
-      ],
-    },
-    {
-      title: 'İletişim',
-      links: [
-        { name: 'Bize Ulaşın', href: '/iletisim' },
-        { name: 'Teklif Al', href: '/iletisim#teklif' },
-        { name: 'S.S.S.', href: '/sss' },
-      ],
-    },
-  ];
+  // Helper function to render certification icons
+  const getCertificationIcon = (iconType: string) => {
+    switch (iconType) {
+      case 'star':
+        return (
+          <svg className="w-5 h-5 text-muted-gold" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+          </svg>
+        );
+      case 'badge':
+        return (
+          <svg className="w-5 h-5 text-muted-gold" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+          </svg>
+        );
+      case 'check':
+        return (
+          <svg className="w-5 h-5 text-muted-gold" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+          </svg>
+        );
+      default:
+        return null;
+    }
+  };
 
   return (
     <footer className="bg-gradient-to-b from-night-blue to-dark-carbon text-white/80 relative overflow-hidden">
@@ -65,18 +115,17 @@ const Footer = () => {
           <div className="lg:col-span-2">
             <div className="flex items-center space-x-3 mb-6">
               <div className="w-12 h-12 bg-gradient-to-br from-muted-gold to-bronze rounded-sm flex items-center justify-center">
-                <span className="text-white font-cinzel font-bold text-xl">EP</span>
+                <span className="text-white font-cinzel font-bold text-xl">{footerData.company.logoText}</span>
               </div>
               <div>
-                <h3 className="text-white font-playfair font-bold text-xl">Ekip Proje</h3>
+                <h3 className="text-white font-playfair font-bold text-xl">{footerData.company.name}</h3>
                 <p className="text-muted-gold text-xs font-roboto-mono tracking-widest">
-                  MİMARLIK & MÜHENDİSLİK
+                  {footerData.company.subtitle}
                 </p>
               </div>
             </div>
             <p className="text-white/60 font-manrope text-sm leading-relaxed mb-6">
-              Geleceğin yapılarını teknik rehberlik ve uzmanlığımızla inşa ediyoruz.
-              EKAP uyumlu, kamu standartlarında projeler.
+              {footerData.company.description}
             </p>
             <div className="flex space-x-4">
               {[
@@ -102,13 +151,13 @@ const Footer = () => {
           </div>
 
           {/* Footer Sections */}
-          {footerSections.map((section) => (
+          {footerData.sections.map((section: any) => (
             <div key={section.title}>
               <h4 className="text-white font-playfair font-semibold text-lg mb-4 border-b border-muted-gold/20 pb-2">
                 {section.title}
               </h4>
               <ul className="space-y-2">
-                {section.links.map((link) => (
+                {section.links.map((link: any) => (
                   <li key={link.name}>
                     <Link
                       href={link.href}
@@ -127,42 +176,30 @@ const Footer = () => {
         {/* Certifications */}
         <div className="border-t border-white/10 pt-8 mb-8">
           <div className="flex flex-wrap items-center justify-center gap-6">
-            <div className="flex items-center space-x-2 px-4 py-2 bg-white/5 rounded border border-muted-gold/20">
-              <svg className="w-5 h-5 text-muted-gold" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-              </svg>
-              <span className="text-white/70 font-roboto-mono text-xs">EKAP Uyumlu</span>
-            </div>
-            <div className="flex items-center space-x-2 px-4 py-2 bg-white/5 rounded border border-muted-gold/20">
-              <svg className="w-5 h-5 text-muted-gold" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-              </svg>
-              <span className="text-white/70 font-roboto-mono text-xs">Kamu Onaylı</span>
-            </div>
-            <div className="flex items-center space-x-2 px-4 py-2 bg-white/5 rounded border border-muted-gold/20">
-              <svg className="w-5 h-5 text-muted-gold" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-              </svg>
-              <span className="text-white/70 font-roboto-mono text-xs">ISO 9001</span>
-            </div>
+            {footerData.certifications.map((cert: any, index: number) => (
+              <div key={index} className="flex items-center space-x-2 px-4 py-2 bg-white/5 rounded border border-muted-gold/20">
+                {getCertificationIcon(cert.icon)}
+                <span className="text-white/70 font-roboto-mono text-xs">{cert.label}</span>
+              </div>
+            ))}
           </div>
         </div>
 
         {/* Bottom Section */}
         <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-white/50 font-roboto-mono text-xs mb-4 md:mb-0">
-            © {currentYear} Ekip Proje Mimarlık ve Mühendislik. Tüm hakları saklıdır.
+            © {currentYear} {footerData.copyright}
           </p>
           <div className="flex space-x-6">
-            <Link href="/gizlilik" className="text-white/50 hover:text-muted-gold font-manrope text-xs transition-colors">
-              Gizlilik Politikası
-            </Link>
-            <Link href="/kullanim-kosullari" className="text-white/50 hover:text-muted-gold font-manrope text-xs transition-colors">
-              Kullanım Koşulları
-            </Link>
-            <Link href="/kvkk" className="text-white/50 hover:text-muted-gold font-manrope text-xs transition-colors">
-              KVKK
-            </Link>
+            {footerData.legalLinks.map((link: any) => (
+              <Link
+                key={link.name}
+                href={link.href}
+                className="text-white/50 hover:text-muted-gold font-manrope text-xs transition-colors"
+              >
+                {link.name}
+              </Link>
+            ))}
           </div>
         </div>
       </div>

@@ -188,6 +188,30 @@ export interface SiteSettings {
       }>;
     };
   };
+  footer?: {
+    company: {
+      logoText: string;
+      name: string;
+      subtitle: string;
+      description: string;
+    };
+    sections: Array<{
+      title: string;
+      links: Array<{
+        name: string;
+        href: string;
+      }>;
+    }>;
+    certifications: Array<{
+      label: string;
+      icon: 'star' | 'badge' | 'check';
+    }>;
+    legalLinks: Array<{
+      name: string;
+      href: string;
+    }>;
+    copyright: string;
+  };
 }
 
 // Helper function - Error handling
