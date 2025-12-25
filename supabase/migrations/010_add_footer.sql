@@ -2,7 +2,7 @@
 -- Description: Adds footer JSONB column with company info, navigation sections, certifications, and legal links
 
 -- First, add the footer column if it doesn't exist
-DO $
+DO $$
 BEGIN
   IF NOT EXISTS (
     SELECT 1 FROM information_schema.columns
@@ -11,10 +11,10 @@ BEGIN
   ) THEN
     ALTER TABLE site_settings ADD COLUMN footer JSONB;
   END IF;
-END $;
+END $$;
 
 -- Then, populate with default footer data
-DO $
+DO $$
 DECLARE
   current_settings RECORD;
 BEGIN
@@ -124,4 +124,4 @@ BEGIN
     )
     WHERE id = 1;
   END IF;
-END $;
+END $$;
