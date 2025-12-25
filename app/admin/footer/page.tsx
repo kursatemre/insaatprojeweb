@@ -13,6 +13,7 @@ export default function AdminFooterPage() {
 
   // Company Info
   const [logoText, setLogoText] = useState('EP');
+  const [logoUrl, setLogoUrl] = useState('');
   const [companyName, setCompanyName] = useState('Ekip Proje');
   const [companySubtitle, setCompanySubtitle] = useState('MİMARLIK & MÜHENDİSLİK');
   const [companyDescription, setCompanyDescription] = useState('');
@@ -84,6 +85,7 @@ export default function AdminFooterPage() {
 
       // Company info
       setLogoText(footer.company.logoText);
+      setLogoUrl(footer.company.logoUrl || '');
       setCompanyName(footer.company.name);
       setCompanySubtitle(footer.company.subtitle);
       setCompanyDescription(footer.company.description);
@@ -109,6 +111,7 @@ export default function AdminFooterPage() {
     const footerData = {
       company: {
         logoText,
+        logoUrl,
         name: companyName,
         subtitle: companySubtitle,
         description: companyDescription,
@@ -228,10 +231,42 @@ export default function AdminFooterPage() {
         <div className="bg-white rounded-lg shadow-sm border border-dark-carbon/10 p-6 mb-6">
           <h2 className="text-xl font-playfair font-semibold text-night-blue mb-4">Şirket Bilgileri</h2>
 
+          <div className="mb-4">
+            <label className="block text-sm font-manrope font-medium text-dark-carbon mb-2">
+              Logo Görseli (URL)
+            </label>
+            <input
+              type="url"
+              value={logoUrl}
+              onChange={(e) => setLogoUrl(e.target.value)}
+              className="w-full px-4 py-2 border border-dark-carbon/20 rounded-lg font-manrope text-dark-carbon focus:outline-none focus:ring-2 focus:ring-muted-gold"
+              placeholder="https://example.com/logo.png"
+            />
+            <p className="mt-1 text-xs text-dark-carbon/60 font-manrope">
+              Logo görseli URL'si girerseniz, logo metni yerine görsel kullanılacaktır.
+            </p>
+            {logoUrl && (
+              <div className="mt-3 p-3 bg-warm-concrete/50 rounded-lg border border-dark-carbon/10">
+                <p className="text-xs text-dark-carbon/70 font-manrope mb-2">Önizleme:</p>
+                <div className="w-12 h-12 rounded-sm overflow-hidden flex items-center justify-center bg-white/50">
+                  <img
+                    src={logoUrl}
+                    alt="Logo preview"
+                    className="w-full h-full object-contain"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).style.display = 'none';
+                      (e.target as HTMLImageElement).parentElement!.innerHTML = '<span class="text-xs text-red-500">Görsel yüklenemedi</span>';
+                    }}
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <div>
               <label className="block text-sm font-manrope font-medium text-dark-carbon mb-2">
-                Logo Metni
+                Logo Metni (Görsel yoksa kullanılır)
               </label>
               <input
                 type="text"

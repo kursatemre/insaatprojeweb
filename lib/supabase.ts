@@ -191,6 +191,7 @@ export interface SiteSettings {
   footer?: {
     company: {
       logoText: string;
+      logoUrl?: string;
       name: string;
       subtitle: string;
       description: string;

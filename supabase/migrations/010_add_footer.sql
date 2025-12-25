@@ -27,6 +27,7 @@ BEGIN
       jsonb_build_object(
         'company', jsonb_build_object(
           'logoText', 'EP',
+          'logoUrl', '',
           'name', 'Ekip Proje',
           'subtitle', 'MİMARLIK & MÜHENDİSLİK',
           'description', 'Geleceğin yapılarını teknik rehberlik ve uzmanlığımızla inşa ediyoruz. EKAP uyumlu, kamu standartlarında projeler.'
@@ -78,6 +79,7 @@ BEGIN
     SET footer = jsonb_build_object(
       'company', jsonb_build_object(
         'logoText', 'EP',
+        'logoUrl', '',
         'name', 'Ekip Proje',
         'subtitle', 'MİMARLIK & MÜHENDİSLİK',
         'description', 'Geleceğin yapılarını teknik rehberlik ve uzmanlığımızla inşa ediyoruz. EKAP uyumlu, kamu standartlarında projeler.'

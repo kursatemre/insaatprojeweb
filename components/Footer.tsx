@@ -17,6 +17,7 @@ const Footer = () => {
   const [footerData, setFooterData] = useState({
     company: {
       logoText: 'EP',
+      logoUrl: '',
       name: 'Ekip Proje',
       subtitle: 'MİMARLIK & MÜHENDİSLİK',
       description: 'Geleceğin yapılarını teknik rehberlik ve uzmanlığımızla inşa ediyoruz. EKAP uyumlu, kamu standartlarında projeler.',
@@ -70,7 +71,13 @@ const Footer = () => {
           setSocialLinks(result.data.social);
         }
         if (result.data.footer) {
-          setFooterData(result.data.footer);
+          setFooterData({
+            ...result.data.footer,
+            company: {
+              ...result.data.footer.company,
+              logoUrl: result.data.footer.company.logoUrl || '',
+            },
+          });
         }
       }
     };
@@ -114,9 +121,19 @@ const Footer = () => {
           {/* Company Info */}
           <div className="lg:col-span-2">
             <div className="flex items-center space-x-3 mb-6">
-              <div className="w-12 h-12 bg-gradient-to-br from-muted-gold to-bronze rounded-sm flex items-center justify-center">
-                <span className="text-white font-cinzel font-bold text-xl">{footerData.company.logoText}</span>
-              </div>
+              {footerData.company.logoUrl ? (
+                <div className="w-12 h-12 rounded-sm overflow-hidden flex items-center justify-center bg-white/5">
+                  <img
+                    src={footerData.company.logoUrl}
+                    alt={footerData.company.name}
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+              ) : (
+                <div className="w-12 h-12 bg-gradient-to-br from-muted-gold to-bronze rounded-sm flex items-center justify-center">
+                  <span className="text-white font-cinzel font-bold text-xl">{footerData.company.logoText}</span>
+                </div>
+              )}
               <div>
                 <h3 className="text-white font-playfair font-bold text-xl">{footerData.company.name}</h3>
                 <p className="text-muted-gold text-xs font-roboto-mono tracking-widest">
