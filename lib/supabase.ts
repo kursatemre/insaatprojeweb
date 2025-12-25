@@ -101,6 +101,19 @@ export interface SiteSettings {
     description: string;
     mission: string;
     vision: string;
+    values?: Array<{
+      title: string;
+      description: string;
+      icon: 'shield' | 'lock' | 'lightbulb' | 'eye';
+    }>;
+    team?: Array<{
+      name: string;
+      role: string;
+      credentials: string;
+      experience: string;
+      projects: string;
+    }>;
+    certifications?: string[];
   };
   cta?: {
     title: string;

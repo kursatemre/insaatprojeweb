@@ -11,120 +11,22 @@ export default function HakkimizdaPage() {
   const isMissionInView = useInView(missionRef, { once: true, amount: 0.3 });
   const isTeamInView = useInView(teamRef, { once: true, amount: 0.2 });
 
-  const [aboutData, setAboutData] = useState({
-    title: '15 Yıllık Deneyim',
-    description: "Türkiye'nin dört bir yanında 320+ başarılı proje ile mühendislik sektörünün güvenilir ortağıyız",
-    mission: 'Mühendislik ve mimarlık alanında en yüksek kalite standartlarında hizmet sunarak, müşterilerimizin hayallerini gerçeğe dönüştürmek. Her projede güvenlik, sürdürülebilirlik ve estetik mükemmelliği sağlamak.',
-    vision: "Türkiye'de mühendislik ve danışmanlık sektörünün lider kuruluşlarından biri olmak. Teknolojik yenilikleri ve sürdürülebilir çözümleri kullanarak sektörde öncü rol oynamak.",
-  });
-
-  useEffect(() => {
-    const loadAboutData = async () => {
-      const result = await getSiteSettings();
-      if (result.success && result.data?.about) {
-        setAboutData(result.data.about);
-      }
-    };
-    loadAboutData();
-  }, []);
-
-  const values = [
-    {
-      title: 'Teknik Mükemmellik',
-      description: 'Her projede en yüksek mühendislik standartlarını koruyoruz',
-      icon: (
-        <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={1.5}
-            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-          />
-        </svg>
-      ),
-    },
-    {
-      title: 'Güvenilirlik',
-      description: 'Taahhütlerimizi zamanında ve eksiksiz yerine getiriyoruz',
-      icon: (
-        <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={1.5}
-            d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-          />
-        </svg>
-      ),
-    },
-    {
-      title: 'İnovasyon',
-      description: 'Sürekli gelişen teknolojileri projelerimize entegre ediyoruz',
-      icon: (
-        <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={1.5}
-            d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
-          />
-        </svg>
-      ),
-    },
-    {
-      title: 'Şeffaflık',
-      description: 'Müşterilerimizle açık ve net iletişim önceliğimizdir',
-      icon: (
-        <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={1.5}
-            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-          />
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={1.5}
-            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-          />
-        </svg>
-      ),
-    },
+  // Default fallback values
+  const defaultValues = [
+    { title: 'Teknik Mükemmellik', description: 'Her projede en yüksek mühendislik standartlarını koruyoruz', icon: 'shield' as const },
+    { title: 'Güvenilirlik', description: 'Taahhütlerimizi zamanında ve eksiksiz yerine getiriyoruz', icon: 'lock' as const },
+    { title: 'İnovasyon', description: 'Sürekli gelişen teknolojileri projelerimize entegre ediyoruz', icon: 'lightbulb' as const },
+    { title: 'Şeffaflık', description: 'Müşterilerimizle açık ve net iletişim önceliğimizdir', icon: 'eye' as const },
   ];
 
-  const team = [
-    {
-      name: 'Mehmet Kaya',
-      role: 'Kurucu Ortak / Mimar',
-      credentials: 'YMM, MSc Mimarlık',
-      experience: '18 yıl',
-      projects: '150+',
-    },
-    {
-      name: 'Ayşe Demir',
-      role: 'Ortak / İnşaat Mühendisi',
-      credentials: 'İnşaat Müh., Statik Uzmanı',
-      experience: '15 yıl',
-      projects: '120+',
-    },
-    {
-      name: 'Ali Yılmaz',
-      role: 'Proje Koordinatörü / Makine Mühendisi',
-      credentials: 'Makine Müh., Enerji Uzmanı',
-      experience: '12 yıl',
-      projects: '90+',
-    },
-    {
-      name: 'Zeynep Arslan',
-      role: 'Elektrik Proje Şefi',
-      credentials: 'Elektrik-Elektronik Müh.',
-      experience: '10 yıl',
-      projects: '85+',
-    },
+  const defaultTeam = [
+    { name: 'Mehmet Kaya', role: 'Kurucu Ortak / Mimar', credentials: 'YMM, MSc Mimarlık', experience: '18 yıl', projects: '150+' },
+    { name: 'Ayşe Demir', role: 'Ortak / İnşaat Mühendisi', credentials: 'İnşaat Müh., Statik Uzmanı', experience: '15 yıl', projects: '120+' },
+    { name: 'Ali Yılmaz', role: 'Proje Koordinatörü / Makine Mühendisi', credentials: 'Makine Müh., Enerji Uzmanı', experience: '12 yıl', projects: '90+' },
+    { name: 'Zeynep Arslan', role: 'Elektrik Proje Şefi', credentials: 'Elektrik-Elektronik Müh.', experience: '10 yıl', projects: '85+' },
   ];
 
-  const certifications = [
+  const defaultCertifications = [
     'EKAP Kayıtlı Firma',
     'Çevre ve Şehircilik Bakanlığı Yeterlilik',
     'ISO 9001 Kalite Yönetim Sistemi',
@@ -132,6 +34,59 @@ export default function HakkimizdaPage() {
     'Mimarlar Odası Üyelik',
     'Makine Mühendisleri Odası Üyelik',
   ];
+
+  const [aboutData, setAboutData] = useState({
+    title: '15 Yıllık Deneyim',
+    description: "Türkiye'nin dört bir yanında 320+ başarılı proje ile mühendislik sektörünün güvenilir ortağıyız",
+    mission: 'Mühendislik ve mimarlık alanında en yüksek kalite standartlarında hizmet sunarak, müşterilerimizin hayallerini gerçeğe dönüştürmek. Her projede güvenlik, sürdürülebilirlik ve estetik mükemmelliği sağlamak.',
+    vision: "Türkiye'de mühendislik ve danışmanlık sektörünün lider kuruluşlarından biri olmak. Teknolojik yenilikleri ve sürdürülebilir çözümleri kullanarak sektörde öncü rol oynamak.",
+    values: defaultValues,
+    team: defaultTeam,
+    certifications: defaultCertifications,
+  });
+
+  useEffect(() => {
+    const loadAboutData = async () => {
+      const result = await getSiteSettings();
+      if (result.success && result.data?.about) {
+        setAboutData({
+          ...result.data.about,
+          values: result.data.about.values || defaultValues,
+          team: result.data.about.team || defaultTeam,
+          certifications: result.data.about.certifications || defaultCertifications,
+        });
+      }
+    };
+    loadAboutData();
+  }, []);
+
+  // Helper function to get icon component based on icon type
+  const getValueIcon = (iconType: string) => {
+    const icons: { [key: string]: JSX.Element } = {
+      shield: (
+        <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+        </svg>
+      ),
+      lock: (
+        <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+        </svg>
+      ),
+      lightbulb: (
+        <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+        </svg>
+      ),
+      eye: (
+        <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+        </svg>
+      ),
+    };
+    return icons[iconType] || icons['shield'];
+  };
 
   return (
     <div className="pt-32 md:pt-28">
@@ -239,7 +194,7 @@ export default function HakkimizdaPage() {
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {values.map((value, index) => (
+            {aboutData.values.map((value: any, index: number) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 30 }}
@@ -249,7 +204,7 @@ export default function HakkimizdaPage() {
                 className="bg-white rounded-xl border-2 border-dark-carbon/10 hover:border-muted-gold/50 p-8 transition-all duration-300 group shadow-lg hover:shadow-2xl"
               >
                 <div className="text-muted-gold group-hover:text-bronze transition-colors mb-6">
-                  {value.icon}
+                  {getValueIcon(value.icon)}
                 </div>
                 <h3 className="font-playfair font-bold text-xl text-night-blue mb-3 group-hover:text-muted-gold transition-colors">
                   {value.title}
@@ -282,7 +237,7 @@ export default function HakkimizdaPage() {
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {team.map((member, index) => (
+            {aboutData.team.map((member: any, index: number) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 30 }}
@@ -294,7 +249,7 @@ export default function HakkimizdaPage() {
                 <div className="h-48 bg-gradient-to-br from-night-blue to-dark-carbon flex items-center justify-center">
                   <div className="w-24 h-24 bg-muted-gold/20 rounded-full flex items-center justify-center border-2 border-muted-gold/50">
                     <span className="text-muted-gold font-playfair font-bold text-3xl">
-                      {member.name.split(' ').map((n) => n[0]).join('')}
+                      {member.name.split(' ').map((n: string) => n[0]).join('')}
                     </span>
                   </div>
                 </div>
@@ -350,7 +305,7 @@ export default function HakkimizdaPage() {
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {certifications.map((cert, index) => (
+            {aboutData.certifications.map((cert: string, index: number) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, scale: 0.9 }}
