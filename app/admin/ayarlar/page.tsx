@@ -368,6 +368,16 @@ export default function AdminAyarlarPage() {
           title: 'Ekip Proje',
           subtitle: 'MİMARLIK & MÜHENDİSLİK',
           tagline: 'Sadece proje çizmiyoruz; geleceğin yapılarını teknik rehberlik ve uzmanlığımızla inşa ediyoruz.',
+          leftCard: {
+            title: 'Hizmet Alımı\n& Proje',
+            description: 'Eksiksiz ve uygulanabilir teslimat. Mimari, Statik ve Tesisat projelerinde profesyonel çözümler.',
+            features: ['Mimari Projeler', 'Statik Hesaplamalar', 'Tesisat Projeleri'],
+          },
+          rightCard: {
+            title: 'Danışmanlık\n& Müşavirlik',
+            description: 'Veri odaklı ve uzmanlık merkezli rehberlik. Teknik analiz ve performans değerlendirmesi.',
+            features: ['Deprem Analizi', 'Kontrollük Hizmetleri', 'Teknik Raporlama'],
+          },
         },
         stats: {
           totalProjects: '320+',
