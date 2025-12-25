@@ -256,7 +256,7 @@ const ServicesOverview = () => {
 
                   {/* Features */}
                   <ul className="space-y-2 mb-6">
-                    {service.features.map((feature, idx) => (
+                    {service.features.map((feature: any, idx: number) => (
                       <li key={idx} className="flex items-start text-dark-carbon/70 font-manrope text-sm">
                         <span className="text-muted-gold mr-2 mt-1">▸</span>
                         <span>{feature}</span>
