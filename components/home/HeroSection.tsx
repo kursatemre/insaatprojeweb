@@ -11,6 +11,16 @@ const HeroSection = () => {
     title: 'Ekip Proje',
     subtitle: 'MİMARLIK & MÜHENDİSLİK',
     tagline: 'Sadece proje çizmiyoruz; geleceğin yapılarını teknik rehberlik ve uzmanlığımızla inşa ediyoruz.',
+    leftCard: {
+      title: 'Hizmet Alımı\n& Proje',
+      description: 'Eksiksiz ve uygulanabilir teslimat. Mimari, Statik ve Tesisat projelerinde profesyonel çözümler.',
+      features: ['Mimari Projeler', 'Statik Hesaplamalar', 'Tesisat Projeleri'],
+    },
+    rightCard: {
+      title: 'Danışmanlık\n& Müşavirlik',
+      description: 'Veri odaklı ve uzmanlık merkezli rehberlik. Teknik analiz ve performans değerlendirmesi.',
+      features: ['Deprem Analizi', 'Kontrollük Hizmetleri', 'Teknik Raporlama'],
+    },
   });
 
   useEffect(() => {
@@ -90,26 +100,20 @@ const HeroSection = () => {
                         01
                       </span>
                     </div>
-                    <h2 className="font-playfair font-bold text-3xl md:text-4xl text-white mb-4">
-                      Hizmet Alımı
-                      <br />& Proje
+                    <h2 className="font-playfair font-bold text-3xl md:text-4xl text-white mb-4 whitespace-pre-line">
+                      {heroData.leftCard.title}
                     </h2>
                     <p className="text-white/70 font-manrope text-base leading-relaxed mb-6">
-                      Eksiksiz ve uygulanabilir teslimat. Mimari, Statik ve Tesisat projelerinde
-                      profesyonel çözümler.
+                      {heroData.leftCard.description}
                     </p>
                   </div>
 
                   <div className="space-y-2">
-                    <div className="flex items-center text-white/60 font-roboto-mono text-sm">
-                      <span className="text-muted-gold mr-2">▸</span> Mimari Projeler
-                    </div>
-                    <div className="flex items-center text-white/60 font-roboto-mono text-sm">
-                      <span className="text-muted-gold mr-2">▸</span> Statik Hesaplamalar
-                    </div>
-                    <div className="flex items-center text-white/60 font-roboto-mono text-sm">
-                      <span className="text-muted-gold mr-2">▸</span> Tesisat Projeleri
-                    </div>
+                    {heroData.leftCard.features.map((feature, index) => (
+                      <div key={index} className="flex items-center text-white/60 font-roboto-mono text-sm">
+                        <span className="text-muted-gold mr-2">▸</span> {feature}
+                      </div>
+                    ))}
                   </div>
 
                   <motion.div
@@ -176,26 +180,20 @@ const HeroSection = () => {
                         02
                       </span>
                     </div>
-                    <h2 className="font-playfair font-bold text-3xl md:text-4xl text-white mb-4">
-                      Danışmanlık
-                      <br />& Müşavirlik
+                    <h2 className="font-playfair font-bold text-3xl md:text-4xl text-white mb-4 whitespace-pre-line">
+                      {heroData.rightCard.title}
                     </h2>
                     <p className="text-white/70 font-manrope text-base leading-relaxed mb-6">
-                      Veri odaklı ve uzmanlık merkezli rehberlik. Teknik analiz ve performans
-                      değerlendirmesi.
+                      {heroData.rightCard.description}
                     </p>
                   </div>
 
                   <div className="space-y-2">
-                    <div className="flex items-center text-white/60 font-roboto-mono text-sm">
-                      <span className="text-muted-gold mr-2">▸</span> Deprem Analizi
-                    </div>
-                    <div className="flex items-center text-white/60 font-roboto-mono text-sm">
-                      <span className="text-muted-gold mr-2">▸</span> Kontrollük Hizmetleri
-                    </div>
-                    <div className="flex items-center text-white/60 font-roboto-mono text-sm">
-                      <span className="text-muted-gold mr-2">▸</span> Teknik Raporlama
-                    </div>
+                    {heroData.rightCard.features.map((feature, index) => (
+                      <div key={index} className="flex items-center text-white/60 font-roboto-mono text-sm">
+                        <span className="text-muted-gold mr-2">▸</span> {feature}
+                      </div>
+                    ))}
                   </div>
 
                   <motion.div

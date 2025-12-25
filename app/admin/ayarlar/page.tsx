@@ -19,6 +19,16 @@ interface SiteSettings {
     title: string;
     subtitle: string;
     tagline: string;
+    leftCard: {
+      title: string;
+      description: string;
+      features: string[];
+    };
+    rightCard: {
+      title: string;
+      description: string;
+      features: string[];
+    };
   };
   // İstatistikler
   stats: {
@@ -120,6 +130,16 @@ export default function AdminAyarlarPage() {
       subtitle: 'MİMARLIK & MÜHENDİSLİK',
       tagline:
         'Sadece proje çizmiyoruz; geleceğin yapılarını teknik rehberlik ve uzmanlığımızla inşa ediyoruz.',
+      leftCard: {
+        title: 'Hizmet Alımı\n& Proje',
+        description: 'Eksiksiz ve uygulanabilir teslimat. Mimari, Statik ve Tesisat projelerinde profesyonel çözümler.',
+        features: ['Mimari Projeler', 'Statik Hesaplamalar', 'Tesisat Projeleri'],
+      },
+      rightCard: {
+        title: 'Danışmanlık\n& Müşavirlik',
+        description: 'Veri odaklı ve uzmanlık merkezli rehberlik. Teknik analiz ve performans değerlendirmesi.',
+        features: ['Deprem Analizi', 'Kontrollük Hizmetleri', 'Teknik Raporlama'],
+      },
     },
     stats: {
       totalProjects: '320+',
@@ -715,6 +735,165 @@ export default function AdminAyarlarPage() {
                       className="w-full px-4 py-3 border-2 border-dark-carbon/20 rounded-lg font-manrope"
                       placeholder="Sadece proje çizmiyoruz..."
                     />
+                  </div>
+                </div>
+              </div>
+
+              {/* Hero Cards Section */}
+              <div className="bg-white rounded-xl border-2 border-dark-carbon/10 p-8">
+                <h2 className="font-playfair font-bold text-2xl text-night-blue mb-6">
+                  Hero Kartları
+                </h2>
+
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  {/* Sol Kart */}
+                  <div className="bg-gradient-to-br from-night-blue/5 to-muted-gold/5 p-6 rounded-xl border-2 border-muted-gold/20">
+                    <h3 className="font-playfair font-bold text-lg text-night-blue mb-4">
+                      Sol Kart (Hizmet Alımı)
+                    </h3>
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block font-manrope font-semibold text-dark-carbon mb-2">
+                          Başlık
+                        </label>
+                        <textarea
+                          value={settings.hero.leftCard.title}
+                          onChange={(e) =>
+                            setSettings({
+                              ...settings,
+                              hero: {
+                                ...settings.hero,
+                                leftCard: { ...settings.hero.leftCard, title: e.target.value },
+                              },
+                            })
+                          }
+                          rows={2}
+                          className="w-full px-4 py-3 border-2 border-dark-carbon/20 rounded-lg font-playfair"
+                          placeholder="Hizmet Alımı & Proje"
+                        />
+                        <p className="text-xs text-dark-carbon/50 mt-1">
+                          İpucu: Alt satıra geçmek için \n kullanın
+                        </p>
+                      </div>
+                      <div>
+                        <label className="block font-manrope font-semibold text-dark-carbon mb-2">
+                          Açıklama
+                        </label>
+                        <textarea
+                          value={settings.hero.leftCard.description}
+                          onChange={(e) =>
+                            setSettings({
+                              ...settings,
+                              hero: {
+                                ...settings.hero,
+                                leftCard: { ...settings.hero.leftCard, description: e.target.value },
+                              },
+                            })
+                          }
+                          rows={3}
+                          className="w-full px-4 py-3 border-2 border-dark-carbon/20 rounded-lg font-manrope"
+                          placeholder="Eksiksiz ve uygulanabilir teslimat..."
+                        />
+                      </div>
+                      <div>
+                        <label className="block font-manrope font-semibold text-dark-carbon mb-2">
+                          Özellikler (Her satıra bir özellik)
+                        </label>
+                        <textarea
+                          value={settings.hero.leftCard.features.join('\n')}
+                          onChange={(e) =>
+                            setSettings({
+                              ...settings,
+                              hero: {
+                                ...settings.hero,
+                                leftCard: {
+                                  ...settings.hero.leftCard,
+                                  features: e.target.value.split('\n').filter(f => f.trim()),
+                                },
+                              },
+                            })
+                          }
+                          rows={3}
+                          className="w-full px-4 py-3 border-2 border-dark-carbon/20 rounded-lg font-manrope"
+                          placeholder="Mimari Projeler&#10;Statik Hesaplamalar&#10;Tesisat Projeleri"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Sağ Kart */}
+                  <div className="bg-gradient-to-br from-night-blue/5 to-muted-gold/5 p-6 rounded-xl border-2 border-muted-gold/20">
+                    <h3 className="font-playfair font-bold text-lg text-night-blue mb-4">
+                      Sağ Kart (Danışmanlık)
+                    </h3>
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block font-manrope font-semibold text-dark-carbon mb-2">
+                          Başlık
+                        </label>
+                        <textarea
+                          value={settings.hero.rightCard.title}
+                          onChange={(e) =>
+                            setSettings({
+                              ...settings,
+                              hero: {
+                                ...settings.hero,
+                                rightCard: { ...settings.hero.rightCard, title: e.target.value },
+                              },
+                            })
+                          }
+                          rows={2}
+                          className="w-full px-4 py-3 border-2 border-dark-carbon/20 rounded-lg font-playfair"
+                          placeholder="Danışmanlık & Müşavirlik"
+                        />
+                        <p className="text-xs text-dark-carbon/50 mt-1">
+                          İpucu: Alt satıra geçmek için \n kullanın
+                        </p>
+                      </div>
+                      <div>
+                        <label className="block font-manrope font-semibold text-dark-carbon mb-2">
+                          Açıklama
+                        </label>
+                        <textarea
+                          value={settings.hero.rightCard.description}
+                          onChange={(e) =>
+                            setSettings({
+                              ...settings,
+                              hero: {
+                                ...settings.hero,
+                                rightCard: { ...settings.hero.rightCard, description: e.target.value },
+                              },
+                            })
+                          }
+                          rows={3}
+                          className="w-full px-4 py-3 border-2 border-dark-carbon/20 rounded-lg font-manrope"
+                          placeholder="Veri odaklı ve uzmanlık merkezli rehberlik..."
+                        />
+                      </div>
+                      <div>
+                        <label className="block font-manrope font-semibold text-dark-carbon mb-2">
+                          Özellikler (Her satıra bir özellik)
+                        </label>
+                        <textarea
+                          value={settings.hero.rightCard.features.join('\n')}
+                          onChange={(e) =>
+                            setSettings({
+                              ...settings,
+                              hero: {
+                                ...settings.hero,
+                                rightCard: {
+                                  ...settings.hero.rightCard,
+                                  features: e.target.value.split('\n').filter(f => f.trim()),
+                                },
+                              },
+                            })
+                          }
+                          rows={3}
+                          className="w-full px-4 py-3 border-2 border-dark-carbon/20 rounded-lg font-manrope"
+                          placeholder="Deprem Analizi&#10;Kontrollük Hizmetleri&#10;Teknik Raporlama"
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
