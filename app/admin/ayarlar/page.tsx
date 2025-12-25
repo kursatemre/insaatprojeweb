@@ -115,7 +115,7 @@ interface SiteSettings {
 export default function AdminAyarlarPage() {
   const router = useRouter();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [activeTab, setActiveTab] = useState<'tema' | 'icerik' | 'hakkimizda' | 'iletisim' | 'sosyal' | 'seo' | 'cta' | 'navigation' | 'istatistikler'>('tema');
+  const [activeTab, setActiveTab] = useState<'tema' | 'icerik' | 'iletisim' | 'sosyal' | 'seo' | 'cta' | 'navigation' | 'istatistikler'>('tema');
   const [isSaving, setIsSaving] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
   const [settings, setSettings] = useState<SiteSettings>({
@@ -421,7 +421,6 @@ export default function AdminAyarlarPage() {
     { id: 'icerik', label: 'İçerik Düzenleme', icon: '📝' },
     { id: 'navigation', label: 'Header / Navigation', icon: '🧭' },
     { id: 'cta', label: 'Call To Action', icon: '🎯' },
-    { id: 'hakkimizda', label: 'Hakkımızda', icon: 'ℹ️' },
     { id: 'iletisim', label: 'İletişim Bilgileri', icon: '📞' },
     { id: 'sosyal', label: 'Sosyal Medya', icon: '🌐' },
     { id: 'seo', label: 'SEO Ayarları', icon: '🔍' },
@@ -1149,91 +1148,6 @@ export default function AdminAyarlarPage() {
                       }
                       className="w-full px-4 py-3 border-2 border-dark-carbon/20 rounded-lg font-manrope"
                       placeholder="https://twitter.com/ekipproje"
-                    />
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          )}
-
-          {/* Hakkımızda Tab */}
-          {activeTab === 'hakkimizda' && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              <div className="bg-white rounded-xl border-2 border-dark-carbon/10 p-8">
-                <h2 className="font-playfair font-bold text-2xl text-night-blue mb-6">
-                  Hakkımızda Bilgileri
-                </h2>
-                <div className="space-y-4">
-                  <div>
-                    <label className="block font-manrope font-semibold text-dark-carbon mb-2">
-                      Başlık
-                    </label>
-                    <input
-                      type="text"
-                      value={settings.about?.title || ''}
-                      onChange={(e) =>
-                        setSettings({
-                          ...settings,
-                          about: { ...settings.about!, title: e.target.value },
-                        })
-                      }
-                      className="w-full px-4 py-3 border-2 border-dark-carbon/20 rounded-lg font-playfair text-lg"
-                      placeholder="Ekip Proje Hakkında"
-                    />
-                  </div>
-                  <div>
-                    <label className="block font-manrope font-semibold text-dark-carbon mb-2">
-                      Açıklama
-                    </label>
-                    <textarea
-                      value={settings.about?.description || ''}
-                      onChange={(e) =>
-                        setSettings({
-                          ...settings,
-                          about: { ...settings.about!, description: e.target.value },
-                        })
-                      }
-                      rows={3}
-                      className="w-full px-4 py-3 border-2 border-dark-carbon/20 rounded-lg font-manrope"
-                      placeholder="Şirket hakkında genel bilgi..."
-                    />
-                  </div>
-                  <div>
-                    <label className="block font-manrope font-semibold text-dark-carbon mb-2">
-                      Misyonumuz
-                    </label>
-                    <textarea
-                      value={settings.about?.mission || ''}
-                      onChange={(e) =>
-                        setSettings({
-                          ...settings,
-                          about: { ...settings.about!, mission: e.target.value },
-                        })
-                      }
-                      rows={3}
-                      className="w-full px-4 py-3 border-2 border-dark-carbon/20 rounded-lg font-manrope"
-                      placeholder="Misyonunuz nedir?"
-                    />
-                  </div>
-                  <div>
-                    <label className="block font-manrope font-semibold text-dark-carbon mb-2">
-                      Vizyonumuz
-                    </label>
-                    <textarea
-                      value={settings.about?.vision || ''}
-                      onChange={(e) =>
-                        setSettings({
-                          ...settings,
-                          about: { ...settings.about!, vision: e.target.value },
-                        })
-                      }
-                      rows={3}
-                      className="w-full px-4 py-3 border-2 border-dark-carbon/20 rounded-lg font-manrope"
-                      placeholder="Vizyonunuz nedir?"
                     />
                   </div>
                 </div>
