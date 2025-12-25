@@ -2,8 +2,9 @@
 
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
+import { getSiteSettings } from '@/lib/api/settings';
 
 export default function HizmetlerPage() {
   const projeRef = useRef(null);
@@ -11,7 +12,20 @@ export default function HizmetlerPage() {
   const isProjeInView = useInView(projeRef, { once: true, amount: 0.1 });
   const isDanismanlikInView = useInView(danismanlikRef, { once: true, amount: 0.1 });
 
-  const projeServices = [
+  const [servicesData, setServicesData] = useState<any>(null);
+
+  // Load services data from Supabase
+  useEffect(() => {
+    const loadServices = async () => {
+      const result = await getSiteSettings();
+      if (result.success && result.data?.services) {
+        setServicesData(result.data.services);
+      }
+    };
+    loadServices();
+  }, []);
+
+  const defaultProjeServices = [
     {
       id: 'mimari',
       title: 'Mimari Projeler',
@@ -140,7 +154,7 @@ export default function HizmetlerPage() {
     },
   ];
 
-  const danismanlikServices = [
+  const defaultDanismanlikServices = [
     {
       id: 'deprem',
       title: 'Deprem Performans Analizi',
@@ -269,6 +283,89 @@ export default function HizmetlerPage() {
     },
   ];
 
+  // Helper function to get icon based on service id
+  const getIcon = (id: string) => {
+    const icons: { [key: string]: JSX.Element } = {
+      mimari: (
+        <svg className="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={1.5}
+            d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+          />
+        </svg>
+      ),
+      statik: (
+        <svg className="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={1.5}
+            d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+          />
+        </svg>
+      ),
+      tesisat: (
+        <svg className="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={1.5}
+            d="M13 10V3L4 14h7v7l9-11h-7z"
+          />
+        </svg>
+      ),
+      deprem: (
+        <svg className="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={1.5}
+            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+          />
+        </svg>
+      ),
+      kontrolluk: (
+        <svg className="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={1.5}
+            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+          />
+        </svg>
+      ),
+      raporlama: (
+        <svg className="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={1.5}
+            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+          />
+        </svg>
+      ),
+    };
+    return icons[id] || icons['mimari'];
+  };
+
+  // Merge dynamic data with defaults and add icons
+  const projeServices = (servicesData?.proje?.items || defaultProjeServices).map((service: any) => ({
+    ...service,
+    icon: getIcon(service.id),
+  }));
+
+  const danismanlikServices = (servicesData?.danismanlik?.items || defaultDanismanlikServices).map((service: any) => ({
+    ...service,
+    icon: getIcon(service.id),
+  }));
+
+  const projeTitle = servicesData?.proje?.title || 'Proje Hizmetleri';
+  const projeSubtitle = servicesData?.proje?.subtitle || 'Eksiksiz ve uygulanabilir teslimat';
+  const danismanlikTitle = servicesData?.danismanlik?.title || 'Danışmanlık Hizmetleri';
+  const danismanlikSubtitle = servicesData?.danismanlik?.subtitle || 'Uzmanlık ve rehberlik merkezli';
+
   return (
     <div className="pt-32 md:pt-28">
       {/* Hero Section */}
@@ -308,10 +405,10 @@ export default function HizmetlerPage() {
             className="text-center mb-16"
           >
             <h2 className="font-playfair font-bold text-4xl md:text-5xl text-night-blue mb-4">
-              Proje Hizmetleri
+              {projeTitle}
             </h2>
             <p className="text-dark-carbon/70 font-manrope text-lg">
-              Eksiksiz ve uygulanabilir teslimat
+              {projeSubtitle}
             </p>
           </motion.div>
 
@@ -338,10 +435,10 @@ export default function HizmetlerPage() {
             className="text-center mb-16"
           >
             <h2 className="font-playfair font-bold text-4xl md:text-5xl text-night-blue mb-4">
-              Danışmanlık Hizmetleri
+              {danismanlikTitle}
             </h2>
             <p className="text-dark-carbon/70 font-manrope text-lg">
-              Uzmanlık ve rehberlik merkezli
+              {danismanlikSubtitle}
             </p>
           </motion.div>
 

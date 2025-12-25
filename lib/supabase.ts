@@ -156,6 +156,38 @@ export interface SiteSettings {
       href: string;
     };
   };
+  services?: {
+    proje: {
+      title: string;
+      subtitle: string;
+      items: Array<{
+        id: string;
+        title: string;
+        subtitle: string;
+        description: string;
+        features: Array<{
+          title: string;
+          desc: string;
+        }>;
+        deliverables: string[];
+      }>;
+    };
+    danismanlik: {
+      title: string;
+      subtitle: string;
+      items: Array<{
+        id: string;
+        title: string;
+        subtitle: string;
+        description: string;
+        features: Array<{
+          title: string;
+          desc: string;
+        }>;
+        deliverables: string[];
+      }>;
+    };
+  };
 }
 
 // Helper function - Error handling

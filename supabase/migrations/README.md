@@ -10,6 +10,7 @@ Bu klasör Supabase veritabanı migration dosyalarını içerir.
 4. **006_add_cta_column.sql** - CTA (Call to Action) bölümü
 5. **007_add_navigation_column.sql** - Dinamik navigasyon menüsü
 6. **008_add_hero_cards.sql** - Hero kartları (Sol & Sağ kart)
+7. **009_add_services.sql** - Hizmetler (Proje & Danışmanlık)
 
 ## Migration Nasıl Çalıştırılır?
 
@@ -50,10 +51,43 @@ psql -h db.your-project-ref.supabase.co -U postgres -d postgres -f supabase/migr
 ⚠️ **Önemli:** Migration'ları sırayla çalıştırmanız önerilir:
 
 ```
-003 → 004 → 005 → 006 → 007 → 008
+003 → 004 → 005 → 006 → 007 → 008 → 009
 ```
 
-## Son Eklenen Migration: 008_add_hero_cards.sql
+## Migration: 009_add_services.sql
+
+Bu migration hizmetler bölümünü ekler:
+
+**Eklenenler:**
+- `services.proje` - Proje Hizmetleri (Mimari, Statik, Tesisat)
+  - title: Başlık
+  - subtitle: Alt başlık
+  - items: Hizmet kartları listesi
+    - id: Hizmet ID (mimari, statik, tesisat)
+    - title: Hizmet başlığı
+    - subtitle: Hizmet alt başlığı
+    - description: Açıklama
+    - features: Özellikler (title + desc)
+    - deliverables: Teslimatlar (string array)
+
+- `services.danismanlik` - Danışmanlık Hizmetleri (Deprem, Kontrollük, Raporlama)
+  - title: Başlık
+  - subtitle: Alt başlık
+  - items: Hizmet kartları listesi
+    - id: Hizmet ID (deprem, kontrolluk, raporlama)
+    - title: Hizmet başlığı
+    - subtitle: Hizmet alt başlığı
+    - description: Açıklama
+    - features: Özellikler (title + desc)
+    - deliverables: Teslimatlar (string array)
+
+**Özellikler:**
+- Tüm mevcut hizmetler default değerler ile gelir
+- Admin panelinden düzenlenebilir
+- Geriye dönük uyumlu
+- Icon'lar frontend tarafında otomatik eklenir
+
+## Migration: 008_add_hero_cards.sql
 
 Bu migration hero kartlarını ekler:
 
@@ -90,6 +124,7 @@ CREATE TABLE site_settings (
   about JSONB,            -- 004'te eklendi
   cta JSONB,              -- 006'da eklendi
   navigation JSONB,        -- 007'de eklendi
+  services JSONB,          -- 009'da eklendi
   created_at TIMESTAMP,
   updated_at TIMESTAMP
 );
