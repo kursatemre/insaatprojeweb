@@ -62,6 +62,16 @@ export interface SiteSettings {
     title: string;
     subtitle: string;
     tagline: string;
+    leftCard?: {
+      title: string;
+      description: string;
+      features: string[];
+    };
+    rightCard?: {
+      title: string;
+      description: string;
+      features: string[];
+    };
   };
   stats: {
     totalProjects: string;
