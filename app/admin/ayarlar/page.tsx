@@ -236,7 +236,21 @@ export default function AdminAyarlarPage() {
         console.log('✅ Setting state with:', result.data);
         setSettings({
           colors: result.data.colors,
-          hero: result.data.hero,
+          hero: {
+            title: result.data.hero?.title || 'Ekip Proje',
+            subtitle: result.data.hero?.subtitle || 'MİMARLIK & MÜHENDİSLİK',
+            tagline: result.data.hero?.tagline || 'Sadece proje çizmiyoruz; geleceğin yapılarını teknik rehberlik ve uzmanlığımızla inşa ediyoruz.',
+            leftCard: result.data.hero?.leftCard || {
+              title: 'Hizmet Alımı\n& Proje',
+              description: 'Eksiksiz ve uygulanabilir teslimat. Mimari, Statik ve Tesisat projelerinde profesyonel çözümler.',
+              features: ['Mimari Projeler', 'Statik Hesaplamalar', 'Tesisat Projeleri'],
+            },
+            rightCard: result.data.hero?.rightCard || {
+              title: 'Danışmanlık\n& Müşavirlik',
+              description: 'Veri odaklı ve uzmanlık merkezli rehberlik. Teknik analiz ve performans değerlendirmesi.',
+              features: ['Deprem Analizi', 'Kontrollük Hizmetleri', 'Teknik Raporlama'],
+            },
+          },
           stats: result.data.stats,
           contact: result.data.contact,
           social: result.data.social,
