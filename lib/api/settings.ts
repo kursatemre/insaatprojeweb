@@ -50,6 +50,7 @@ export async function updateSiteSettings(settings: Partial<SiteSettings>): Promi
         about: settings.about,
         cta: settings.cta,
         navigation: settings.navigation,
+        services: settings.services,
         updated_at: new Date().toISOString(),
       })
       .eq('id', firstRecord.id);
