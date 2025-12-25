@@ -413,7 +413,7 @@ export default function HizmetlerPage() {
           </motion.div>
 
           <div className="space-y-16">
-            {projeServices.map((service, index) => (
+            {projeServices.map((service: any, index: number) => (
               <ServiceCard key={service.id} service={service} index={index} isInView={isProjeInView} />
             ))}
           </div>
@@ -443,7 +443,7 @@ export default function HizmetlerPage() {
           </motion.div>
 
           <div className="space-y-16">
-            {danismanlikServices.map((service, index) => (
+            {danismanlikServices.map((service: any, index: number) => (
               <ServiceCard
                 key={service.id}
                 service={service}
