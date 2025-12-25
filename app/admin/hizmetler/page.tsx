@@ -1,9 +1,13 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { getSiteSettings, updateSiteSettings } from '@/lib/api/settings';
+import AdminSidebar from '@/components/admin/AdminSidebar';
 
 export default function AdminHizmetlerPage() {
+  const router = useRouter();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
@@ -36,8 +40,14 @@ export default function AdminHizmetlerPage() {
   ]);
 
   useEffect(() => {
-    loadSettings();
-  }, []);
+    const token = localStorage.getItem('adminToken');
+    if (!token) {
+      router.push('/admin/login');
+    } else {
+      setIsAuthenticated(true);
+      loadSettings();
+    }
+  }, [router]);
 
   const loadSettings = async () => {
     setLoading(true);
@@ -182,19 +192,15 @@ export default function AdminHizmetlerPage() {
     setDanismanlikServices(updated);
   };
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-muted-gold mx-auto mb-4"></div>
-          <p className="text-dark-carbon/70">Yükleniyor...</p>
-        </div>
-      </div>
-    );
+  if (!isAuthenticated || loading) {
+    return null;
   }
 
   return (
-    <div className="p-6 max-w-7xl mx-auto">
+    <div className="flex min-h-screen bg-warm-concrete">
+      <AdminSidebar />
+
+      <div className="flex-1 lg:ml-64 p-6 max-w-7xl mx-auto">
       {/* Toast Notification */}
       {toast && (
         <div
@@ -208,6 +214,15 @@ export default function AdminHizmetlerPage() {
 
       {/* Header */}
       <div className="mb-8">
+        <button
+          onClick={() => router.push('/admin/dashboard')}
+          className="flex items-center text-dark-carbon/70 hover:text-night-blue mb-4 font-manrope transition-colors"
+        >
+          <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
+          Dashboard'a Dön
+        </button>
         <h1 className="text-3xl font-playfair font-bold text-night-blue mb-2">Hizmetler Yönetimi</h1>
         <p className="text-dark-carbon/70 font-manrope">
           Proje ve danışmanlık hizmetlerinizi buradan düzenleyebilirsiniz.
@@ -531,6 +546,7 @@ export default function AdminHizmetlerPage() {
         >
           {saving ? 'Kaydediliyor...' : 'Değişiklikleri Kaydet'}
         </button>
+      </div>
       </div>
     </div>
   );
