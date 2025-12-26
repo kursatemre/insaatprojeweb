@@ -632,7 +632,11 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
 
 ## 📄 Lisans
 
-Bu proje Ekip Proje Mimarlık ve Mühendislik için özel olarak geliştirilmiştir.
+MIT License
+
+Copyright (c) 2025 OrionSoft.dev
+
+Bu proje MIT lisansı altında lisanslanmıştır. Detaylar için [LICENSE](LICENSE) dosyasına bakınız.
 
 ## 👨‍💻 Geliştirici Notları
 
@@ -680,8 +684,20 @@ npx supabase db reset
 
 ---
 
-**Geliştirme Tarihi:** Aralık 2024
-**Versiyon:** 3.0.0
+## 🏢 Geliştirici
+
+**OrionSoft.dev** - Modern Web Çözümleri
+- Website: [orionsoft.dev](https://orionsoft.dev)
+- Email: contact@orionsoft.dev
+
+---
+
+**Geliştirme Tarihi:** Aralık 2024 - Ocak 2025
+**Versiyon:** 1.0.0
 **Status:** ✅ Production Ready - Full Dynamic Content Management
+**Lisans:** MIT License
 **GitHub:** https://github.com/kursatemre/insaatprojeweb
-**Developer:** Claude Code + Kürşat Emre
+
+---
+
+Made with ❤️ by **OrionSoft.dev**

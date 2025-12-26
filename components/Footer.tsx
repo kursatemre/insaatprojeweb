@@ -204,9 +204,22 @@ const Footer = () => {
 
         {/* Bottom Section */}
         <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-white/50 font-roboto-mono text-xs mb-4 md:mb-0">
-            © {currentYear} {footerData.copyright}
-          </p>
+          <div className="flex flex-col items-center md:items-start mb-4 md:mb-0">
+            <p className="text-white/50 font-roboto-mono text-xs mb-2">
+              © {currentYear} {footerData.copyright}
+            </p>
+            <p className="text-white/30 font-manrope text-xs flex items-center gap-1">
+              Developed with <span className="text-red-400">♥</span> by{' '}
+              <a
+                href="https://orionsoft.dev"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-muted-gold hover:text-muted-gold/80 transition-colors font-semibold"
+              >
+                OrionSoft.dev
+              </a>
+            </p>
+          </div>
           <div className="flex space-x-6">
             {footerData.legalLinks.map((link: any) => (
               <Link

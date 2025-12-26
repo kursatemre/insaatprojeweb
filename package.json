@@ -1,7 +1,14 @@
 {
   "name": "ekip-proje",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
+  "author": "OrionSoft.dev",
+  "license": "MIT",
+  "description": "Modern mimarlık ve mühendislik firması web sitesi - Next.js 15, Supabase, Tailwind CSS",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kursatemre/insaatprojeweb.git"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
