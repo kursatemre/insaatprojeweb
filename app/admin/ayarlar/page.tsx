@@ -43,6 +43,7 @@ interface SiteSettings {
     phone: string;
     address: string;
     workingHours: string;
+    mapsUrl?: string;
   };
   // Sosyal Medya
   social: {
@@ -152,6 +153,7 @@ export default function AdminAyarlarPage() {
       phone: '+90 (312) 123 4567',
       address: 'Çankaya, Ankara, Türkiye',
       workingHours: 'Pazartesi - Cuma: 09:00 - 18:00',
+      mapsUrl: '',
     },
     social: {
       linkedin: 'https://linkedin.com/company/ekipproje',
@@ -1064,6 +1066,39 @@ export default function AdminAyarlarPage() {
                       className="w-full px-4 py-3 border-2 border-dark-carbon/20 rounded-lg font-manrope"
                       placeholder="Pazartesi - Cuma: 09:00 - 18:00"
                     />
+                  </div>
+                  <div>
+                    <label className="block font-manrope font-semibold text-dark-carbon mb-2">
+                      Google Maps Embed URL
+                    </label>
+                    <input
+                      type="url"
+                      value={settings.contact.mapsUrl || ''}
+                      onChange={(e) =>
+                        setSettings({
+                          ...settings,
+                          contact: { ...settings.contact, mapsUrl: e.target.value },
+                        })
+                      }
+                      className="w-full px-4 py-3 border-2 border-dark-carbon/20 rounded-lg font-manrope"
+                      placeholder="https://www.google.com/maps/embed?pb=..."
+                    />
+                    <p className="mt-2 text-sm text-dark-carbon/60 font-manrope">
+                      Google Maps'ten "Harita paylaş" → "Haritayı yerleştir" → HTML kodu alın ve src URL'sini buraya yapıştırın.
+                    </p>
+                    <details className="mt-3 text-sm">
+                      <summary className="cursor-pointer text-muted-gold font-manrope font-semibold hover:text-bronze">
+                        Nasıl alırım? (Tıklayın)
+                      </summary>
+                      <ol className="mt-2 ml-4 list-decimal space-y-1 text-dark-carbon/70 font-manrope">
+                        <li>Google Maps'i açın</li>
+                        <li>Konumunuzu arayın</li>
+                        <li>"Paylaş" butonuna tıklayın</li>
+                        <li>"Haritayı yerleştir" sekmesine geçin</li>
+                        <li>HTML kodunu kopyalayın</li>
+                        <li>src="..." kısmındaki URL'i buraya yapıştırın</li>
+                      </ol>
+                    </details>
                   </div>
                 </div>
               </div>

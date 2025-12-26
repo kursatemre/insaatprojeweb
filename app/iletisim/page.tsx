@@ -18,11 +18,18 @@ export default function IletisimPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
 
-  const [contactData, setContactData] = useState({
+  const [contactData, setContactData] = useState<{
+    phone: string;
+    email: string;
+    address: string;
+    workingHours: string;
+    mapsUrl?: string;
+  }>({
     phone: '+90 (312) 123 45 67',
     email: 'info@ekipproje.com',
     address: 'Çankaya, Ankara, Türkiye',
     workingHours: 'Pzt-Cum: 09:00 - 18:00',
+    mapsUrl: '',
   });
 
   useEffect(() => {
@@ -423,32 +430,47 @@ export default function IletisimPage() {
               viewport={{ once: true }}
               className="space-y-8"
             >
-              {/* Map Placeholder */}
+              {/* Google Maps */}
               <div className="bg-gradient-to-br from-night-blue to-dark-carbon rounded-2xl overflow-hidden border-2 border-muted-gold/20 shadow-2xl h-80">
-                <div className="w-full h-full flex items-center justify-center">
-                  <div className="text-center text-white/40">
-                    <svg
-                      className="w-20 h-20 mx-auto mb-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={1}
-                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                      />
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={1}
-                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                      />
-                    </svg>
-                    <p className="font-roboto-mono text-sm">GOOGLE MAPS ENTEGRASYONU</p>
+                {contactData.mapsUrl ? (
+                  <iframe
+                    src={contactData.mapsUrl}
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title="Ofis Konumu"
+                    className="w-full h-full"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center">
+                    <div className="text-center text-white/40">
+                      <svg
+                        className="w-20 h-20 mx-auto mb-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={1}
+                          d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                        />
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={1}
+                          d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                        />
+                      </svg>
+                      <p className="font-roboto-mono text-sm">GOOGLE MAPS</p>
+                      <p className="font-manrope text-xs mt-2">Admin panelden harita URL'si ekleyin</p>
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
 
               {/* FAQ */}
