@@ -10,12 +10,18 @@ export default function AdminDashboardPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem('adminToken');
-    if (!token) {
-      router.push('/admin/login');
-    } else {
-      setIsAuthenticated(true);
-    }
+    const checkAuth = async () => {
+      const { getCurrentSession } = await import('@/lib/auth');
+      const result = await getCurrentSession();
+
+      if (!result.success) {
+        router.push('/admin/login');
+      } else {
+        setIsAuthenticated(true);
+      }
+    };
+
+    checkAuth();
   }, [router]);
 
   if (!isAuthenticated) {
