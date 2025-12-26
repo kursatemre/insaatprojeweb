@@ -124,7 +124,7 @@ export default function AdminDashboardPage() {
       {/* Main Content */}
       <div className="flex-1 lg:ml-64">
         {/* Top Bar */}
-        <div className="bg-white border-b border-dark-carbon/10 p-6 lg:p-8">
+        <div className="bg-white border-b border-dark-carbon/10 p-6 lg:p-8 pt-20 lg:pt-8">
           <div className="flex items-center justify-between">
             <div>
               <h1 className="font-playfair font-bold text-3xl text-night-blue">Dashboard</h1>

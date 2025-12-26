@@ -191,11 +191,8 @@ export default function AdminSidebar() {
       </button>
 
       {/* Sidebar */}
-      <motion.aside
-        initial={false}
-        animate={{ x: isMobileMenuOpen || isDesktop ? 0 : -300 }}
-        transition={{ duration: 0.3, ease: 'easeInOut' }}
-        className={`fixed left-0 top-0 h-screen w-64 bg-gradient-to-b from-night-blue to-dark-carbon border-r border-muted-gold/20 z-40 overflow-y-auto lg:translate-x-0 ${
+      <aside
+        className={`fixed left-0 top-0 h-screen w-64 bg-gradient-to-b from-night-blue to-dark-carbon border-r border-muted-gold/20 z-40 overflow-y-auto transition-transform duration-300 ease-in-out ${
           isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         }`}
       >
@@ -280,7 +277,7 @@ export default function AdminSidebar() {
             <span className="font-manrope font-semibold text-sm">Çıkış Yap</span>
           </button>
         </div>
-      </motion.aside>
+      </aside>
 
       {/* Mobile Overlay */}
       {isMobileMenuOpen && (
