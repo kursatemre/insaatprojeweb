@@ -2,8 +2,9 @@
 
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import TurkeySVGMap from './TurkeySVGMap';
+import { getSiteSettings } from '@/lib/api/settings';
 
 interface CityData {
   name: string;
@@ -16,26 +17,35 @@ const TurkeyMap = () => {
   const isInView = useInView(ref, { once: true, amount: 0.3 });
   const [hoveredCity, setHoveredCity] = useState<string | null>(null);
   const [selectedCity, setSelectedCity] = useState<{ name: string; code: string } | null>(null);
+  const [cityDataMap, setCityDataMap] = useState<Record<string, { projects: number; type: string }>>({
+    // Default sample data
+    '01': { projects: 20, type: 'Karma' },
+    '06': { projects: 38, type: 'Kamu' },
+    '07': { projects: 28, type: 'Özel' },
+    '10': { projects: 15, type: 'Karma' },
+    '16': { projects: 25, type: 'Karma' },
+    '20': { projects: 12, type: 'Özel' },
+    '21': { projects: 18, type: 'Kamu' },
+    '26': { projects: 12, type: 'Karma' },
+    '27': { projects: 18, type: 'Kamu' },
+    '34': { projects: 45, type: 'Karma' },
+    '35': { projects: 32, type: 'Karma' },
+    '38': { projects: 16, type: 'Kamu' },
+    '41': { projects: 14, type: 'Karma' },
+    '42': { projects: 22, type: 'Kamu' },
+    '55': { projects: 15, type: 'Kamu' },
+    '61': { projects: 14, type: 'Kamu' },
+  });
 
-  // Sample city data - il kodu ile eşleştirilmiş
-  const cityDataMap: Record<string, { projects: number; type: string }> = {
-    '01': { projects: 20, type: 'Karma' }, // Adana
-    '06': { projects: 38, type: 'Kamu' }, // Ankara
-    '07': { projects: 28, type: 'Özel' }, // Antalya
-    '10': { projects: 15, type: 'Karma' }, // Balıkesir
-    '16': { projects: 25, type: 'Karma' }, // Bursa
-    '20': { projects: 12, type: 'Özel' }, // Denizli
-    '21': { projects: 18, type: 'Kamu' }, // Diyarbakır
-    '26': { projects: 12, type: 'Karma' }, // Eskişehir
-    '27': { projects: 18, type: 'Kamu' }, // Gaziantep
-    '34': { projects: 45, type: 'Karma' }, // İstanbul
-    '35': { projects: 32, type: 'Karma' }, // İzmir
-    '38': { projects: 16, type: 'Kamu' }, // Kayseri
-    '41': { projects: 14, type: 'Karma' }, // Kocaeli
-    '42': { projects: 22, type: 'Kamu' }, // Konya
-    '55': { projects: 15, type: 'Kamu' }, // Samsun
-    '61': { projects: 14, type: 'Kamu' }, // Trabzon
-  };
+  useEffect(() => {
+    const loadCityData = async () => {
+      const result = await getSiteSettings();
+      if (result.success && result.data?.turkeyMap) {
+        setCityDataMap(result.data.turkeyMap);
+      }
+    };
+    loadCityData();
+  }, []);
 
   const handleCityClick = (cityName: string, cityCode: string) => {
     setSelectedCity({ name: cityName, code: cityCode });

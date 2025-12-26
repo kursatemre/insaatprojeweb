@@ -242,6 +242,10 @@ export interface SiteSettings {
       }>;
     }>;
   };
+  turkeyMap?: Record<string, {
+    projects: number;
+    type: string;
+  }>;
 }
 
 // Helper function - Error handling
