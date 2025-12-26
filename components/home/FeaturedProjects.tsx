@@ -297,8 +297,35 @@ export default function FeaturedProjects() {
             </motion.div>
           </AnimatePresence>
 
-          {/* Compact Navigation */}
-          <div className="absolute bottom-0 left-0 right-0 flex items-center justify-between z-20">
+          {/* Mobile: Arrows on Image */}
+          <div className="lg:hidden absolute top-1/2 -translate-y-1/2 left-0 right-0 flex items-center justify-between px-2 z-20 pointer-events-none">
+            {/* Prev Button */}
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => paginate(-1)}
+              className="pointer-events-auto w-10 h-10 rounded-full border border-muted-gold/60 bg-night-blue/80 backdrop-blur-md text-muted-gold hover:bg-muted-gold hover:text-night-blue transition-all duration-200 flex items-center justify-center shadow-lg"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            </motion.button>
+
+            {/* Next Button */}
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => paginate(1)}
+              className="pointer-events-auto w-10 h-10 rounded-full border border-muted-gold/60 bg-night-blue/80 backdrop-blur-md text-muted-gold hover:bg-muted-gold hover:text-night-blue transition-all duration-200 flex items-center justify-center shadow-lg"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </motion.button>
+          </div>
+
+          {/* Desktop: Full Navigation at Bottom */}
+          <div className="hidden lg:flex absolute bottom-0 left-0 right-0 items-center justify-between z-20">
             {/* Prev Button */}
             <motion.button
               whileHover={{ scale: 1.05 }}
