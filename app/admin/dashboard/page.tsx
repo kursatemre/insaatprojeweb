@@ -1,33 +1,8 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import AdminSidebar from '@/components/admin/AdminSidebar';
 
 export default function AdminDashboardPage() {
-  const router = useRouter();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  useEffect(() => {
-    const checkAuth = async () => {
-      const { getCurrentSession } = await import('@/lib/auth');
-      const result = await getCurrentSession();
-
-      if (!result.success) {
-        router.push('/admin/login');
-      } else {
-        setIsAuthenticated(true);
-      }
-    };
-
-    checkAuth();
-  }, [router]);
-
-  if (!isAuthenticated) {
-    return null;
-  }
-
   const stats = [
     {
       id: 1,
@@ -118,13 +93,9 @@ export default function AdminDashboardPage() {
   ];
 
   return (
-    <div className="flex min-h-screen bg-warm-concrete">
-      <AdminSidebar />
-
-      {/* Main Content */}
-      <div className="flex-1 lg:ml-64">
-        {/* Top Bar */}
-        <div className="bg-white border-b border-dark-carbon/10 p-6 lg:p-8 pt-20 lg:pt-8">
+    <>
+      {/* Top Bar */}
+      <div className="bg-white border-b border-dark-carbon/10 p-6 lg:p-8 pt-20 lg:pt-8">
           <div className="flex items-center justify-between">
             <div>
               <h1 className="font-playfair font-bold text-3xl text-night-blue">Dashboard</h1>
@@ -301,7 +272,6 @@ export default function AdminDashboardPage() {
             </div>
           </div>
         </div>
-      </div>
-    </div>
+    </>
   );
 }
