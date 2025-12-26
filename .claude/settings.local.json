@@ -23,7 +23,8 @@
       "Bash(npx supabase:*)",
       "Bash(npm run build:*)",
       "Bash(npm uninstall:*)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(node test-turkey-map.js:*)"
     ]
   }
 }

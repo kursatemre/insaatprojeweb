@@ -52,8 +52,12 @@ export default function AdminHaritaPage() {
   useEffect(() => {
     const loadData = async () => {
       const result = await getSiteSettings();
-      if (result.success && result.data?.turkeyMap) {
-        setCityData(result.data.turkeyMap);
+      if (result.success && result.data) {
+        // Database'de turkey_map olarak saklanıyor
+        const mapData = (result.data as any).turkey_map || result.data.turkeyMap;
+        if (mapData) {
+          setCityData(mapData);
+        }
       }
       setIsLoading(false);
     };

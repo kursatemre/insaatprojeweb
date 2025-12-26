@@ -52,6 +52,8 @@ export async function updateSiteSettings(settings: Partial<SiteSettings>): Promi
         navigation: settings.navigation,
         services: settings.services,
         footer: settings.footer,
+        faq: settings.faq,
+        turkey_map: settings.turkeyMap,
         updated_at: new Date().toISOString(),
       })
       .eq('id', firstRecord.id);

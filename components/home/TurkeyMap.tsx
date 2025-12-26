@@ -40,8 +40,12 @@ const TurkeyMap = () => {
   useEffect(() => {
     const loadCityData = async () => {
       const result = await getSiteSettings();
-      if (result.success && result.data?.turkeyMap) {
-        setCityDataMap(result.data.turkeyMap);
+      if (result.success && result.data) {
+        // Database'de turkey_map olarak saklanıyor
+        const mapData = (result.data as any).turkey_map || result.data.turkeyMap;
+        if (mapData) {
+          setCityDataMap(mapData);
+        }
       }
     };
     loadCityData();
