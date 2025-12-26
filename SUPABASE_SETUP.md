@@ -307,5 +307,5 @@ Backend entegrasyonu tamamlandı. Artık:
 - ✅ Admin paneli gerçek verilerle çalışıyor
 - ✅ Site ayarları güncelleniyor
 
-**Live URL:** https://insaatprojeweb.vercel.app
+**Live URL:** https://ekipproje.com
 **Supabase Dashboard:** https://supabase.com/dashboard/project/[your-project-id]

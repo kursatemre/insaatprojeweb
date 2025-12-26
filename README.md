@@ -363,9 +363,9 @@ npm run start
 
 ### Giriş Bilgileri:
 ```
-URL: https://insaatprojeweb.vercel.app/admin/login
+URL: https://ekipproje.com/admin/login
 Email: admin@ekipproje.com
-Password: admin123
+Password: [Supabase Dashboard'dan belirlenen şifre]
 ```
 
 ### Admin Panel Özellikleri:
@@ -591,8 +591,8 @@ Icon Sistemi:        ✅ Lucide React
 
 ## 🚀 Deployment
 
-**Live URL:** https://insaatprojeweb.vercel.app
-**Admin Panel:** https://insaatprojeweb.vercel.app/admin/login
+**Live URL:** https://ekipproje.com
+**Admin Panel:** https://ekipproje.com/admin/login
 
 **Deployment Platform:** Vercel
 - Otomatik deployment (git push)

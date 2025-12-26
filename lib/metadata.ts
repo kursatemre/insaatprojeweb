@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 
-const baseUrl = 'https://insaatprojeweb.vercel.app';
+const baseUrl = 'https://ekipproje.com';
 const siteName = 'Ekip Proje - Mimarlık & Mühendislik';
 
 export const defaultMetadata: Metadata = {

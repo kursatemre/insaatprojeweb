@@ -19,7 +19,7 @@ export default function SEOHead({
   canonical,
   structuredData,
 }: SEOHeadProps) {
-  const baseUrl = 'https://insaatprojeweb.vercel.app';
+  const baseUrl = 'https://ekipproje.com';
   const fullTitle = `${title} | Ekip Proje - Mimarlık & Mühendislik`;
   const defaultImage = `${baseUrl}/og-image.jpg`;
   const image = ogImage || defaultImage;

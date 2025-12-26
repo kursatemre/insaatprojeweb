@@ -115,8 +115,8 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your_production_anon_key
 
 ### Supabase Production Settings:
 1. Authentication > URL Configuration
-   - Site URL: `https://insaatprojeweb.vercel.app`
-   - Redirect URLs: `https://insaatprojeweb.vercel.app/admin/dashboard`
+   - Site URL: `https://ekipproje.com`
+   - Redirect URLs: `https://ekipproje.com/admin/dashboard`
 
 2. Authentication > Email Templates
    - Confirm signup: Kendi email template'inizi ekleyin

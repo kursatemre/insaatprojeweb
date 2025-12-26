@@ -58,8 +58,8 @@ export default function RootLayoutClient({
                 '@type': 'Organization',
                 name: 'Ekip Proje',
                 alternateName: 'Ekip Proje Mimarlık ve Mühendislik',
-                url: 'https://insaatprojeweb.vercel.app',
-                logo: 'https://insaatprojeweb.vercel.app/logo.png',
+                url: 'https://ekipproje.com',
+                logo: 'https://ekipproje.com/logo.png',
                 description:
                   'Türkiye genelinde mimari proje, statik hesap, tesisat projeleri, deprem analizi ve teknik müşavirlik hizmetleri.',
                 address: {
