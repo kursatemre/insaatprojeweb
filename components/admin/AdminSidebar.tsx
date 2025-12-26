@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
+import { logout } from '@/lib/auth';
 
 export default function AdminSidebar() {
   const pathname = usePathname();
@@ -163,9 +164,12 @@ export default function AdminSidebar() {
     return () => window.removeEventListener('resize', checkDesktop);
   }, []);
 
-  const handleLogout = () => {
-    localStorage.removeItem('adminToken');
-    router.push('/admin/login');
+  const handleLogout = async () => {
+    const result = await logout();
+    if (result.success || !result.success) {
+      // Her durumda login sayfasına yönlendir
+      router.push('/admin/login');
+    }
   };
 
   return (

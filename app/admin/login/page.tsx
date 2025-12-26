@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { loginWithEmail } from '@/lib/auth';
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -19,18 +20,17 @@ export default function AdminLoginPage() {
     setIsLoading(true);
     setError('');
 
-    // TODO: Supabase authentication entegrasyonu
-    // Şimdilik basit demo login
-    setTimeout(() => {
-      if (formData.email === 'admin@ekipproje.com' && formData.password === 'admin123') {
-        // localStorage'a token kaydet
-        localStorage.setItem('adminToken', 'demo-token-123');
-        router.push('/admin/dashboard');
-      } else {
-        setError('E-posta veya şifre hatalı');
-        setIsLoading(false);
-      }
-    }, 1000);
+    // Supabase Authentication
+    const result = await loginWithEmail(formData.email, formData.password);
+
+    if (result.success) {
+      // Başarılı giriş
+      router.push('/admin/dashboard');
+    } else {
+      // Hatalı giriş
+      setError(result.error || 'E-posta veya şifre hatalı');
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -157,13 +157,10 @@ export default function AdminLoginPage() {
               </button>
             </form>
 
-            {/* Demo Credentials Info */}
+            {/* Security Info */}
             <div className="mt-6 p-4 bg-night-blue/5 rounded-lg border border-night-blue/10">
-              <p className="text-xs font-manrope text-dark-carbon/60 text-center mb-2">
-                <strong>Demo Giriş Bilgileri:</strong>
-              </p>
-              <p className="text-xs font-roboto-mono text-dark-carbon/80 text-center">
-                admin@ekipproje.com / admin123
+              <p className="text-xs font-manrope text-dark-carbon/60 text-center">
+                Giriş bilgilerinizi Supabase Dashboard'dan alabilirsiniz
               </p>
             </div>
           </div>
