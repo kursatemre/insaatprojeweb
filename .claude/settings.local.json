@@ -21,7 +21,8 @@
       "Bash(taskkill:*)",
       "Bash(echo:*)",
       "Bash(npx supabase:*)",
-      "Bash(npm run build:*)"
+      "Bash(npm run build:*)",
+      "Bash(npm uninstall:*)"
     ]
   }
 }
