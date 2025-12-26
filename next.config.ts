@@ -11,12 +11,6 @@ const nextConfig: NextConfig = {
     }
     return config;
   },
-
-  // Experimental features
-  experimental: {
-    // Disable Vercel feedback widget in development
-    instrumentationHook: false,
-  },
 };
 
 export default nextConfig;
