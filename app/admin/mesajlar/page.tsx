@@ -2,14 +2,10 @@
 
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import AdminSidebar from '@/components/admin/AdminSidebar';
 import { getAllMessages, markMessageAsRead, deleteMessage } from '@/lib/api/messages';
 import type { Message } from '@/lib/supabase';
 
 export default function AdminMesajlarPage() {
-  const router = useRouter();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
   const [filterStatus, setFilterStatus] = useState<'all' | 'unread' | 'read'>('all');
@@ -17,14 +13,8 @@ export default function AdminMesajlarPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const token = localStorage.getItem('adminToken');
-    if (!token) {
-      router.push('/admin/login');
-    } else {
-      setIsAuthenticated(true);
-      loadMessages();
-    }
-  }, [router]);
+    loadMessages();
+  }, []);
 
   const loadMessages = async () => {
     setIsLoading(true);
@@ -98,13 +88,8 @@ export default function AdminMesajlarPage() {
 
   const unreadCount = messages.filter((m) => !m.is_read).length;
 
-  if (!isAuthenticated) {
-    return null;
-  }
-
   return (
-    <div className="flex min-h-screen bg-warm-concrete">
-      <AdminSidebar />
+    <div className="min-h-screen bg-warm-concrete pt-20 lg:pt-8 p-6 lg:p-8">
 
       <div className="flex-1 lg:ml-64">
         {/* Top Bar */}
