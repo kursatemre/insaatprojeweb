@@ -2,8 +2,6 @@
 
 import { motion } from 'framer-motion';
 import { useEffect, useState, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
-import AdminSidebar from '@/components/admin/AdminSidebar';
 import { getSiteSettings, updateSiteSettings } from '@/lib/api/settings';
 
 interface SiteSettings {
@@ -114,8 +112,6 @@ interface SiteSettings {
 }
 
 export default function AdminAyarlarPage() {
-  const router = useRouter();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [activeTab, setActiveTab] = useState<'tema' | 'icerik' | 'iletisim' | 'sosyal' | 'seo' | 'cta' | 'navigation' | 'istatistikler'>('tema');
   const [isSaving, setIsSaving] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
@@ -327,14 +323,8 @@ export default function AdminAyarlarPage() {
   }, [showToast]);
 
   useEffect(() => {
-    const token = localStorage.getItem('adminToken');
-    if (!token) {
-      router.push('/admin/login');
-    } else {
-      setIsAuthenticated(true);
-      loadSettings();
-    }
-  }, [router, loadSettings]);
+    loadSettings();
+  }, [loadSettings]);
 
   const handleSave = async () => {
     setIsSaving(true);
@@ -414,10 +404,6 @@ export default function AdminAyarlarPage() {
     }
   };
 
-  if (!isAuthenticated) {
-    return null;
-  }
-
   const tabs = [
     { id: 'tema', label: 'Tema & Renkler', icon: '🎨' },
     { id: 'icerik', label: 'İçerik Düzenleme', icon: '📝' },
@@ -429,9 +415,7 @@ export default function AdminAyarlarPage() {
   ];
 
   return (
-    <div className="flex min-h-screen bg-warm-concrete">
-      <AdminSidebar />
-
+    <div className="min-h-screen bg-warm-concrete pt-20 lg:pt-8">
       {/* Toast Notification */}
       {toast && (
         <motion.div
