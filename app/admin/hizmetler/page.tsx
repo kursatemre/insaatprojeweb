@@ -1,13 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import { getSiteSettings, updateSiteSettings } from '@/lib/api/settings';
-import AdminSidebar from '@/components/admin/AdminSidebar';
 
 export default function AdminHizmetlerPage() {
-  const router = useRouter();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
@@ -40,14 +36,8 @@ export default function AdminHizmetlerPage() {
   ]);
 
   useEffect(() => {
-    const token = localStorage.getItem('adminToken');
-    if (!token) {
-      router.push('/admin/login');
-    } else {
-      setIsAuthenticated(true);
-      loadSettings();
-    }
-  }, [router]);
+    loadSettings();
+  }, []);
 
   const loadSettings = async () => {
     setLoading(true);
@@ -192,15 +182,19 @@ export default function AdminHizmetlerPage() {
     setDanismanlikServices(updated);
   };
 
-  if (!isAuthenticated || loading) {
-    return null;
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-warm-concrete">
+        <div className="text-center">
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-muted-gold border-t-transparent"></div>
+          <p className="mt-4 text-dark-carbon/60 font-manrope">Yükleniyor...</p>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <div className="flex min-h-screen bg-warm-concrete">
-      <AdminSidebar />
-
-      <div className="flex-1 lg:ml-64 p-6 max-w-7xl mx-auto">
+    <div className="min-h-screen bg-warm-concrete pt-20 lg:pt-8 p-6 max-w-7xl mx-auto">
       {/* Toast Notification */}
       {toast && (
         <div
