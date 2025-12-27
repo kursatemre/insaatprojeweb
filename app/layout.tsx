@@ -14,6 +14,11 @@ export default function RootLayout({
   return (
     <html lang="tr">
       <head>
+        {/* DNS Prefetch for faster connection */}
+        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+        <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+
+        {/* Preconnect for critical resources */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://faavqdgnlmubkbgzghem.supabase.co" />
