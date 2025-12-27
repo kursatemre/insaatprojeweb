@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { getAllProjects } from '@/lib/api/projects';
 import type { Project } from '@/lib/supabase';
 
@@ -161,10 +162,13 @@ export default function FeaturedProjects() {
                 >
                   <div className="relative w-full h-full rounded-xl overflow-hidden border border-muted-gold/20 shadow-xl">
                     {activeProject.image_url ? (
-                      <img
+                      <Image
                         src={activeProject.image_url}
                         alt={activeProject.title}
-                        className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 60vw, 50vw"
+                        priority={activeIndex === 0}
+                        className="object-cover group-hover:scale-110 transition-transform duration-700"
                       />
                     ) : (
                       <div className="w-full h-full bg-gradient-to-br from-dark-carbon to-night-blue flex items-center justify-center">
