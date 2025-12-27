@@ -1,8 +1,34 @@
 import type { Metadata } from 'next';
+import { Playfair_Display, Manrope, Roboto_Mono } from 'next/font/google';
 import "./globals.css";
 import RootLayoutClient from "@/components/RootLayoutClient";
 import Analytics from "@/components/Analytics";
 import { defaultMetadata } from "@/lib/metadata";
+
+// Optimize font loading with next/font
+const playfair = Playfair_Display({
+  weight: '700',
+  subsets: ['latin'],
+  variable: '--font-playfair',
+  display: 'swap',
+  preload: true,
+});
+
+const manrope = Manrope({
+  weight: ['400', '600', '700'],
+  subsets: ['latin'],
+  variable: '--font-manrope',
+  display: 'swap',
+  preload: true,
+});
+
+const robotoMono = Roboto_Mono({
+  weight: '400',
+  subsets: ['latin'],
+  variable: '--font-roboto-mono',
+  display: 'swap',
+  preload: false, // Less critical, don't preload
+});
 
 export const metadata: Metadata = defaultMetadata;
 
@@ -12,15 +38,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="tr">
+    <html lang="tr" className={`${playfair.variable} ${manrope.variable} ${robotoMono.variable}`}>
       <head>
-        {/* DNS Prefetch for faster connection */}
-        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
-        <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
-
-        {/* Preconnect for critical resources */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* Preconnect for Supabase images */}
         <link rel="preconnect" href="https://faavqdgnlmubkbgzghem.supabase.co" />
       </head>
       <body className="antialiased">

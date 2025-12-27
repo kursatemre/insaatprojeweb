@@ -1,9 +1,8 @@
-/* Font preload - only essential weights */
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Manrope:wght@400;600;700&family=Roboto+Mono:wght@400&display=swap&subset=latin');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Fonts are loaded via next/font in layout.tsx for optimal performance */
 
 :root {
   --warm-concrete: #f4f4f2;
@@ -30,7 +29,7 @@ html {
 }
 
 body {
-  font-family: 'Manrope', sans-serif;
+  font-family: var(--font-manrope), sans-serif;
   background-color: var(--warm-concrete);
   color: var(--dark-carbon);
   overflow-x: hidden;
