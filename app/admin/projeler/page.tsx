@@ -2,15 +2,11 @@
 
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import AdminSidebar from '@/components/admin/AdminSidebar';
 import ProjectForm from '@/components/admin/ProjectForm';
 import { getAllProjects, deleteProject } from '@/lib/api/projects';
 import type { Project } from '@/lib/supabase';
 
 export default function AdminProjelerPage() {
-  const router = useRouter();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [projects, setProjects] = useState<Project[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProject, setEditingProject] = useState<Project | null>(null);
@@ -19,14 +15,8 @@ export default function AdminProjelerPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const token = localStorage.getItem('adminToken');
-    if (!token) {
-      router.push('/admin/login');
-    } else {
-      setIsAuthenticated(true);
-      loadProjects();
-    }
-  }, [router]);
+    loadProjects();
+  }, []);
 
   const loadProjects = async () => {
     setIsLoading(true);
@@ -83,15 +73,9 @@ export default function AdminProjelerPage() {
   const filteredProjects =
     filterCategory === 'all' ? projects : projects.filter((p) => p.category === filterCategory);
 
-  if (!isAuthenticated) {
-    return null;
-  }
-
   return (
-    <div className="flex min-h-screen bg-warm-concrete">
-      <AdminSidebar />
-
-      <div className="flex-1 lg:ml-64">
+    <div className="min-h-screen bg-warm-concrete pt-20 lg:pt-8 p-6 lg:p-8">
+      <div className="flex-1">
         {/* Top Bar */}
         <div className="bg-white border-b border-dark-carbon/10 p-6 lg:p-8">
           {/* Error Alert */}
