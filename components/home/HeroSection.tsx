@@ -24,28 +24,19 @@ const HeroSection = () => {
   });
 
   useEffect(() => {
-    const loadHeroData = async () => {
-      const result = await getSiteSettings();
+    // Load hero data in background without blocking render
+    getSiteSettings().then((result) => {
       if (result.success && result.data?.hero) {
         const hero = result.data.hero;
         setHeroData({
           title: hero.title,
           subtitle: hero.subtitle,
           tagline: hero.tagline,
-          leftCard: hero.leftCard || {
-            title: 'Hizmet Alımı\n& Proje',
-            description: 'Eksiksiz ve uygulanabilir teslimat. Mimari, Statik ve Tesisat projelerinde profesyonel çözümler.',
-            features: ['Mimari Projeler', 'Statik Hesaplamalar', 'Tesisat Projeleri'],
-          },
-          rightCard: hero.rightCard || {
-            title: 'Danışmanlık\n& Müşavirlik',
-            description: 'Veri odaklı ve uzmanlık merkezli rehberlik. Teknik analiz ve performans değerlendirmesi.',
-            features: ['Deprem Analizi', 'Kontrollük Hizmetleri', 'Teknik Raporlama'],
-          },
+          leftCard: hero.leftCard || heroData.leftCard,
+          rightCard: hero.rightCard || heroData.rightCard,
         });
       }
-    };
-    loadHeroData();
+    });
   }, []);
 
   return (
@@ -59,11 +50,11 @@ const HeroSection = () => {
       <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-muted-gold to-transparent"></div>
 
       <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 md:pt-28">
-        {/* Top Title */}
+        {/* Top Title - No animation delay for LCP */}
         <motion.div
-          initial={{ opacity: 0, y: -30 }}
+          initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
+          transition={{ duration: 0.4 }}
           className="text-center mb-12"
         >
           <h1 className="font-playfair font-bold text-5xl md:text-7xl text-night-blue mb-4">
@@ -76,11 +67,11 @@ const HeroSection = () => {
 
         {/* Split Interactive Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-          {/* Left Side - Hizmet Alımı & Proje */}
+          {/* Left Side - Hizmet Alımı & Proje - Faster animation */}
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
+            initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
             onMouseEnter={() => setHoveredSide('left')}
             onMouseLeave={() => setHoveredSide(null)}
             className="relative group"
@@ -155,11 +146,11 @@ const HeroSection = () => {
             </Link>
           </motion.div>
 
-          {/* Right Side - Danışmanlık & Müşavirlik */}
+          {/* Right Side - Danışmanlık & Müşavirlik - Faster animation */}
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
+            initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
             onMouseEnter={() => setHoveredSide('right')}
             onMouseLeave={() => setHoveredSide(null)}
             className="relative group"
@@ -236,11 +227,11 @@ const HeroSection = () => {
           </motion.div>
         </div>
 
-        {/* Main Tagline */}
+        {/* Main Tagline - Reduced delay for faster LCP */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
           className="text-center max-w-4xl mx-auto"
         >
           <p className="font-playfair text-2xl md:text-3xl text-dark-carbon leading-relaxed italic">
