@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { getSiteSettings, updateSiteSettings } from '@/lib/api/settings';
-import AdminSidebar from '@/components/admin/AdminSidebar';
 
 export default function AdminHakkimizdaPage() {
   const [title, setTitle] = useState('');
@@ -122,10 +121,8 @@ export default function AdminHakkimizdaPage() {
   }
 
   return (
-    <>
-      <AdminSidebar />
-      <div className="min-h-screen bg-warm-concrete py-8 px-4 sm:px-6 lg:px-8 lg:ml-64">
-        <div className="max-w-5xl mx-auto">
+    <div className="min-h-screen bg-warm-concrete pt-20 lg:pt-8 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-5xl mx-auto">
         <div className="bg-white rounded-2xl shadow-xl border-2 border-dark-carbon/10 p-8">
           {/* Header */}
           <div className="mb-8 pb-6 border-b-2 border-dark-carbon/10">
@@ -441,8 +438,7 @@ export default function AdminHakkimizdaPage() {
             </button>
           </div>
         </div>
-        </div>
       </div>
-    </>
+    </div>
   );
 }

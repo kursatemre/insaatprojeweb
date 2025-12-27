@@ -2,7 +2,6 @@
 
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
-import AdminSidebar from '@/components/admin/AdminSidebar';
 import { getSiteSettings, updateSiteSettings } from '@/lib/api/settings';
 
 interface Question {
@@ -194,22 +193,17 @@ export default function AdminSSSPage() {
 
   if (loading) {
     return (
-      <>
-        <AdminSidebar />
-        <div className="min-h-screen bg-warm-concrete flex items-center justify-center lg:ml-64">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-night-blue mx-auto mb-4"></div>
-            <p className="text-dark-carbon/70 font-manrope">Yükleniyor...</p>
-          </div>
+      <div className="min-h-screen bg-warm-concrete flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-night-blue mx-auto mb-4"></div>
+          <p className="text-dark-carbon/70 font-manrope">Yükleniyor...</p>
         </div>
-      </>
+      </div>
     );
   }
 
   return (
-    <>
-      <AdminSidebar />
-      <div className="min-h-screen bg-warm-concrete py-8 px-4 sm:px-6 lg:px-8 lg:ml-64">
+    <div className="min-h-screen bg-warm-concrete pt-20 lg:pt-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="bg-white rounded-2xl shadow-xl border-2 border-dark-carbon/10 p-8 mb-6">
@@ -488,7 +482,6 @@ export default function AdminSSSPage() {
             </div>
           </div>
         </div>
-      </div>
-    </>
+    </div>
   );
 }

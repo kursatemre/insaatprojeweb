@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { getSiteSettings, updateSiteSettings } from '@/lib/api/settings';
-import AdminSidebar from '@/components/admin/AdminSidebar';
 import { motion } from 'framer-motion';
 
 interface CityData {
@@ -115,10 +114,8 @@ export default function AdminHaritaPage() {
   }
 
   return (
-    <>
-      <AdminSidebar />
-      <div className="min-h-screen bg-warm-concrete py-8 px-4 sm:px-6 lg:px-8 lg:ml-64">
-        <div className="max-w-7xl mx-auto">
+    <div className="min-h-screen bg-warm-concrete pt-20 lg:pt-8 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
           {/* Header */}
           <motion.div
             initial={{ opacity: 0, y: -20 }}
@@ -261,8 +258,7 @@ export default function AdminHaritaPage() {
               {isSaving ? 'Kaydediliyor...' : 'Değişiklikleri Kaydet'}
             </button>
           </motion.div>
-        </div>
       </div>
-    </>
+    </div>
   );
 }
