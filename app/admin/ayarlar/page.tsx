@@ -435,8 +435,7 @@ export default function AdminAyarlarPage() {
         </motion.div>
       )}
 
-      <div className="flex-1 lg:ml-64">
-        {/* Top Bar */}
+      {/* Top Bar */}
         <div className="bg-white border-b border-dark-carbon/10 p-4 sm:p-6 lg:p-8">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
@@ -2307,7 +2306,6 @@ export default function AdminAyarlarPage() {
             {isSaving ? 'Kaydediliyor...' : 'Değişiklikleri Kaydet'}
           </button>
         </div>
-      </div>
     </div>
   );
 }

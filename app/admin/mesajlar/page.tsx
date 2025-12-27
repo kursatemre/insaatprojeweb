@@ -90,8 +90,6 @@ export default function AdminMesajlarPage() {
 
   return (
     <div className="min-h-screen bg-warm-concrete pt-20 lg:pt-8 p-6 lg:p-8">
-
-      <div className="flex-1 lg:ml-64">
         {/* Top Bar */}
         <div className="bg-white border-b border-dark-carbon/10 p-6 lg:p-8">
           <div className="flex items-center justify-between">
@@ -367,7 +365,6 @@ export default function AdminMesajlarPage() {
             </div>
           </div>
         </div>
-      </div>
     </div>
   );
 }
