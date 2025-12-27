@@ -1,14 +1,10 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import AdminSidebar from '@/components/admin/AdminSidebar';
 import { getSiteSettings, updateSiteSettings } from '@/lib/api/settings';
 import Link from 'next/link';
 
 export default function AdminFooterPage() {
-  const router = useRouter();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
   // Company Info
@@ -65,17 +61,10 @@ export default function AdminFooterPage() {
   // Copyright
   const [copyright, setCopyright] = useState('Ekip Proje Mimarlık ve Mühendislik. Tüm hakları saklıdır.');
 
-  // Auth check
+  // Load settings on mount
   useEffect(() => {
-    const token = localStorage.getItem('adminToken');
-
-    if (!token) {
-      router.push('/admin/login');
-    } else {
-      setIsAuthenticated(true);
-      loadSettings();
-    }
-  }, [router]);
+    loadSettings();
+  }, []);
 
   // Load settings from database
   const loadSettings = async () => {
@@ -199,15 +188,8 @@ export default function AdminFooterPage() {
     setLegalLinks(updated);
   };
 
-  if (!isAuthenticated) {
-    return null;
-  }
-
   return (
-    <div className="flex min-h-screen bg-warm-concrete">
-      <AdminSidebar />
-
-      <div className="flex-1 lg:ml-64 p-6 max-w-7xl mx-auto">
+    <div className="min-h-screen bg-warm-concrete pt-20 lg:pt-8 p-6 max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
@@ -493,7 +475,6 @@ export default function AdminFooterPage() {
             {isSaving ? 'Kaydediliyor...' : 'Değişiklikleri Kaydet'}
           </button>
         </div>
-      </div>
     </div>
   );
 }
