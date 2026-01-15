@@ -135,7 +135,7 @@ export default function FeaturedProjects() {
         </motion.div>
 
         {/* Compact Project Showcase */}
-        <div className="relative min-h-[520px] sm:min-h-[500px] md:min-h-[480px] lg:min-h-[420px]">
+        <div className="relative min-h-[450px] sm:min-h-[420px] md:min-h-[380px] lg:min-h-[320px]">
           <AnimatePresence initial={false} custom={direction} mode="popLayout">
             <motion.div
               key={activeIndex}
@@ -157,7 +157,7 @@ export default function FeaturedProjects() {
                   initial={{ opacity: 0, y: 15 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.1 }}
-                  className="lg:col-span-3 relative group cursor-pointer h-[280px] md:h-[350px]"
+                  className="lg:col-span-3 relative group cursor-pointer h-[200px] sm:h-[220px] md:h-[250px] lg:h-[280px]"
                   onClick={() => router.push(`/projeler/${activeProject.id}`)}
                 >
                   <div className="relative w-full h-full rounded-xl overflow-hidden border border-muted-gold/20 shadow-xl">
