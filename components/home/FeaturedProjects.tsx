@@ -237,60 +237,60 @@ export default function FeaturedProjects() {
                   initial={{ opacity: 0, y: 15 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.2 }}
-                  className="lg:col-span-2 flex flex-col justify-center space-y-3"
+                  className="lg:col-span-2 flex flex-col justify-center space-y-2 lg:space-y-3 overflow-hidden"
                 >
                   {/* Title & Location */}
-                  <div>
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className="font-playfair text-2xl font-bold text-muted-gold/40">
+                  <div className="flex-shrink-0">
+                    <div className="flex items-center gap-2 mb-1 lg:mb-2">
+                      <span className="font-playfair text-xl lg:text-2xl font-bold text-muted-gold/40">
                         {String(activeIndex + 1).padStart(2, '0')}
                       </span>
                       <div className="h-px flex-1 bg-muted-gold/20"></div>
                     </div>
-                    <h3 className="font-playfair font-bold text-xl md:text-2xl text-white mb-2 leading-tight">
+                    <h3 className="font-playfair font-bold text-lg lg:text-xl xl:text-2xl text-white mb-1 lg:mb-2 leading-tight line-clamp-2">
                       {activeProject.title}
                     </h3>
                     <div className="flex items-center gap-2 text-white/50 font-manrope text-xs">
-                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                      <svg className="w-3 h-3 lg:w-4 lg:h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                         <path
                           fillRule="evenodd"
                           d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
                           clipRule="evenodd"
                         />
                       </svg>
-                      <span>{activeProject.location}</span>
-                      <span className="text-muted-gold">•</span>
-                      <span>{activeProject.year}</span>
+                      <span className="truncate">{activeProject.location}</span>
+                      <span className="text-muted-gold flex-shrink-0">•</span>
+                      <span className="flex-shrink-0">{activeProject.year}</span>
                     </div>
                   </div>
 
                   {/* Description - Truncated */}
-                  <p className="text-white/70 font-manrope text-sm leading-relaxed line-clamp-2">
+                  <p className="text-white/70 font-manrope text-xs lg:text-sm leading-relaxed line-clamp-2 flex-shrink-0">
                     {activeProject.description}
                   </p>
 
                   {/* Compact Stats */}
-                  <div className="grid grid-cols-3 gap-3">
+                  <div className="grid grid-cols-3 gap-2 lg:gap-3 flex-shrink-0">
                     <div className="border-l-2 border-muted-gold pl-2">
-                      <p className="text-white/40 text-xs font-manrope mb-0.5 uppercase">Alan</p>
-                      <p className="text-white font-roboto-mono text-sm font-semibold">{activeProject.area}</p>
+                      <p className="text-white/40 text-[10px] lg:text-xs font-manrope mb-0.5 uppercase">Alan</p>
+                      <p className="text-white font-roboto-mono text-xs lg:text-sm font-semibold truncate">{activeProject.area}</p>
                     </div>
                     <div className="border-l-2 border-muted-gold pl-2">
-                      <p className="text-white/40 text-xs font-manrope mb-0.5 uppercase">Süre</p>
-                      <p className="text-white font-roboto-mono text-sm font-semibold">{activeProject.duration}</p>
+                      <p className="text-white/40 text-[10px] lg:text-xs font-manrope mb-0.5 uppercase">Süre</p>
+                      <p className="text-white font-roboto-mono text-xs lg:text-sm font-semibold truncate">{activeProject.duration}</p>
                     </div>
                     <div className="border-l-2 border-muted-gold pl-2">
-                      <p className="text-white/40 text-xs font-manrope mb-0.5 uppercase">Bütçe</p>
-                      <p className="text-white font-roboto-mono text-sm font-semibold">{activeProject.budget}</p>
+                      <p className="text-white/40 text-[10px] lg:text-xs font-manrope mb-0.5 uppercase">Bütçe</p>
+                      <p className="text-white font-roboto-mono text-xs lg:text-sm font-semibold truncate">{activeProject.budget}</p>
                     </div>
                   </div>
 
                   {/* Compact Services */}
-                  <div className="flex flex-wrap gap-1.5">
+                  <div className="flex flex-wrap gap-1 lg:gap-1.5 flex-shrink-0">
                     {activeProject.services.slice(0, 3).map((service, idx) => (
                       <span
                         key={idx}
-                        className="px-2.5 py-1 border border-muted-gold/20 text-muted-gold rounded text-xs font-manrope"
+                        className="px-2 lg:px-2.5 py-0.5 lg:py-1 border border-muted-gold/20 text-muted-gold rounded text-[10px] lg:text-xs font-manrope"
                       >
                         {service}
                       </span>
