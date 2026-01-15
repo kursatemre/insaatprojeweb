@@ -61,26 +61,6 @@ export default function FeaturedProjects() {
     });
   };
 
-  const slideVariants = {
-    enter: (direction: number) => ({
-      x: direction > 0 ? '100%' : '-100%',
-      opacity: 0,
-      scale: 0.95,
-    }),
-    center: {
-      zIndex: 1,
-      x: 0,
-      opacity: 1,
-      scale: 1,
-    },
-    exit: (direction: number) => ({
-      zIndex: 0,
-      x: direction < 0 ? '100%' : '-100%',
-      opacity: 0,
-      scale: 0.95,
-    }),
-  };
-
   if (isLoading) {
     return (
       <section className="relative py-20 bg-gradient-to-br from-night-blue via-dark-carbon to-night-blue overflow-hidden">
@@ -103,7 +83,7 @@ export default function FeaturedProjects() {
   return (
     <section
       ref={containerRef}
-      className="relative py-12 md:py-16 bg-gradient-to-br from-night-blue via-dark-carbon to-night-blue overflow-hidden"
+      className="relative py-10 sm:py-12 md:py-16 bg-gradient-to-br from-night-blue via-dark-carbon to-night-blue overflow-hidden"
     >
       {/* Animated Background */}
       <div className="absolute inset-0">
@@ -115,18 +95,18 @@ export default function FeaturedProjects() {
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Compact Section Header */}
+        {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-center mb-8 md:mb-10"
+          className="text-center mb-6 sm:mb-8"
         >
           <span className="text-muted-gold font-roboto-mono text-xs tracking-widest uppercase">
             Referanslarımız
           </span>
-          <h2 className="font-playfair font-bold text-3xl md:text-4xl text-white mt-2 mb-2">
+          <h2 className="font-playfair font-bold text-2xl sm:text-3xl md:text-4xl text-white mt-2 mb-2">
             Öne Çıkan Projelerimiz
           </h2>
           <p className="text-white/60 font-manrope text-sm md:text-base max-w-2xl mx-auto">
@@ -134,218 +114,187 @@ export default function FeaturedProjects() {
           </p>
         </motion.div>
 
-        {/* Compact Project Showcase */}
-        <div className="relative min-h-[450px] sm:min-h-[420px] md:min-h-[380px] lg:min-h-[320px]">
-          <AnimatePresence initial={false} custom={direction} mode="popLayout">
+        {/* Project Showcase - Normal Flow */}
+        <div className="relative">
+          {/* Main Content Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 lg:gap-6">
+            {/* Left: Image */}
             <motion.div
-              key={activeIndex}
-              custom={direction}
-              variants={slideVariants}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              transition={{
-                x: { type: 'spring', stiffness: 300, damping: 30 },
-                opacity: { duration: 0.4 },
-                scale: { duration: 0.4 },
-              }}
-              className="absolute inset-0 pb-16"
+              key={`image-${activeIndex}`}
+              initial={{ opacity: 0, x: direction > 0 ? 50 : -50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5 }}
+              className="lg:col-span-3 relative group cursor-pointer"
+              onClick={() => router.push(`/projeler/${activeProject.id}`)}
             >
-              <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 md:gap-6 h-full">
-                {/* Left: Image - Kompakt */}
-                <motion.div
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.1 }}
-                  className="lg:col-span-3 relative group cursor-pointer h-[200px] sm:h-[220px] md:h-[250px] lg:h-[280px]"
-                  onClick={() => router.push(`/projeler/${activeProject.id}`)}
-                >
-                  <div className="relative w-full h-full rounded-xl overflow-hidden border border-muted-gold/20 shadow-xl">
-                    {activeProject.image_url ? (
-                      <Image
-                        src={activeProject.image_url}
-                        alt={activeProject.title}
-                        fill
-                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 60vw, 50vw"
-                        priority={activeIndex === 0}
-                        className="object-cover group-hover:scale-110 transition-transform duration-700"
+              <div className="relative w-full aspect-[16/10] sm:aspect-[16/9] lg:aspect-[16/10] rounded-xl overflow-hidden border border-muted-gold/20 shadow-xl">
+                {activeProject.image_url ? (
+                  <Image
+                    src={activeProject.image_url}
+                    alt={activeProject.title}
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 100vw, 60vw"
+                    priority={activeIndex === 0}
+                    className="object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gradient-to-br from-dark-carbon to-night-blue flex items-center justify-center">
+                    <div className="absolute inset-0 bg-blueprint-pattern opacity-20"></div>
+                    <svg
+                      className="w-20 h-20 sm:w-24 sm:h-24 text-white/20 relative z-10"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={1}
+                        d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
                       />
-                    ) : (
-                      <div className="w-full h-full bg-gradient-to-br from-dark-carbon to-night-blue flex items-center justify-center">
-                        <div className="absolute inset-0 bg-blueprint-pattern opacity-20"></div>
-                        <svg
-                          className="w-32 h-32 text-white/20 relative z-10"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={1}
-                            d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-                          />
-                        </svg>
-                      </div>
-                    )}
-
-                    {/* Overlay Gradient */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-night-blue/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-
-                    {/* View Project Button */}
-                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300">
-                      <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        className="px-6 py-3 bg-muted-gold text-night-blue font-manrope font-semibold rounded-lg shadow-xl flex items-center gap-2 text-sm"
-                      >
-                        <span>İncele</span>
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                        </svg>
-                      </motion.button>
-                    </div>
-
-                    {/* Compact Badges */}
-                    <div className="absolute top-3 left-3 flex gap-2">
-                      <span className="px-3 py-1 bg-muted-gold/90 backdrop-blur-sm text-night-blue rounded-full text-xs font-manrope font-semibold">
-                        {activeProject.category === 'kamu' && 'Kamu'}
-                        {activeProject.category === 'ozel' && 'Özel'}
-                        {activeProject.category === 'konut' && 'Konut'}
-                        {activeProject.category === 'ticari' && 'Ticari'}
-                      </span>
-                    </div>
-
-                    <div className="absolute top-3 right-3">
-                      <span
-                        className={`px-2.5 py-1 backdrop-blur-sm rounded-full text-xs font-roboto-mono ${
-                          activeProject.status === 'Tamamlandı'
-                            ? 'bg-green-500/90 text-white'
-                            : activeProject.status === 'Devam Ediyor'
-                            ? 'bg-blue-500/90 text-white'
-                            : 'bg-yellow-500/90 text-night-blue'
-                        }`}
-                      >
-                        {activeProject.status}
-                      </span>
-                    </div>
+                    </svg>
                   </div>
-                </motion.div>
+                )}
 
-                {/* Right: Compact Info */}
-                <motion.div
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.2 }}
-                  className="lg:col-span-2 flex flex-col justify-center space-y-2 lg:space-y-3 overflow-hidden"
-                >
-                  {/* Title & Location */}
-                  <div className="flex-shrink-0">
-                    <div className="flex items-center gap-2 mb-1 lg:mb-2">
-                      <span className="font-playfair text-xl lg:text-2xl font-bold text-muted-gold/40">
-                        {String(activeIndex + 1).padStart(2, '0')}
-                      </span>
-                      <div className="h-px flex-1 bg-muted-gold/20"></div>
-                    </div>
-                    <h3 className="font-playfair font-bold text-lg lg:text-xl xl:text-2xl text-white mb-1 lg:mb-2 leading-tight line-clamp-2">
-                      {activeProject.title}
-                    </h3>
-                    <div className="flex items-center gap-2 text-white/50 font-manrope text-xs">
-                      <svg className="w-3 h-3 lg:w-4 lg:h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                        <path
-                          fillRule="evenodd"
-                          d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                      <span className="truncate">{activeProject.location}</span>
-                      <span className="text-muted-gold flex-shrink-0">•</span>
-                      <span className="flex-shrink-0">{activeProject.year}</span>
-                    </div>
-                  </div>
+                {/* Hover Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-night-blue/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                  <motion.span
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    whileHover={{ scale: 1 }}
+                    className="px-4 py-2 bg-muted-gold text-night-blue font-manrope font-semibold rounded-lg text-sm"
+                  >
+                    İncele →
+                  </motion.span>
+                </div>
 
-                  {/* Description - Truncated */}
-                  <p className="text-white/70 font-manrope text-xs lg:text-sm leading-relaxed line-clamp-2 flex-shrink-0">
-                    {activeProject.description}
-                  </p>
+                {/* Badges */}
+                <div className="absolute top-2 sm:top-3 left-2 sm:left-3 flex gap-2">
+                  <span className="px-2 sm:px-3 py-1 bg-muted-gold/90 backdrop-blur-sm text-night-blue rounded-full text-[10px] sm:text-xs font-manrope font-semibold">
+                    {activeProject.category === 'kamu' && 'Kamu'}
+                    {activeProject.category === 'ozel' && 'Özel'}
+                    {activeProject.category === 'konut' && 'Konut'}
+                    {activeProject.category === 'ticari' && 'Ticari'}
+                  </span>
+                </div>
 
-                  {/* Compact Stats */}
-                  <div className="grid grid-cols-3 gap-2 lg:gap-3 flex-shrink-0">
-                    <div className="border-l-2 border-muted-gold pl-2">
-                      <p className="text-white/40 text-[10px] lg:text-xs font-manrope mb-0.5 uppercase">Alan</p>
-                      <p className="text-white font-roboto-mono text-xs lg:text-sm font-semibold truncate">{activeProject.area}</p>
-                    </div>
-                    <div className="border-l-2 border-muted-gold pl-2">
-                      <p className="text-white/40 text-[10px] lg:text-xs font-manrope mb-0.5 uppercase">Süre</p>
-                      <p className="text-white font-roboto-mono text-xs lg:text-sm font-semibold truncate">{activeProject.duration}</p>
-                    </div>
-                    <div className="border-l-2 border-muted-gold pl-2">
-                      <p className="text-white/40 text-[10px] lg:text-xs font-manrope mb-0.5 uppercase">Bütçe</p>
-                      <p className="text-white font-roboto-mono text-xs lg:text-sm font-semibold truncate">{activeProject.budget}</p>
-                    </div>
-                  </div>
+                <div className="absolute top-2 sm:top-3 right-2 sm:right-3">
+                  <span
+                    className={`px-2 py-0.5 sm:py-1 backdrop-blur-sm rounded-full text-[10px] sm:text-xs font-roboto-mono ${
+                      activeProject.status === 'Tamamlandı'
+                        ? 'bg-green-500/90 text-white'
+                        : activeProject.status === 'Devam Ediyor'
+                        ? 'bg-blue-500/90 text-white'
+                        : 'bg-yellow-500/90 text-night-blue'
+                    }`}
+                  >
+                    {activeProject.status}
+                  </span>
+                </div>
 
-                  {/* Compact Services */}
-                  <div className="flex flex-wrap gap-1 lg:gap-1.5 flex-shrink-0">
-                    {activeProject.services.slice(0, 3).map((service, idx) => (
-                      <span
-                        key={idx}
-                        className="px-2 lg:px-2.5 py-0.5 lg:py-1 border border-muted-gold/20 text-muted-gold rounded text-[10px] lg:text-xs font-manrope"
-                      >
-                        {service}
-                      </span>
-                    ))}
-                  </div>
-                </motion.div>
+                {/* Navigation Arrows - Mobile */}
+                <div className="lg:hidden absolute inset-y-0 left-0 right-0 flex items-center justify-between px-2 pointer-events-none">
+                  <button
+                    onClick={(e) => { e.stopPropagation(); paginate(-1); }}
+                    className="pointer-events-auto w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-white/30 bg-night-blue/60 backdrop-blur-sm text-white hover:bg-muted-gold hover:text-night-blue transition-all flex items-center justify-center"
+                  >
+                    <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                    </svg>
+                  </button>
+                  <button
+                    onClick={(e) => { e.stopPropagation(); paginate(1); }}
+                    className="pointer-events-auto w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-white/30 bg-night-blue/60 backdrop-blur-sm text-white hover:bg-muted-gold hover:text-night-blue transition-all flex items-center justify-center"
+                  >
+                    <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </button>
+                </div>
               </div>
             </motion.div>
-          </AnimatePresence>
 
-          {/* Mobile: Arrows on Image */}
-          <div className="lg:hidden absolute top-1/2 -translate-y-1/2 left-0 right-0 flex items-center justify-between px-2 z-20 pointer-events-none">
-            {/* Prev Button */}
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => paginate(-1)}
-              className="pointer-events-auto w-10 h-10 rounded-full border border-muted-gold/60 bg-night-blue/80 backdrop-blur-md text-muted-gold hover:bg-muted-gold hover:text-night-blue transition-all duration-200 flex items-center justify-center shadow-lg"
+            {/* Right: Info */}
+            <motion.div
+              key={`info-${activeIndex}`}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="lg:col-span-2 flex flex-col justify-center space-y-3 sm:space-y-4"
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-              </svg>
-            </motion.button>
+              {/* Index & Title */}
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="font-playfair text-lg sm:text-xl lg:text-2xl font-bold text-muted-gold/40">
+                    {String(activeIndex + 1).padStart(2, '0')}
+                  </span>
+                  <div className="h-px flex-1 bg-muted-gold/20"></div>
+                </div>
+                <h3 className="font-playfair font-bold text-lg sm:text-xl lg:text-2xl text-white mb-1 sm:mb-2 leading-tight line-clamp-2">
+                  {activeProject.title}
+                </h3>
+                <div className="flex items-center gap-2 text-white/50 font-manrope text-xs sm:text-sm">
+                  <svg className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path
+                      fillRule="evenodd"
+                      d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  <span className="truncate max-w-[150px] sm:max-w-none">{activeProject.location}</span>
+                  <span className="text-muted-gold">•</span>
+                  <span>{activeProject.year}</span>
+                </div>
+              </div>
 
-            {/* Next Button */}
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => paginate(1)}
-              className="pointer-events-auto w-10 h-10 rounded-full border border-muted-gold/60 bg-night-blue/80 backdrop-blur-md text-muted-gold hover:bg-muted-gold hover:text-night-blue transition-all duration-200 flex items-center justify-center shadow-lg"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </motion.button>
+              {/* Description */}
+              <p className="text-white/70 font-manrope text-xs sm:text-sm leading-relaxed line-clamp-2 sm:line-clamp-3">
+                {activeProject.description}
+              </p>
+
+              {/* Stats */}
+              <div className="grid grid-cols-3 gap-2 sm:gap-3">
+                <div className="border-l-2 border-muted-gold pl-2">
+                  <p className="text-white/40 text-[10px] sm:text-xs font-manrope uppercase">Alan</p>
+                  <p className="text-white font-roboto-mono text-xs sm:text-sm font-semibold truncate">{activeProject.area}</p>
+                </div>
+                <div className="border-l-2 border-muted-gold pl-2">
+                  <p className="text-white/40 text-[10px] sm:text-xs font-manrope uppercase">Süre</p>
+                  <p className="text-white font-roboto-mono text-xs sm:text-sm font-semibold truncate">{activeProject.duration}</p>
+                </div>
+                <div className="border-l-2 border-muted-gold pl-2">
+                  <p className="text-white/40 text-[10px] sm:text-xs font-manrope uppercase">Bütçe</p>
+                  <p className="text-white font-roboto-mono text-xs sm:text-sm font-semibold truncate">{activeProject.budget}</p>
+                </div>
+              </div>
+
+              {/* Services */}
+              <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                {activeProject.services.slice(0, 3).map((service, idx) => (
+                  <span
+                    key={idx}
+                    className="px-2 sm:px-2.5 py-0.5 sm:py-1 border border-muted-gold/20 text-muted-gold rounded text-[10px] sm:text-xs font-manrope"
+                  >
+                    {service}
+                  </span>
+                ))}
+              </div>
+            </motion.div>
           </div>
 
-          {/* Desktop: Full Navigation at Bottom */}
-          <div className="hidden lg:flex absolute bottom-0 left-0 right-0 items-center justify-between z-20">
-            {/* Prev Button */}
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+          {/* Desktop Navigation */}
+          <div className="hidden lg:flex items-center justify-center gap-4 mt-6">
+            <button
               onClick={() => paginate(-1)}
-              className="w-10 h-10 rounded-full border border-muted-gold/40 bg-night-blue/70 backdrop-blur-sm text-muted-gold hover:bg-muted-gold hover:text-night-blue transition-all duration-200 flex items-center justify-center"
+              className="w-10 h-10 rounded-full border border-muted-gold/40 bg-night-blue/50 text-muted-gold hover:bg-muted-gold hover:text-night-blue transition-all flex items-center justify-center"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
-            </motion.button>
+            </button>
 
-            {/* Dots */}
             <div className="flex gap-2">
               {projects.map((_, index) => (
-                <motion.button
+                <button
                   key={index}
                   onClick={() => {
                     setDirection(index > activeIndex ? 1 : -1);
@@ -353,29 +302,43 @@ export default function FeaturedProjects() {
                   }}
                   className={`transition-all duration-200 ${
                     index === activeIndex
-                      ? 'w-8 h-1.5 bg-muted-gold rounded-full'
-                      : 'w-1.5 h-1.5 bg-white/30 rounded-full hover:bg-white/50'
+                      ? 'w-8 h-2 bg-muted-gold rounded-full'
+                      : 'w-2 h-2 bg-white/30 rounded-full hover:bg-white/50'
                   }`}
-                  whileHover={{ scale: 1.1 }}
-                ></motion.button>
+                />
               ))}
             </div>
 
-            {/* Next Button */}
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+            <button
               onClick={() => paginate(1)}
-              className="w-10 h-10 rounded-full border border-muted-gold/40 bg-night-blue/70 backdrop-blur-sm text-muted-gold hover:bg-muted-gold hover:text-night-blue transition-all duration-200 flex items-center justify-center"
+              className="w-10 h-10 rounded-full border border-muted-gold/40 bg-night-blue/50 text-muted-gold hover:bg-muted-gold hover:text-night-blue transition-all flex items-center justify-center"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
-            </motion.button>
+            </button>
+          </div>
+
+          {/* Mobile Dots */}
+          <div className="flex lg:hidden justify-center gap-2 mt-4">
+            {projects.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => {
+                  setDirection(index > activeIndex ? 1 : -1);
+                  setActiveIndex(index);
+                }}
+                className={`transition-all duration-200 ${
+                  index === activeIndex
+                    ? 'w-6 h-1.5 bg-muted-gold rounded-full'
+                    : 'w-1.5 h-1.5 bg-white/30 rounded-full'
+                }`}
+              />
+            ))}
           </div>
         </div>
 
-        {/* Compact Bottom CTA */}
+        {/* Bottom CTA */}
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -384,15 +347,13 @@ export default function FeaturedProjects() {
           className="mt-6 sm:mt-8 flex flex-col sm:flex-row items-center justify-center sm:justify-between gap-3 sm:gap-4"
         >
           <p className="text-white/40 font-manrope text-xs sm:text-sm text-center sm:text-left">
-            <span className="inline-block">{projects.length} Öne Çıkan Proje</span>
-            <span className="mx-1 sm:mx-2">•</span>
-            <span className="inline-block">320+ Başarılı Referans</span>
+            {projects.length} Öne Çıkan Proje • 320+ Başarılı Referans
           </p>
           <motion.button
             onClick={() => router.push('/projeler')}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            className="group inline-flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 bg-muted-gold text-night-blue font-manrope font-semibold text-xs sm:text-sm rounded-lg hover:shadow-lg hover:shadow-muted-gold/30 transition-all duration-200 flex-shrink-0"
+            className="group inline-flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 bg-muted-gold text-night-blue font-manrope font-semibold text-xs sm:text-sm rounded-lg hover:shadow-lg hover:shadow-muted-gold/30 transition-all"
           >
             <span>Tümünü Gör</span>
             <svg
