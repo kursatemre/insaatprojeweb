@@ -381,16 +381,16 @@ export default function FeaturedProjects() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
           viewport={{ once: true }}
-          className="mt-8 flex items-center justify-between"
+          className="mt-8 flex flex-col sm:flex-row items-center justify-center sm:justify-between gap-4"
         >
-          <p className="text-white/40 font-manrope text-xs md:text-sm">
+          <p className="text-white/40 font-manrope text-xs sm:text-sm text-center sm:text-left whitespace-nowrap">
             {projects.length} Öne Çıkan Proje • 320+ Başarılı Referans
           </p>
           <motion.button
             onClick={() => router.push('/projeler')}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            className="group inline-flex items-center gap-2 px-5 py-2.5 bg-muted-gold text-night-blue font-manrope font-semibold text-sm rounded-lg hover:shadow-lg hover:shadow-muted-gold/30 transition-all duration-200"
+            className="group inline-flex items-center gap-2 px-5 py-2.5 bg-muted-gold text-night-blue font-manrope font-semibold text-sm rounded-lg hover:shadow-lg hover:shadow-muted-gold/30 transition-all duration-200 flex-shrink-0"
           >
             <span>Tümünü Gör</span>
             <svg
