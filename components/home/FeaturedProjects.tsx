@@ -135,7 +135,7 @@ export default function FeaturedProjects() {
         </motion.div>
 
         {/* Compact Project Showcase */}
-        <div className="relative min-h-[500px] md:min-h-[450px]">
+        <div className="relative min-h-[520px] sm:min-h-[500px] md:min-h-[480px] lg:min-h-[420px]">
           <AnimatePresence initial={false} custom={direction} mode="popLayout">
             <motion.div
               key={activeIndex}
@@ -381,16 +381,18 @@ export default function FeaturedProjects() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
           viewport={{ once: true }}
-          className="mt-8 flex flex-col sm:flex-row items-center justify-center sm:justify-between gap-4"
+          className="mt-6 sm:mt-8 flex flex-col sm:flex-row items-center justify-center sm:justify-between gap-3 sm:gap-4"
         >
-          <p className="text-white/40 font-manrope text-xs sm:text-sm text-center sm:text-left whitespace-nowrap">
-            {projects.length} Öne Çıkan Proje • 320+ Başarılı Referans
+          <p className="text-white/40 font-manrope text-xs sm:text-sm text-center sm:text-left">
+            <span className="inline-block">{projects.length} Öne Çıkan Proje</span>
+            <span className="mx-1 sm:mx-2">•</span>
+            <span className="inline-block">320+ Başarılı Referans</span>
           </p>
           <motion.button
             onClick={() => router.push('/projeler')}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            className="group inline-flex items-center gap-2 px-5 py-2.5 bg-muted-gold text-night-blue font-manrope font-semibold text-sm rounded-lg hover:shadow-lg hover:shadow-muted-gold/30 transition-all duration-200 flex-shrink-0"
+            className="group inline-flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 bg-muted-gold text-night-blue font-manrope font-semibold text-xs sm:text-sm rounded-lg hover:shadow-lg hover:shadow-muted-gold/30 transition-all duration-200 flex-shrink-0"
           >
             <span>Tümünü Gör</span>
             <svg
